@@ -256,12 +256,25 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	if (cx < 0) cx = 0;
+	if (cy < 50)
+	{
+		cy = 0;
+	}
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
 {
+	float x, y;
+	CGame::GetInstance()->GetCamPos(x, y);
+
+	CTextures* textures = CTextures::GetInstance();
+	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
+	map = new Map(tileset, 16, 16);
+	map->ReadMapTXT("textures\\map\\map_1.txt");
+	map->DrawMap(0, 0);
+
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }

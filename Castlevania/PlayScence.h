@@ -7,6 +7,7 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Map.h"
 
 
 class CPlayScene : public CScene
@@ -32,6 +33,7 @@ public:
 	virtual void Unload();
 
 	CMario* GetPlayer() { return player; }
+	Map* map;
 
 	//friend class CPlayScenceKeyHandler;
 };

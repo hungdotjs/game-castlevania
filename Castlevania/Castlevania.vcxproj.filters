@@ -40,6 +40,9 @@
     <Filter Include="Object\Portal">
       <UniqueIdentifier>{f9d56b66-cf3f-4d39-b7ff-89e2b1cbd672}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Map">
+      <UniqueIdentifier>{45ccbb4e-df2a-4296-acb8-393fdc393b1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -87,6 +90,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Library\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Library\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -130,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Object\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Library\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
