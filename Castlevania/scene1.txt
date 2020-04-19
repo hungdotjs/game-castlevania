@@ -1,37 +1,49 @@
 # id	file_path		transparent_color_r	g	b
 [TEXTURES]
-0	textures\mario.png			255	255	255
-20	textures\misc.png			176	224	248
-10	textures\enemies.png			3	26	110
-100	textures\map\titleset_1_bank.png	0	0	255
-90	textures\brick.png			0	0	0
+1	textures\simon_right.png	116	116	116
+2	textures\simon_left.png	116	116	116
+20	textures\misc.png	176	224	248
+10	textures\enemies.png	3	26	110
+100	textures\map\titleset_1_bank.png	255	255	255
+90	textures\brick.png	0	0	0
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# BIG MARIO 
+#---SIMON---
 # idle right
-10001	246	154	260	181	0
-# walk
-10002	275	154	290	181	0		
-10003	304	154	321	181	0
+1001	190	2	206	32	1
+# walk right
+1002	165	2	181	32	1
+1003	143	0	158	32	1
+1004	123	2	138	32	1
+# jump right
+1005	99	2	115	25	1
+# sit right
+1006	99	2	115	25	1
+# sit attack right
+1007	48	42	72	65	1
+1008	31	42	47	65	1
+1009	6	43	28	65	1
+#die right
+1024	4	84	36	99	1
+
 # idle left
-10011	186	154	200	181	0
-#walk
-10012	155	154	170	181	0
-10013	125	154	140	181	0
-# die 
-10099	215	120	231	135	0
-# SMALL MARIO
-# idle small right
-10021	247	0	259	15	0
-# walk
-10022	275	0	291	15	0
-10023	306	0	320	15	0
-# idle small left
-10031	187	0	198	15	0
-# walk
-10032	155	0	170	15	0
-10033	125	0	139	15	0
+1101	1	2	17	32	2
+# walk left
+1102	26	2	42	32	2
+1103	49	0	64	32	2
+1104	69	2	84	32	2
+# jump left
+1105	92	2	108	25	2
+# sit left
+1106	92	2	108	25	2
+# sit attack left
+1107	135	42	159	65	2
+1108	160	42	176	65	2
+1109	179	43	201	65	2
+# die left
+1124	171	84	203	99	2
+
 #BRICK
 20001	408	225	424	241	90
 #GOOMBA
@@ -48,27 +60,32 @@
 						
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
+# === SIMON ====
+# idle right
+9001	1001	100
+# walk right
+9002	1002	100	1003	200	1004	200
+# jump right
+9003	1005	100
+# sit right
+9004	1006	100
+# sit attack right
+9005	1007	100	1008	100	1009	100
+# die right
+9009	1024	100
 
-# ==== MARIO =========
-#idle BIG right
-400	10001	100
-#idle BIG left
-401	10011	100
-#idle small right
-402	10021	100
-#idle small left
-403	10031	100
-#walk right big
-500	10001	100	10002	100	10003	100
-#walk left big
-501	10011	100	10012	100	10013	100
-#walk right small
-502	10021	100	10022	100	10023	100
-#walk left small
-503	10031	100	10032	100	10033	100
-#die
-599	10099	100
-
+# idle left
+9101	1101	100
+# walk left
+9102	1102	100	1103	200	1104	200
+# jump left
+9103	1105	100
+# sit left
+9104	1106	100
+#sit attack left
+9105	1107	100	1108	100	1109	100
+# die left
+9109	1124	100
 
 # ==== BRICK =========
 601	20001	100
@@ -89,8 +106,8 @@
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# MARIO
-1	400	401	402	403	500	501	502	503	599
+# SIMON
+1	9001	9101	9002	9102	9003	9103	9004	9104	9009	9109	9005	9105
 # BRICK 
 2	601
 # QUESTION MARK BRICK 
@@ -100,8 +117,8 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba
-# MARIO
+# type: 0 = Simon , 1 = Brick, 2 = Goomba
+# SIMON
 0	50.0	0	1
 
 # GOOMBA
@@ -160,5 +177,5 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	300	98	0	316	161	2
+50	490	98	1	316	161	2
 

@@ -19,6 +19,7 @@ Map::Map(LPDIRECT3DTEXTURE9 sprite, int _tileWidth, int _tileHeight)
 
 Map::~Map()
 {
+	tileSet->Release();
 }
 
 
@@ -53,7 +54,7 @@ void Map::ReadMapTXT(char* filename)
 
 	f.close();
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", filename);
+	DebugOut(L"[INFO] Done loading map resources %s\n", filename);
 
 }
 

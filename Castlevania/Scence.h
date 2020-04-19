@@ -12,6 +12,7 @@ protected:
 
 public:
 	CScene(int id, LPCWSTR filePath);
+	~CScene();
 
 	CKeyEventHandler* GetKeyEventHandler() { return key_handler; }
 	virtual void Load() = 0;
@@ -32,4 +33,5 @@ public:
 	virtual void OnKeyDown(int KeyCode) = 0;
 	virtual void OnKeyUp(int KeyCode) = 0;
 	CScenceKeyHandler(CScene* s) :CKeyEventHandler() { scence = s; }
+	~CScenceKeyHandler();
 };

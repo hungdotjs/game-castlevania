@@ -15,6 +15,20 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	key_handler = new CPlayScenceKeyHandler(this);
 }
 
+CPlayScene::~CPlayScene()
+{
+	if (player != NULL)
+	{
+		delete player;
+		player = nullptr;
+	}
+	if (map != NULL)
+	{
+		delete map;
+		map = nullptr;
+	}
+}
+
 /*
 	Load scene resources from scene file (textures, sprites, animations and objects)
 	See scene1.txt, scene2.txt for detail format specification
@@ -27,14 +41,14 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_MARIO	0
+#define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
 
 #define OBJECT_TYPE_PORTAL	50
 
-#define MAX_SCENE_LINE 1024
+#define MAX_SCENE_LINE 2048
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -142,16 +156,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_SIMON:
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
-		player = (CMario*)obj;
-
-		DebugOut(L"[INFO] Player object created!\n");
+		obj = new Simon();
+		player = (Simon*)obj;
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
@@ -228,6 +240,14 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+
+	CTextures* textures = CTextures::GetInstance();
+
+	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
+
+	map = new Map(tileset, 16, 16);
+	map->ReadMapTXT("textures\\map\\map_1.txt");
+
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -247,7 +267,8 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	//if (player == NULL) return;
+
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -256,11 +277,13 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
+
 	if (cx < 0) cx = 0;
-	if (cy < 50)
+	if (cy < 0)
 	{
 		cy = 0;
 	}
+
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
@@ -269,10 +292,6 @@ void CPlayScene::Render()
 	float x, y;
 	CGame::GetInstance()->GetCamPos(x, y);
 
-	CTextures* textures = CTextures::GetInstance();
-	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
-	map = new Map(tileset, 16, 16);
-	map->ReadMapTXT("textures\\map\\map_1.txt");
 	map->DrawMap(0, 0);
 
 	for (int i = 0; i < objects.size(); i++)
@@ -295,31 +314,90 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
+
+	// Chet
+	if (simon->GetState() == SIMON_STATE_DIE) return;
+
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
+	case DIK_SPACE:	// Nhay
+		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false)
+			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
-	case DIK_A:
-		mario->Reset();
+
+	case DIK_Q: // Danh
+		if (simon->isAttack == false)
+			simon->SetAction(SIMON_ACTION_ATTACK);
 		break;
+
+	case DIK_A:	// Reset
+		simon->Reset();
+		break;
+	}
+}
+
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+{
+	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
+
+	// Chet
+	if (simon->GetState() == SIMON_STATE_DIE) return;
+
+	// Ngoi
+	if (KeyCode == DIK_DOWN)
+	{
+		if (simon->isSit)
+		{
+			if (!simon->isAttack)
+			{
+				simon->isSit = false;
+			}
+			else
+			{
+				simon->isExitSit = true;
+			}
+		}
+	}
+
+	// Di bo
+	else if (KeyCode == DIK_RIGHT || KeyCode == DIK_LEFT)
+	{
+		simon->isMoving = false;
+		simon->vx = 0;
 	}
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
 
-	// disable control key when Mario die 
-	if (mario->GetState() == MARIO_STATE_DIE) return;
+	// Chet
+	if (simon->GetState() == SIMON_STATE_DIE) return;
+
+	// Ngoi
+	if (game->IsKeyDown(DIK_DOWN))
+	{
+		simon->SetState(SIMON_STATE_SIT);
+	}
+
+	// Di bo
 	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+	{
+		if (!simon->isSit && !simon->isAttack)
+			simon->SetState(SIMON_STATE_WALK);
+		if (!simon->isJump && !simon->isAttack)
+			simon->nx = 1;
+	}
 	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
-	else
-		mario->SetState(MARIO_STATE_IDLE);
+	{
+		if (!simon->isSit && !simon->isAttack)
+			simon->SetState(SIMON_STATE_WALK);
+		if (!simon->isJump && !simon->isAttack)
+			simon->nx = -1;
+	}
+
 }

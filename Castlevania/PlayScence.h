@@ -7,13 +7,14 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Simon.h"
 #include "Map.h"
 
 
 class CPlayScene : public CScene
 {
 protected:
-	CMario* player;					// A play scene has to have player, right? 
+	Simon* player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -32,10 +33,11 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CMario* GetPlayer() { return player; }
+	Simon* GetPlayer() { return player; }
 	Map* map;
 
 	//friend class CPlayScenceKeyHandler;
+	~CPlayScene();
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
@@ -43,7 +45,7 @@ class CPlayScenceKeyHandler : public CScenceKeyHandler
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode) {};
+	virtual void OnKeyUp(int KeyCode);
 	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
 

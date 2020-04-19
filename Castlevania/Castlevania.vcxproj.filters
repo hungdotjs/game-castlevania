@@ -43,6 +43,9 @@
     <Filter Include="Library\Map">
       <UniqueIdentifier>{45ccbb4e-df2a-4296-acb8-393fdc393b1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Simon">
+      <UniqueIdentifier>{ff61bc6b-58ad-418c-9be9-be7ea7905080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -93,6 +96,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>Library\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>Object\Simon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -139,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Library\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Object\Simon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

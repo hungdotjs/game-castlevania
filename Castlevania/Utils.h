@@ -1,16 +1,17 @@
 #pragma once
 
 #include <Windows.h>
-
+#include <assert.h>
 #include <signal.h>
 #include <string.h>
-#include <fstream> 
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
-#include <stdlib.h>
-#include <vector>
+#include <algorithm>
+#include <fstream> 
 #include <string>
+#include <vector>
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
 #define SCREEN_WIDTH 320
