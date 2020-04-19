@@ -19,6 +19,9 @@ private:
 	LPDIRECT3DTEXTURE9 tileSet;
 
 public:
+	int mapWidth;
+	int mapHeght;
+
 	Map();
 	Map(LPDIRECT3DTEXTURE9 sprite, int tileWidth, int tileHeight);
 

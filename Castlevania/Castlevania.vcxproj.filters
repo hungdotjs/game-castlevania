@@ -13,11 +13,17 @@
     <Filter Include="Library\Scene">
       <UniqueIdentifier>{872bc22e-11ea-47f5-84c0-7ac357c87a85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Keyboard">
+      <UniqueIdentifier>{7aa083f9-c4e7-4a44-b401-a4a2f2734e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Scene\PlayScene">
+      <UniqueIdentifier>{f5a87b65-e33d-4a32-b076-428a4ecc4262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Map">
+      <UniqueIdentifier>{45ccbb4e-df2a-4296-acb8-393fdc393b1e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{3a6adc1e-7395-4778-baa4-c0e4ebcb6c90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{cefa08cf-ae90-43ef-a07d-9af09435d71f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Brick">
       <UniqueIdentifier>{3a2b0d8c-82d4-4e17-a008-6a4b20cca287}</UniqueIdentifier>
@@ -25,23 +31,14 @@
     <Filter Include="Object\Goomba">
       <UniqueIdentifier>{cd7c9546-f8f9-4785-b1c6-e2f6956972d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\Keyboard">
-      <UniqueIdentifier>{7aa083f9-c4e7-4a44-b401-a4a2f2734e7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Koopas">
       <UniqueIdentifier>{cbee5f7b-383b-4cef-9533-de7ad9b39d0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Mario">
       <UniqueIdentifier>{fa38a5ec-84af-4373-a875-1e11e2851e1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\Scene\PlayScene">
-      <UniqueIdentifier>{f5a87b65-e33d-4a32-b076-428a4ecc4262}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Portal">
       <UniqueIdentifier>{f9d56b66-cf3f-4d39-b7ff-89e2b1cbd672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\Map">
-      <UniqueIdentifier>{45ccbb4e-df2a-4296-acb8-393fdc393b1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Simon">
       <UniqueIdentifier>{ff61bc6b-58ad-418c-9be9-be7ea7905080}</UniqueIdentifier>
@@ -62,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="Scence.cpp">
       <Filter>Library\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>Object\Brick</Filter>
@@ -99,6 +93,7 @@
     <ClCompile Include="Simon.cpp">
       <Filter>Object\Simon</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">

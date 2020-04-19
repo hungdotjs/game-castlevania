@@ -85,6 +85,12 @@ void Map::_ParseSection_MAP_PROPS(string line)
 
 	this->rows = atoi(tokens[0].c_str());
 	this->columns = atoi(tokens[1].c_str());
+
+	mapWidth = tileWidth * columns;
+	mapHeght = tileHeight * rows;
+
+	//DebugOut(L"[MAP] width = %d, height = %d\n", mapWidth, mapHeght);
+
 }
 
 
@@ -93,8 +99,8 @@ void Map::DrawMap(float x, float y)
 	RECT tileRect;
 	//D3DXVECTOR3 tilePos;
 
-	/*int cameraWidth = 320;
-	int cameraHeight = 240;*/
+	//int cameraWidth = 320;
+	//int cameraHeight = 240;
 
 	//int colStart = (int)x / tileWidth;
 	//int colEnd = ((int)x + cameraWidth) / tileWidth < columns - 1 ? (x + cameraWidth) / tileWidth : columns - 1;

@@ -67,7 +67,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Right corner
 	else if (x > rightCorner)
 	{
-		//x = rightCorner;
+		x = rightCorner;
 	}
 
 	// No collision occured, proceed normally

@@ -266,8 +266,8 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	//if (player == NULL) return;
+	//skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
 
 
 	// Update camera to follow mario
@@ -275,16 +275,21 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 
 	CGame* game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
+
+	// Dung camera khi toi cuoi map
+	int maxCamX = (int)cx + game->GetScreenWidth();
+	if (maxCamX - game->GetScreenWidth() / 2 > map->mapWidth)
+		cx = map->mapWidth - game->GetScreenWidth();
+	else
+		cx -= game->GetScreenWidth() / 2;
+	
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cx < 0) cx = 0;
-	if (cy < 0)
-	{
-		cy = 0;
-	}
 
-	CGame::GetInstance()->SetCamPos(cx, cy);
+
+	if (cx < 0) cx = 0;
+
+	CGame::GetInstance()->SetCamPos(cx, 0 /*cy*/);
 }
 
 void CPlayScene::Render()
@@ -292,7 +297,7 @@ void CPlayScene::Render()
 	float x, y;
 	CGame::GetInstance()->GetCamPos(x, y);
 
-	map->DrawMap(0, 0);
+	map->DrawMap(x, y);
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
