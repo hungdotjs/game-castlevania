@@ -5,12 +5,13 @@
 #include "Brick.h"
 #include "Goomba.h"
 #include "Portal.h"
+#include "Whip.h"
+#include "Torch.h"
 
 #define SIMON_WALKING_SPEED			0.06f 
-//0.1f
-#define SIMON_JUMP_SPEED_Y			0.4f
+#define SIMON_JUMP_SPEED_Y			0.32f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
-#define SIMON_GRAVITY				0.002f
+#define SIMON_GRAVITY				0.0015f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
 #define SIMON_SIT_TO_STAND			15.0f
 
@@ -38,11 +39,15 @@
 #define SIMON_ANI_DIE_LEFT			9
 #define SIMON_ANI_SIT_ATTACK_RIGHT	10
 #define SIMON_ANI_SIT_ATTACK_LEFT	11
+#define SIMON_ANI_ATTACK_RIGHT		12
+#define SIMON_ANI_ATTACK_LEFT		13
 
 #define SIMON_LEVEL			1
 
 #define SIMON_BBOX_WIDTH  16
 #define SIMON_BBOX_HEIGHT 30
+#define SIMON_SIT_BBOX_WIDTH			16
+#define SIMON_SIT_BBOX_HEIGHT			23
 
 #define SIMON_UNTOUCHABLE_TIME		5000
 #define SIMON_TIMER_ATTACK			450
@@ -69,11 +74,10 @@ public:
 
 	DWORD attackTime;
 
+	Whip* whip;
 
 public:
 	Simon(float x = 0.0f, float y = 0.0f);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
-	virtual void Render();
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
@@ -83,6 +87,13 @@ public:
 
 	void SetAction(int action);
 	int GetAction() { return action; }
+
+	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
+	virtual void Render();
+
+
+	void SetPosition(float x, float y);
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

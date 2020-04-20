@@ -43,6 +43,12 @@
     <Filter Include="Object\Simon">
       <UniqueIdentifier>{ff61bc6b-58ad-418c-9be9-be7ea7905080}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Whip">
+      <UniqueIdentifier>{7c9f3001-9bcb-4179-b8fc-ae6cf12f0598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Torch">
+      <UniqueIdentifier>{88440f48-f7d1-4b19-b0a2-fd9bc61c7580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -94,6 +100,12 @@
       <Filter>Object\Simon</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Whip.cpp">
+      <Filter>Object\Whip</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Object\Torch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -143,6 +155,12 @@
     </ClInclude>
     <ClInclude Include="Simon.h">
       <Filter>Object\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Whip.h">
+      <Filter>Object\Whip</Filter>
+    </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>Object\Torch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

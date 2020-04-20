@@ -6,10 +6,32 @@ Simon::Simon(float x, float y) : CGameObject()
 	untouchable = 0;
 	SetState(SIMON_STATE_IDLE);
 
+	whip = new Whip();
 	start_x = x;
 	start_y = y;
 	this->x = x;
 	this->y = y;
+}
+
+void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
+{
+	bool isCollideWithCheckBox = false;
+	for (UINT i = 0; i < coObjects->size(); i++)
+
+	{
+		// Simon se khong va cham voi nhung vat sau:
+		if (!dynamic_cast<Torch*>(coObjects->at(i)))
+		{
+			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+			if (e->t > 0 && e->t <= 1.0f)
+				coEvents.push_back(e);
+			else
+				delete e;
+		}
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -27,6 +49,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y -= SIMON_SIT_TO_STAND;
 			isExitSit = false;
 		}
+		// Check collision between whip and game objects here
+		whip->Update(dt, coObjects);
 	}
 
 	// Simple fall down
@@ -52,6 +76,23 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+
+	// when simon attack
+	if (isAttack == true)
+	{
+		if (nx > 0)
+		{
+			// Whip position equal to simon position
+			whip->SetPosition(x, y);
+		}
+		else
+		{
+			// Whip position equal to simon position + simon width - whip width
+			float wl, wr, wt, wb;
+			whip->GetBoundingBox(wl, wt, wr, wb);
+			whip->SetPosition(x + SIMON_BBOX_WIDTH - (wr - wl), y);
+		}
 	}
 
 	// Handle Simon go over screen camera
@@ -159,12 +200,62 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Simon::Render()
 {
-	int ani = -1;
+	int ani = -1, aniWhip = -1;
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE_RIGHT;
 	else
 	{
-		if (isJump)
+		if (isAttack)
+		{
+			if (nx > 0)
+			{
+				if (isSit)
+				{
+					ani = SIMON_ANI_SIT_ATTACK_RIGHT;
+				}
+				else {
+					ani = SIMON_ANI_ATTACK_RIGHT;
+				}
+
+				/*	switch (whip->level)
+					{
+					case 0:
+						aniWhip = WHIP_RIGHT;
+						break;
+					case 1:
+						aniWhip = WHIP_RIGHT_1;
+						break;
+					case 2:
+						aniWhip = WHIP_RIGHT_2;
+						break;
+					}*/
+			}
+			else
+			{
+				if (isSit)
+				{
+					ani = SIMON_ANI_SIT_ATTACK_LEFT;
+				}
+				else {
+					ani = SIMON_ANI_ATTACK_LEFT;
+				}
+
+
+				/*	switch (whip->level)
+					{
+					case 0:
+						aniWhip = WHIP_LEFT;
+						break;
+					case 1:
+						aniWhip = WHIP_LEFT_1;
+						break;
+					case 2:
+						aniWhip = WHIP_LEFT_2;
+						break;
+					}*/
+			}
+		}
+		else if (isJump)
 		{
 			if (nx > 0)
 				ani = SIMON_ANI_JUMP_RIGHT;
@@ -221,10 +312,12 @@ void Simon::Render()
 	{
 		switch (ani)
 		{
+		case SIMON_ANI_SIT_ATTACK_RIGHT:
+			animation_set->at(ani)->Render(x - 8, y + 7, alpha);
+			break;
 		case SIMON_ANI_SIT_RIGHT:
 		case SIMON_ANI_SIT_LEFT:
 		case SIMON_ANI_SIT_ATTACK_LEFT:
-		case SIMON_ANI_SIT_ATTACK_RIGHT:
 			animation_set->at(ani)->Render(x, y + 7, alpha);
 			break;
 		default:
@@ -233,6 +326,13 @@ void Simon::Render()
 		}
 	}
 
+	//if (aniWhip != -1)
+	//{
+	//	if (!isSit)
+	//		whip->animation_set->at(aniWhip)->Render(x, y, alpha);
+	//	else
+	//		whip->animation_set->at(aniWhip)->Render(x, y + (SIMON_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT), alpha);
+	//}
 
 	RenderBoundingBox();
 }
@@ -247,7 +347,6 @@ void Simon::SetState(int state)
 		isDead = true;
 		vy = -SIMON_DIE_DEFLECT_SPEED;
 		break;
-
 
 	case SIMON_STATE_SIT:
 		//isOnCheckStair = false;
@@ -292,11 +391,17 @@ void Simon::SetAction(int action)
 		// Don gian la cho nhay, khong ngat bat ki trang thai nao
 		// Them van toc nhay
 	case SIMON_ACTION_JUMP:
-		state = SIMON_STATE_JUMP;
 		isJump = true;
 		vy = -SIMON_JUMP_SPEED_Y;
 		break;
 	}
+}
+
+void Simon::SetPosition(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+	whip->SetPosition(x, y);
 }
 
 void Simon::GetBoundingBox(float& left, float& top, float& right, float& bottom)

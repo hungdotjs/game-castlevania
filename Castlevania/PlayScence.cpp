@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "Torch.h"
 #include "Portal.h"
 
 using namespace std;
@@ -45,6 +46,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_TORCH	100
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -108,6 +110,8 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	}
 
 	CAnimations::GetInstance()->Add(ani_id, ani);
+
+	DebugOut(L"[ANIMATION] Load animation id: %d\n", ani_id);
 }
 
 void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
@@ -168,6 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -333,12 +338,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
 
-	case DIK_Q: // Danh
+	case DIK_A: // Danh
 		if (simon->isAttack == false)
 			simon->SetAction(SIMON_ACTION_ATTACK);
 		break;
 
-	case DIK_A:	// Reset
+	case DIK_R:	// Reset
 		simon->Reset();
 		break;
 	}
@@ -386,7 +391,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Ngoi
 	if (game->IsKeyDown(DIK_DOWN))
 	{
-		simon->SetState(SIMON_STATE_SIT);
+		if (!simon->isAttack && !simon->isJump)
+			simon->SetState(SIMON_STATE_SIT);
 	}
 
 	// Di bo
