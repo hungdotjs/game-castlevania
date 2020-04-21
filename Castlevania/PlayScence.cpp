@@ -46,6 +46,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_WHIP	11
 #define OBJECT_TYPE_TORCH	100
 
 #define OBJECT_TYPE_PORTAL	50
@@ -163,7 +164,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SIMON:
 		if (player != NULL)
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			DebugOut(L"[ERROR] SIMON object was created before!\n");
 			return;
 		}
 		obj = new Simon();
@@ -173,14 +174,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
-	case OBJECT_TYPE_PORTAL:
+	case OBJECT_TYPE_WHIP:
 	{
+		obj = new Whip();
+		player->whip = (Whip*)obj;
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
+		return;
+	}
+
+	case OBJECT_TYPE_PORTAL: {
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		break;
 	}
-	break;
+
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -242,7 +255,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -287,7 +300,7 @@ void CPlayScene::Update(DWORD dt)
 		cx = map->mapWidth - game->GetScreenWidth();
 	else
 		cx -= game->GetScreenWidth() / 2;
-	
+
 	cy -= game->GetScreenHeight() / 2;
 
 
@@ -324,8 +337,6 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
 	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
 
 	// Chet
@@ -400,14 +411,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	{
 		if (!simon->isSit && !simon->isAttack)
 			simon->SetState(SIMON_STATE_WALK);
-		if (!simon->isJump && !simon->isAttack)
+		if (!simon->isAttack)
 			simon->nx = 1;
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
 		if (!simon->isSit && !simon->isAttack)
 			simon->SetState(SIMON_STATE_WALK);
-		if (!simon->isJump && !simon->isAttack)
+		if (!simon->isAttack)
 			simon->nx = -1;
 	}
 

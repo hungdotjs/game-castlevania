@@ -8,7 +8,7 @@
 #include "Whip.h"
 #include "Torch.h"
 
-#define SIMON_WALKING_SPEED			0.06f 
+#define SIMON_WALKING_SPEED			0.1f 
 #define SIMON_JUMP_SPEED_Y			0.42f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
 #define SIMON_GRAVITY				0.0015f
@@ -75,6 +75,13 @@ public:
 	DWORD attackTime;
 
 	Whip* whip;
+	int life;
+	int preHP;
+	bool isLevelUp;
+	bool isBonus;
+	static int score;
+	static int heartsAmount;
+	int currentWeapon;
 
 public:
 	Simon(float x = 0.0f, float y = 0.0f);
@@ -94,6 +101,17 @@ public:
 
 
 	void SetPosition(float x, float y);
+
+	void SetCurrentWeapon(int weapon) { currentWeapon = weapon; }
+	int GetCurrentWeapon() { return currentWeapon; }
+
+	void AddHeart(int num) { heartsAmount += num; }
+	void AddScore(int num) { score += num; }
+
+	int GetScore() { return score; }
+	int GetLife() { return life; }
+	int GetHP() { return preHP; }
+	int GetHeart() { return heartsAmount; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

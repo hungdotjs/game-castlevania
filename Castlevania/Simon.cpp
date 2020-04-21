@@ -1,12 +1,20 @@
 ﻿#include "Simon.h"
 
+int Simon::score = 0;
+int Simon::heartsAmount = 5;
+
 Simon::Simon(float x, float y) : CGameObject()
 {
+	SetState(SIMON_STATE_IDLE);
 	level = SIMON_LEVEL;
 	untouchable = 0;
-	SetState(SIMON_STATE_IDLE);
 
 	whip = new Whip();
+
+	life = 3;
+	preHP = 16;
+	currentWeapon = 0;
+
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -16,11 +24,12 @@ Simon::Simon(float x, float y) : CGameObject()
 void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
 {
 	bool isCollideWithCheckBox = false;
-	for (UINT i = 0; i < coObjects->size(); i++)
 
+	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		// Simon se khong va cham voi nhung vat sau:
-		if (!dynamic_cast<Torch*>(coObjects->at(i)))
+		if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
+			!dynamic_cast<Whip*>(coObjects->at(i)))
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
@@ -49,8 +58,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y -= SIMON_SIT_TO_STAND;
 			isExitSit = false;
 		}
-		// Check collision between whip and game objects here
+		// Check collision between whip and game objects 
 		whip->Update(dt, coObjects);
+
 	}
 
 	// Simple fall down
@@ -79,7 +89,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// when simon attack
-	if (isAttack == true)
+	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK - 50)
 	{
 		if (nx > 0)
 		{
@@ -156,36 +166,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
 			}
-			else if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
-			{
-				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -SIMON_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable == 0)
-					{
-						if (goomba->GetState() != GOOMBA_STATE_DIE)
-						{
-							if (level > SIMON_LEVEL)
-							{
-								level = SIMON_LEVEL;
-								StartUntouchable();
-							}
-							else
-								SetState(SIMON_STATE_DIE);
-						}
-					}
-				}
-			} // if Goomba
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
@@ -201,6 +181,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Simon::Render()
 {
 	int ani = -1, aniWhip = -1;
+
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE_RIGHT;
 	else
@@ -217,18 +198,18 @@ void Simon::Render()
 					ani = SIMON_ANI_ATTACK_RIGHT;
 				}
 
-				/*	switch (whip->level)
-					{
-					case 0:
-						aniWhip = WHIP_RIGHT;
-						break;
-					case 1:
-						aniWhip = WHIP_RIGHT_1;
-						break;
-					case 2:
-						aniWhip = WHIP_RIGHT_2;
-						break;
-					}*/
+				switch (whip->level)
+				{
+				case 0:
+					aniWhip = WHIP_RIGHT;
+					break;
+				case 1:
+					aniWhip = WHIP_RIGHT_1;
+					break;
+				case 2:
+					aniWhip = WHIP_RIGHT_2;
+					break;
+				}
 			}
 			else
 			{
@@ -241,18 +222,18 @@ void Simon::Render()
 				}
 
 
-				/*	switch (whip->level)
-					{
-					case 0:
-						aniWhip = WHIP_LEFT;
-						break;
-					case 1:
-						aniWhip = WHIP_LEFT_1;
-						break;
-					case 2:
-						aniWhip = WHIP_LEFT_2;
-						break;
-					}*/
+				switch (whip->level)
+				{
+				case 0:
+					aniWhip = WHIP_LEFT;
+					break;
+				case 1:
+					aniWhip = WHIP_LEFT_1;
+					break;
+				case 2:
+					aniWhip = WHIP_LEFT_2;
+					break;
+				}
 			}
 		}
 		else if (isJump)
@@ -330,13 +311,27 @@ void Simon::Render()
 		}
 	}
 
-	//if (aniWhip != -1)
-	//{
-	//	if (!isSit)
-	//		whip->animation_set->at(aniWhip)->Render(x, y, alpha);
-	//	else
-	//		whip->animation_set->at(aniWhip)->Render(x, y + (SIMON_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT), alpha);
-	//}
+	if (aniWhip != -1)
+	{
+		float fix_x = x;
+		switch (aniWhip)
+		{
+		case WHIP_LEFT:
+		case WHIP_LEFT_1:
+		case WHIP_LEFT_2:
+			fix_x -= 28;
+			break;
+		case WHIP_RIGHT:
+		case WHIP_RIGHT_1:
+		case WHIP_RIGHT_2:
+			fix_x -= 16;
+			break;
+		}
+		if (!isSit)
+			whip->animation_set->at(aniWhip)->Render(fix_x, y, alpha);
+		else
+			whip->animation_set->at(aniWhip)->Render(fix_x, y + (SIMON_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT), alpha);
+	}
 
 	RenderBoundingBox();
 }
