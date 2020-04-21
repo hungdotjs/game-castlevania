@@ -6,33 +6,33 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float wl, wr, wt, wb;
 	GetBoundingBox(wl, wt, wr, wb);
 
-	//for (UINT i = 0; i < coObjects->size(); i++)
-	//{
-	//	if (dynamic_cast<Zombie*>(coObjects->at(i)))
-	//	{
-	//		Zombie* zombie = dynamic_cast<Zombie*>(coObjects->at(i));
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		/*if (dynamic_cast<Zombie*>(coObjects->at(i)))
+		{
+			Zombie* zombie = dynamic_cast<Zombie*>(coObjects->at(i));
 
-	//		float zl, zr, zt, zb;
-	//		zombie->GetBoundingBox(zl, zt, zr, zb);
-	//		if (wl < zl && wr > zr && wt > zt && wb < zb)
-	//		{
-	//			if (zombie->GetState() != ZOMBIE_STATE_DIE) {
-	//				zombie->SetState(ZOMBIE_STATE_DIE);
-	//			}
-	//			Simon::score += 100;
-	//		}
-	//	}
-	//	else if (dynamic_cast<BigFire*>(coObjects->at(i)))
-	//	{
-	//		BigFire* bigfire = dynamic_cast<BigFire*>(coObjects->at(i));
-	//		float zl, zr, zt, zb;
-	//		bigfire->GetBoundingBox(zl, zt, zr, zb);
-	//		if (wl < zl && wr > zr && wt > zt && wb < zb)
-	//		{
-	//			bigfire->isHitted = true;
-	//		}
-	//	}
-	//}
+			float zl, zr, zt, zb;
+			zombie->GetBoundingBox(zl, zt, zr, zb);
+			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			{
+				if (zombie->GetState() != ZOMBIE_STATE_DIE) {
+					zombie->SetState(ZOMBIE_STATE_DIE);
+				}
+				Simon::score += 100;
+			}
+		}*/
+		if (dynamic_cast<Torch*>(coObjects->at(i)))
+		{
+			Torch* torch = dynamic_cast<Torch*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			torch->GetBoundingBox(zl, zt, zr, zb);
+			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			{
+				torch->isHitted = true;
+			}
+		}
+	}
 }
 
 void Whip::Render()

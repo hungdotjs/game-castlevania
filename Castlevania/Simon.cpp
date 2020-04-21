@@ -312,13 +312,17 @@ void Simon::Render()
 	{
 		switch (ani)
 		{
-		case SIMON_ANI_SIT_ATTACK_RIGHT:
-			animation_set->at(ani)->Render(x - 8, y + 7, alpha);
-			break;
 		case SIMON_ANI_SIT_RIGHT:
 		case SIMON_ANI_SIT_LEFT:
-		case SIMON_ANI_SIT_ATTACK_LEFT:
 			animation_set->at(ani)->Render(x, y + 7, alpha);
+			break;
+		case SIMON_ANI_SIT_ATTACK_RIGHT:
+		case SIMON_ANI_SIT_ATTACK_LEFT:
+			animation_set->at(ani)->Render(x - 6, y + 7, alpha);
+			break;
+		case SIMON_ANI_ATTACK_LEFT:
+		case SIMON_ANI_ATTACK_RIGHT:
+			animation_set->at(ani)->Render(x - 6, y, alpha);
 			break;
 		default:
 			animation_set->at(ani)->Render(x, y, alpha);
