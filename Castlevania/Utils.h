@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+#define GAME_FONT L"textures\\font\\prstart.ttf"
+
+
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240

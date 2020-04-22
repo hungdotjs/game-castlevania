@@ -3,10 +3,11 @@
 #include "Textures.h"
 #include "Scence.h"
 #include "GameObject.h"
+#include "Item.h"
 #include "Brick.h"
-#include "Mario.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Torch.h"
 #include "Simon.h"
 #include "Map.h"
 
@@ -32,6 +33,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	void RemoveObjects();
 
 	Simon* GetPlayer() { return player; }
 	Map* map;

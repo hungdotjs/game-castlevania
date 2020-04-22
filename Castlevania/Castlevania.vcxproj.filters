@@ -34,9 +34,6 @@
     <Filter Include="Object\Koopas">
       <UniqueIdentifier>{cbee5f7b-383b-4cef-9533-de7ad9b39d0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Mario">
-      <UniqueIdentifier>{fa38a5ec-84af-4373-a875-1e11e2851e1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Portal">
       <UniqueIdentifier>{f9d56b66-cf3f-4d39-b7ff-89e2b1cbd672}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,12 @@
     </Filter>
     <Filter Include="Object\Torch">
       <UniqueIdentifier>{88440f48-f7d1-4b19-b0a2-fd9bc61c7580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Score">
+      <UniqueIdentifier>{cb82d797-fe9e-464f-8446-40f482eef8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Item">
+      <UniqueIdentifier>{080cea62-ff80-4dd7-b3c1-81894be31b01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +84,6 @@
     <ClCompile Include="Koopas.cpp">
       <Filter>Object\Koopas</Filter>
     </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Object\Mario</Filter>
-    </ClCompile>
     <ClCompile Include="PlayScence.cpp">
       <Filter>Library\Scene\PlayScene</Filter>
     </ClCompile>
@@ -105,6 +105,12 @@
     </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Object\Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Object\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +147,6 @@
     <ClInclude Include="Koopas.h">
       <Filter>Object\Koopas</Filter>
     </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Object\Mario</Filter>
-    </ClInclude>
     <ClInclude Include="PlayScence.h">
       <Filter>Library\Scene\PlayScene</Filter>
     </ClInclude>
@@ -161,6 +164,12 @@
     </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Object\Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Object\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

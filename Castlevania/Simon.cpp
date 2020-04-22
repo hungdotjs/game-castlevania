@@ -43,6 +43,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
+
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
@@ -165,6 +166,28 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				// Xét va chạm cứng
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
+			}
+			else if (dynamic_cast<Item*>(e->obj))
+			{
+				Item* item = dynamic_cast<Item*>(e->obj);
+				item->SetEaten();
+
+				int type = item->GetType();
+				switch (type)
+				{
+				case ITEM_HEART:
+					AddHeart(5);
+					break;
+				case ITEM_WHIP:
+					whip->UpLevel();
+					break;
+				case ITEM_KNIFE:
+					SetCurrentWeapon(ITEM_KNIFE);
+					break;
+				case ITEM_MONEY:
+					AddScore(1000);
+					break;
+				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{

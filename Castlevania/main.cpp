@@ -19,7 +19,6 @@
 #include "GameObject.h"
 #include "Textures.h"
 
-#include "Mario.h"
 #include "Brick.h"
 #include "Goomba.h"
 
@@ -177,7 +176,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	game->Load(L"mario-sample.txt");
 
-	SetWindowPos(hWnd, 0, 400, 400, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 400, 400, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
 

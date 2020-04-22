@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -308,6 +308,8 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 
 	CGame::GetInstance()->SetCamPos(cx, 0 /*cy*/);
+
+	RemoveObjects();
 }
 
 void CPlayScene::Render()
@@ -319,6 +321,84 @@ void CPlayScene::Render()
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+}
+
+
+void CPlayScene::RemoveObjects() 
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<Torch*>(objects.at(i)))
+		{
+			Torch* torch = dynamic_cast<Torch*>(objects.at(i));
+			if (torch->isHitted)
+			{
+				float torch_x, torch_y, torch_right, torch_bottom;
+				torch->GetBoundingBox(torch_x, torch_y, torch_right, torch_bottom);
+
+				Item* item = new Item();
+				item->SetPosition(torch_x, torch_y);
+				item->SetSpeed(0, -0.1);
+				objects.push_back(item);
+
+				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+				LPANIMATION_SET ani_set;
+
+				// Whip item
+				if (player->whip->level < 2)
+				{
+					ani_set = animation_sets->Get(ITEM_WHIP);
+					item->SetAnimationSet(ani_set);
+					item->SetType(ITEM_WHIP);
+				}
+				else
+				{
+					/**
+					 * Random ra item
+					 * 70% heart
+					 * 20% money
+					 * 10% knife
+					 */
+
+					srand(time(NULL));
+					int random_portion = rand() % 100;
+
+					// Heart
+					if (random_portion < 70)
+					{
+						ani_set = animation_sets->Get(ITEM_HEART);
+						item->SetType(ITEM_HEART);
+					}
+					// Money
+					else if (random_portion >= 70 && random_portion < 90)
+					{
+						ani_set = animation_sets->Get(ITEM_MONEY);
+						item->SetType(ITEM_MONEY);
+					}
+					// Knife
+					else
+					{
+						ani_set = animation_sets->Get(ITEM_KNIFE);
+						item->SetType(ITEM_KNIFE);
+					}
+				}
+
+				item->SetAnimationSet(ani_set);
+				objects.erase(objects.begin() + i);
+				delete torch;
+			}
+		}
+		else if (dynamic_cast<Item*>(objects.at(i)))
+		{
+			Item* item = dynamic_cast<Item*>(objects.at(i));
+
+			if (item->GetEaten())
+			{
+				objects.erase(objects.begin() + i);
+				delete item;
+			}
+		}
+	}
 }
 
 /*
