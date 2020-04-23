@@ -255,7 +255,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 0, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -266,6 +266,8 @@ void CPlayScene::Load()
 	map = new Map(tileset, 16, 16);
 	map->ReadMapTXT("textures\\map\\map_1.txt");
 
+	board = new Board();
+	board->Initialize(CGame::GetInstance()->GetDirect3DDevice(), player);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -304,12 +306,13 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 
 
-
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0 /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, 30);
 
 	RemoveObjects();
+	gameTime -= dt;
+	board->Update(gameTime / 1000, 1, player);
 }
 
 void CPlayScene::Render()
@@ -318,13 +321,14 @@ void CPlayScene::Render()
 	CGame::GetInstance()->GetCamPos(x, y);
 
 	map->DrawMap(x, y);
+	board->Render(x, y, player);
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
 
 
-void CPlayScene::RemoveObjects() 
+void CPlayScene::RemoveObjects()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{

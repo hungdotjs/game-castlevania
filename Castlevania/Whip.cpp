@@ -8,20 +8,6 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		/*if (dynamic_cast<Zombie*>(coObjects->at(i)))
-		{
-			Zombie* zombie = dynamic_cast<Zombie*>(coObjects->at(i));
-
-			float zl, zr, zt, zb;
-			zombie->GetBoundingBox(zl, zt, zr, zb);
-			if (wl < zl && wr > zr && wt > zt && wb < zb)
-			{
-				if (zombie->GetState() != ZOMBIE_STATE_DIE) {
-					zombie->SetState(ZOMBIE_STATE_DIE);
-				}
-				Simon::score += 100;
-			}
-		}*/
 		if (dynamic_cast<Torch*>(coObjects->at(i)))
 		{
 			Torch* torch = dynamic_cast<Torch*>(coObjects->at(i));

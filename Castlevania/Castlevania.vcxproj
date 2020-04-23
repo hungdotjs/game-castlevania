@@ -155,7 +155,7 @@
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Whip.cpp" />
@@ -175,7 +175,7 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Scence.h" />
-    <ClInclude Include="Score.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />

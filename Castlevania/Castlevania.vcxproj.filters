@@ -46,11 +46,11 @@
     <Filter Include="Object\Torch">
       <UniqueIdentifier>{88440f48-f7d1-4b19-b0a2-fd9bc61c7580}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Score">
-      <UniqueIdentifier>{cb82d797-fe9e-464f-8446-40f482eef8d8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Item">
       <UniqueIdentifier>{080cea62-ff80-4dd7-b3c1-81894be31b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Board">
+      <UniqueIdentifier>{cb82d797-fe9e-464f-8446-40f482eef8d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,11 +106,11 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Object\Torch</Filter>
     </ClCompile>
-    <ClCompile Include="Score.cpp">
-      <Filter>Object\Score</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Object\Board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -165,11 +165,11 @@
     <ClInclude Include="Torch.h">
       <Filter>Object\Torch</Filter>
     </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>Object\Score</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Object\Board</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

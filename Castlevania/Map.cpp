@@ -97,21 +97,15 @@ void Map::_ParseSection_MAP_PROPS(string line)
 void Map::DrawMap(float x, float y)
 {
 	RECT tileRect;
-	//D3DXVECTOR3 tilePos;
+	D3DXVECTOR3 tilePos;
 
-	//int cameraWidth = 320;
-	//int cameraHeight = 240;
+	int cameraWidth = 320;
+	int cameraHeight = 240;
 
-	//int colStart = (int)x / tileWidth;
-	//int colEnd = ((int)x + cameraWidth) / tileWidth < columns - 1 ? (x + cameraWidth) / tileWidth : columns - 1;
-	//int rowStart = (int)y / tileHeight;
-	//int rowEnd = ((int)y + cameraHeight) / tileHeight < rows - 1 ? (y + cameraHeight) / tileHeight : rows - 1;
-
-	int colStart = 0;
-	int colEnd = 47;
-	int rowStart = 0;
-	int rowEnd = 11;
-	
+	int colStart = (int)x / tileWidth;
+	int colEnd = ((int)x + cameraWidth) / tileWidth < columns - 1 ? (x + cameraWidth) / tileWidth : columns - 1;
+	int rowStart = (int)y / tileHeight;
+	int rowEnd = ((int)y + cameraHeight) / tileHeight < rows - 1 ? (y + cameraHeight) / tileHeight : rows - 1;
 
 	for (int i = rowStart; i <= rowEnd; i++)
 	{
@@ -123,7 +117,7 @@ void Map::DrawMap(float x, float y)
 			tileRect.right = tileRect.left + tileWidth;
 			tileRect.bottom = tileRect.top + tileHeight;
 
-			CGame::GetInstance()->Draw(tileWidth * j, tileHeight * i, tileSet, tileRect.left, tileRect.top, tileRect.right, tileRect.bottom);
+			CGame::GetInstance()->Draw(tileWidth * j, tileHeight * i + 60, tileSet, tileRect.left, tileRect.top, tileRect.right, tileRect.bottom);
 		}
 	}
 }

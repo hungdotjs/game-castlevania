@@ -176,7 +176,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				switch (type)
 				{
 				case ITEM_HEART:
-					AddHeart(5);
+					AddHeart(1);
 					break;
 				case ITEM_WHIP:
 					whip->UpLevel();

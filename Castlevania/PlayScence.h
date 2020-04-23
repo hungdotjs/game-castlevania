@@ -10,6 +10,7 @@
 #include "Torch.h"
 #include "Simon.h"
 #include "Map.h"
+#include "Board.h"
 
 
 class CPlayScene : public CScene
@@ -27,6 +28,11 @@ protected:
 
 
 public:
+	Map* map;
+	Board* board;
+	DWORD gameTime = 999999;
+
+public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
@@ -36,7 +42,6 @@ public:
 	void RemoveObjects();
 
 	Simon* GetPlayer() { return player; }
-	Map* map;
 
 	//friend class CPlayScenceKeyHandler;
 	~CPlayScene();

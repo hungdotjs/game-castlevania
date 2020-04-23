@@ -21,6 +21,7 @@
 #define SCREEN_HEIGHT 240
 
 #define ID_TEX_TILESET 100
+#define ID_TEX_MISC		20
 
 #define MAX_FRAME_RATE 120
 
