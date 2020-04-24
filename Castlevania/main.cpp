@@ -174,7 +174,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->Init(hWnd);
 	game->InitKeyboard();
 
-	game->Load(L"mario-sample.txt");
+	game->Load(L"scene\\scene-manager.txt");
 
 	SetWindowPos(hWnd, 0, 400, 400, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

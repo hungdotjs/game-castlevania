@@ -255,7 +255,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -263,8 +263,17 @@ void CPlayScene::Load()
 
 	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
 
-	map = new Map(tileset, 16, 16);
-	map->ReadMapTXT("textures\\map\\map_1.txt");
+	switch (CGame::GetInstance()->GetCurrentStage())
+	{
+	case 1:
+		map = new Map(tileset, 16, 16);
+		map->ReadMapTXT("textures\\map\\map_1.txt");
+		break;
+	case 2:
+		map = new Map(tileset, 16, 16);
+		map->ReadMapTXT("textures\\map\\map_2.txt");
+		break;
+	}
 
 	board = new Board();
 	board->Initialize(CGame::GetInstance()->GetDirect3DDevice(), player);
@@ -308,11 +317,11 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 30);
+	CGame::GetInstance()->SetCamPos(cx, 48);
 
 	RemoveObjects();
 	gameTime -= dt;
-	board->Update(gameTime / 1000, 1, player);
+	board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
 }
 
 void CPlayScene::Render()
@@ -411,10 +420,11 @@ void CPlayScene::RemoveObjects()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
+	{
 		delete objects[i];
+	}
 
 	objects.clear();
-	player = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

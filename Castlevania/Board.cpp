@@ -108,7 +108,7 @@ void Board::Render(float x, float y, Simon* simon)
 			switch (weapon)
 			{
 			case ITEM_KNIFE:
-				knife->Draw(x + SCREEN_WIDTH / 2, 50);
+				knife->Draw(x + SCREEN_WIDTH / 2 - 16, 50);
 				break;
 			}
 		}

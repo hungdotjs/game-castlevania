@@ -31,6 +31,7 @@ public:
 	Map* map;
 	Board* board;
 	DWORD gameTime = 999999;
+	int stage;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);

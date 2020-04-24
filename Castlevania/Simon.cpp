@@ -127,6 +127,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+		DebugOut(L"[DY] dy = %f\n", dy);
 	}
 	else
 	{
@@ -159,9 +160,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				// Da cham dat
-				// Khong va cham theo phuong ngang
-				if (isJump && e->nx == 0 && e->ny < 0)
-					isJump = false;
+				isJump = false;
 
 				// Xét va chạm cứng
 				if (nx != 0) vx = 0;
@@ -341,8 +340,11 @@ void Simon::Render()
 		{
 		case WHIP_LEFT:
 		case WHIP_LEFT_1:
-		case WHIP_LEFT_2:
 			fix_x -= 28;
+			break;
+
+		case WHIP_LEFT_2:
+			fix_x -= 44;
 			break;
 		case WHIP_RIGHT:
 		case WHIP_RIGHT_1:

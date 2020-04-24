@@ -76,7 +76,6 @@ void Map::_ParseSection_MAP(string line)
 			index += 1;
 		}
 	}
-	int sa = 0;
 }
 
 void Map::_ParseSection_MAP_PROPS(string line)
