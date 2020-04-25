@@ -55,7 +55,7 @@ void Board::Initialize(LPDIRECT3DDEVICE9 d3ddv, Simon* simon)
 	if (!SUCCEEDED(result))
 		return;
 
-	SetRect(&rect, 0, 8, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetRect(&rect, 8, 4, SCREEN_WIDTH, SCREEN_HEIGHT);
 	information = "SCORE 000000		TIME 0000		STAGE 00\n";
 	information += "PLAYER							 -62\n";
 	information += "ENEMY							P-3\n";
@@ -92,15 +92,15 @@ void Board::Render(float x, float y, Simon* simon)
 		font->DrawTextA(NULL, information.c_str(), -1, &rect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
 	for (int i = 0; i < simonHPList.size(); i++)
 	{
-		simonHPList[i]->Draw(x + 50 + 5 * i, 46);
+		simonHPList[i]->Draw(x + 60 + 5 * i, 60);
 	}
 	for (int i = 0; i < enemyHPList.size(); i++)
 	{
-		enemyHPList[i]->Draw(x + 50 + 5 * i, 56);
+		enemyHPList[i]->Draw(x + 60 + 5 * i, 70);
 	}
 
-	heart->Draw(x + SCREEN_WIDTH / 2 + 20, 46);
-	redRect->Draw(x + SCREEN_WIDTH / 2 - 16, 46);
+	heart->Draw(x + SCREEN_WIDTH / 2 + 30, 60);
+	redRect->Draw(x + SCREEN_WIDTH / 2 - 8, 60);
 	if (simon->currentWeapon != NULL)
 	{
 		int weapon = simon->currentWeapon;
@@ -108,7 +108,7 @@ void Board::Render(float x, float y, Simon* simon)
 			switch (weapon)
 			{
 			case ITEM_KNIFE:
-				knife->Draw(x + SCREEN_WIDTH / 2 - 16, 50);
+				knife->Draw(x + SCREEN_WIDTH / 2, 65);
 				break;
 			}
 		}

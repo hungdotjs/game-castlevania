@@ -255,7 +255,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -299,7 +299,7 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return;
 
 
-	// Update camera to follow mario
+	// Update camera to follow simon
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
@@ -316,6 +316,7 @@ void CPlayScene::Update(DWORD dt)
 
 
 	if (cx < 0) cx = 0;
+	if (cy > 48) cy = 48;
 
 	CGame::GetInstance()->SetCamPos(cx, 48);
 
@@ -341,7 +342,12 @@ void CPlayScene::RemoveObjects()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<Torch*>(objects.at(i)))
+		if (dynamic_cast<Whip*>(objects.at(i))) 
+		{
+			Whip* whip = dynamic_cast<Whip*>(objects.at(i));
+			objects.erase(objects.begin() + i);
+		}
+		else if (dynamic_cast<Torch*>(objects.at(i)))
 		{
 			Torch* torch = dynamic_cast<Torch*>(objects.at(i));
 			if (torch->isHitted)

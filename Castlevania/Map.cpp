@@ -97,7 +97,7 @@ void Map::DrawMap(float x, float y)
 {
 	RECT tileRect;
 	D3DXVECTOR3 tilePos;
-
+	y = 16;
 	int cameraWidth = 320;
 	int cameraHeight = 240;
 
@@ -116,7 +116,7 @@ void Map::DrawMap(float x, float y)
 			tileRect.right = tileRect.left + tileWidth;
 			tileRect.bottom = tileRect.top + tileHeight;
 
-			CGame::GetInstance()->Draw(tileWidth * j, tileHeight * i + 60, tileSet, tileRect.left, tileRect.top, tileRect.right, tileRect.bottom);
+			CGame::GetInstance()->Draw(tileWidth * j, tileHeight * i + 76, tileSet, tileRect.left, tileRect.top, tileRect.right, tileRect.bottom);
 		}
 	}
 }
