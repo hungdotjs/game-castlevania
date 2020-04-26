@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Utils.h"
 #include "Brick.h"
+#include "Candle.h"
 #include "Goomba.h"
 #include "Portal.h"
 #include "Whip.h"

@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Torch.h"
+#include "Candle.h"
 #include "Portal.h"
 
 using namespace std;
@@ -18,11 +19,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 CPlayScene::~CPlayScene()
 {
-	if (player != NULL)
-	{
-		delete player;
-		player = nullptr;
-	}
 	if (map != NULL)
 	{
 		delete map;
@@ -48,6 +44,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_KOOPAS	3
 #define OBJECT_TYPE_WHIP	11
 #define OBJECT_TYPE_TORCH	100
+#define OBJECT_TYPE_CANDLE	400
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -172,14 +169,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_CANDLE: obj = new Candle(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_WHIP:
 	{
+		if (player->whip != NULL) {
+			return;
+		}
 		obj = new Whip();
 		player->whip = (Whip*)obj;
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 		obj->SetAnimationSet(ani_set);
 		objects.push_back(obj);
 		return;
@@ -342,7 +342,7 @@ void CPlayScene::RemoveObjects()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<Whip*>(objects.at(i))) 
+		if (dynamic_cast<Whip*>(objects.at(i)))
 		{
 			Whip* whip = dynamic_cast<Whip*>(objects.at(i));
 			objects.erase(objects.begin() + i);
@@ -405,6 +405,61 @@ void CPlayScene::RemoveObjects()
 				item->SetAnimationSet(ani_set);
 				objects.erase(objects.begin() + i);
 				delete torch;
+			}
+		}
+		else if (dynamic_cast<Candle*>(objects.at(i))) {
+			Candle* candle = dynamic_cast<Candle*>(objects.at(i));
+			if (candle->isHitted)
+			{
+				float x, y, r, b;
+				candle->GetBoundingBox(x, y, r, b);
+
+				Item* item = new Item();
+				item->SetPosition(x, y);
+				item->SetSpeed(0, -0.1);
+				objects.push_back(item);
+
+				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+				LPANIMATION_SET ani_set;
+
+				/**
+				 * Random ra item
+				 * 50% mini heart
+				 * 20% heart
+				 * 20% money
+				 * 10% knife
+				 */
+
+				srand(time(NULL));
+				int random_portion = rand() % 100;
+
+				// Heart
+				if (random_portion < 50)
+				{
+					ani_set = animation_sets->Get(ITEM_MINIHEART);
+					item->SetType(ITEM_MINIHEART);
+				}
+				else if (random_portion >= 50 && random_portion < 70)
+				{
+					ani_set = animation_sets->Get(ITEM_HEART);
+					item->SetType(ITEM_HEART);
+				}
+				// Money
+				else if (random_portion >= 70 && random_portion < 90)
+				{
+					ani_set = animation_sets->Get(ITEM_MONEY);
+					item->SetType(ITEM_MONEY);
+				}
+				// Knife
+				else
+				{
+					ani_set = animation_sets->Get(ITEM_KNIFE);
+					item->SetType(ITEM_KNIFE);
+				}
+
+				item->SetAnimationSet(ani_set);
+				objects.erase(objects.begin() + i);
+				delete candle;
 			}
 		}
 		else if (dynamic_cast<Item*>(objects.at(i)))

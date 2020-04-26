@@ -9,8 +9,6 @@ Simon::Simon(float x, float y) : CGameObject()
 	level = SIMON_LEVEL;
 	untouchable = 0;
 
-	whip = new Whip();
-
 	life = 3;
 	preHP = 16;
 	currentWeapon = 0;
@@ -29,7 +27,8 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 	{
 		// Simon se khong va cham voi nhung vat sau:
 		if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
-			!dynamic_cast<Whip*>(coObjects->at(i)))
+			!dynamic_cast<Whip*>(coObjects->at(i)) &&
+			!dynamic_cast<Candle*>(coObjects->at(i)))
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
@@ -175,6 +174,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				int type = item->GetType();
 				switch (type)
 				{
+				case ITEM_MINIHEART:
+					AddHeart(1);
+					break;
 				case ITEM_HEART:
 					AddHeart(5);
 					break;

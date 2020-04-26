@@ -377,13 +377,13 @@ void CGame::Load(LPCWSTR gameFile)
 	f.close();
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
-
 	SwitchScene(current_scene);
 }
 
 void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
+
 
 	scenes[current_scene]->Unload();
 

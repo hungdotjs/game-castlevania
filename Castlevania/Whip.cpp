@@ -18,6 +18,16 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				torch->isHitted = true;
 			}
 		}
+		else if (dynamic_cast<Candle*>(coObjects->at(i)))
+		{
+			Candle* candle = dynamic_cast<Candle*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			candle->GetBoundingBox(zl, zt, zr, zb);
+			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			{
+				candle->isHitted = true;
+			}
+		}
 	}
 }
 

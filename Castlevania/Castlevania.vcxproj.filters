@@ -52,6 +52,9 @@
     <Filter Include="Object\Board">
       <UniqueIdentifier>{cb82d797-fe9e-464f-8446-40f482eef8d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Candle">
+      <UniqueIdentifier>{f8f028a7-f1a7-4093-9431-4797736dff97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -112,6 +115,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>Object\Board</Filter>
     </ClCompile>
+    <ClCompile Include="Candle.cpp">
+      <Filter>Object\Candle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -170,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="Board.h">
       <Filter>Object\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle.h">
+      <Filter>Object\Candle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

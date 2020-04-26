@@ -9,10 +9,15 @@
 #define ITEM_HEART						301
 #define ITEM_MONEY						302
 #define ITEM_KNIFE						303
+#define ITEM_MINIHEART					304
 
 // Heart
 #define HEART_BBOX_WIDTH				12
 #define HEART_BBOX_HEIGHT				10
+
+// Mini heart
+#define MINIHEART_BBOX_HEIGHT				8
+#define MINIHEART_BBOX_HEIGHT				8
 
 // Whip item
 #define WHIPITEM_BBOX_WIDTH				16
