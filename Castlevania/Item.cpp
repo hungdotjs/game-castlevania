@@ -1,5 +1,4 @@
-#include "Item.h"
-
+﻿#include "Item.h"
 
 void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -47,6 +46,10 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 	switch (type)
 	{
+	case ITEM_MINIHEART:
+		r = x + MINIHEART_BBOX_WIDTH;
+		b = y + MINIHEART_BBOX_HEIGHT;
+		break;
 	case ITEM_HEART:
 		r = x + HEART_BBOX_WIDTH;
 		b = y + HEART_BBOX_HEIGHT;

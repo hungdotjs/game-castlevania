@@ -255,7 +255,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -320,9 +320,9 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame::GetInstance()->SetCamPos(cx, 48);
 
-	RemoveObjects();
 	gameTime -= dt;
 	board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
+	RemoveObjects();
 }
 
 void CPlayScene::Render()

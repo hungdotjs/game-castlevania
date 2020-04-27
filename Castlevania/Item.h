@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Brick.h"
+#include "Whip.h"
 
 #define ITEM_GRAVITY		0.002f
 
@@ -16,7 +17,7 @@
 #define HEART_BBOX_HEIGHT				10
 
 // Mini heart
-#define MINIHEART_BBOX_HEIGHT				8
+#define MINIHEART_BBOX_WIDTH				8
 #define MINIHEART_BBOX_HEIGHT				8
 
 // Whip item

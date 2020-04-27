@@ -49,9 +49,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Has completed attack animation
+
 	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK)
 	{
-		isAttack = false;
 		if (isExitSit)
 		{
 			isSit = false;
@@ -59,9 +59,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isExitSit = false;
 		}
 		// Check collision between whip and game objects 
+		isAttack = false;
 		whip->Update(dt, coObjects);
-
 	}
+	if (GetTickCount() - attackTime >= 300)
+		whip->Update(dt, coObjects);
 
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
@@ -89,12 +91,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// when simon attack
-	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK - 50)
+	if (isAttack == true)
 	{
 		if (nx > 0)
 		{
 			// Whip position equal to simon position
-			whip->SetPosition(x, y);
+			whip->SetPosition(x, y + SIMON_BBOX_HEIGHT / 3);
 		}
 		else
 		{
