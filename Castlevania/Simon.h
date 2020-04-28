@@ -11,9 +11,9 @@
 #include "Item.h"
 
 #define SIMON_WALKING_SPEED			0.08f 
-#define SIMON_JUMP_SPEED_Y			0.38f
+#define SIMON_JUMP_SPEED_Y			0.28f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
-#define SIMON_GRAVITY				0.0015f
+#define SIMON_GRAVITY				0.001f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
 #define SIMON_SIT_TO_STAND			15.0f
 
@@ -52,7 +52,7 @@
 #define SIMON_SIT_BBOX_HEIGHT			23
 
 #define SIMON_UNTOUCHABLE_TIME		5000
-#define SIMON_TIMER_ATTACK			450
+#define SIMON_TIMER_ATTACK			300
 
 class Simon : public CGameObject
 {

@@ -28,9 +28,6 @@
     <Filter Include="Object\Brick">
       <UniqueIdentifier>{3a2b0d8c-82d4-4e17-a008-6a4b20cca287}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Goomba">
-      <UniqueIdentifier>{cd7c9546-f8f9-4785-b1c6-e2f6956972d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Koopas">
       <UniqueIdentifier>{cbee5f7b-383b-4cef-9533-de7ad9b39d0c}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,12 @@
     </Filter>
     <Filter Include="Object\Candle">
       <UniqueIdentifier>{f8f028a7-f1a7-4093-9431-4797736dff97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Goomba">
+      <UniqueIdentifier>{cd7c9546-f8f9-4785-b1c6-e2f6956972d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Knight">
+      <UniqueIdentifier>{c80f57f8-9bd6-44d5-9e4f-1f5e5a04718b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +121,9 @@
     <ClCompile Include="Candle.cpp">
       <Filter>Object\Candle</Filter>
     </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>Object\Knight</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -179,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Candle.h">
       <Filter>Object\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="Knight.h">
+      <Filter>Object\Knight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

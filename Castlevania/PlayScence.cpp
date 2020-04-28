@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "Knight.h"
 #include "Torch.h"
 #include "Candle.h"
 #include "Portal.h"
@@ -45,6 +46,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_WHIP	11
 #define OBJECT_TYPE_TORCH	100
 #define OBJECT_TYPE_CANDLE	400
+#define OBJECT_TYPE_KNIGHT	500
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -172,6 +174,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANDLE: obj = new Candle(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
+	case OBJECT_TYPE_KNIGHT: obj = new Knight(); break;
 	case OBJECT_TYPE_WHIP:
 	{
 		if (player->whip != NULL) {

@@ -146,6 +146,7 @@
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Brick.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="PlayScence.h" />
