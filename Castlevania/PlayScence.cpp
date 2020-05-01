@@ -525,10 +525,31 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	// Chet
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
+	// Len xuong cau thang
+	if (KeyCode == DIK_UP)
+	{
+		if (simon->isOnCheckStairUp)
+		{
+			simon->SetState(SIMON_STATE_IDLE);
+		}
+		else if (simon->isOnStair)
+		{
+			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
+		}
+	}
+
 	// Ngoi
 	if (KeyCode == DIK_DOWN)
 	{
-		if (simon->isSit)
+		if (simon->isOnCheckStairDown)
+		{
+			simon->SetState(SIMON_STATE_IDLE);
+		}
+		else if (simon->isOnStair)
+		{
+			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
+		}
+		else if (simon->isSit)
 		{
 			if (!simon->isAttack)
 			{

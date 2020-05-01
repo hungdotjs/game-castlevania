@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "Utils.h"
 #include "Brick.h"
+#include "Stair.h"
+#include "CheckStair.h"
 #include "Candle.h"
 #include "Goomba.h"
 #include "Portal.h"
@@ -12,6 +14,8 @@
 
 #define SIMON_WALKING_SPEED			0.08f 
 #define SIMON_JUMP_SPEED_Y			0.28f
+#define SIMON_CLIMBING_SPEED_X		0.05f
+#define SIMON_CLIMBING_SPEED_Y		0.05f
 #define SIMON_JUMP_DEFLECT_SPEED	0.2f
 #define SIMON_GRAVITY				0.001f
 #define SIMON_DIE_DEFLECT_SPEED		0.5f
@@ -21,6 +25,9 @@
 #define SIMON_STATE_WALK			20
 #define SIMON_STATE_JUMP			30
 #define SIMON_STATE_SIT				40
+#define SIMON_STATE_ONCHECKSTAIR	50
+#define SIMON_STATE_ONSTAIR			60
+#define SIMON_STATE_ONSTAIR_IDLE	70
 #define SIMON_STATE_DIE				90
 
 
@@ -43,6 +50,22 @@
 #define SIMON_ANI_SIT_ATTACK_LEFT	11
 #define SIMON_ANI_ATTACK_RIGHT		12
 #define SIMON_ANI_ATTACK_LEFT		13
+#define SIMON_ANI_STAIRUP_ATTACK_RIGHT		14
+#define SIMON_ANI_STAIRUP_ATTACK_LEFT		15
+#define SIMON_ANI_STAIRDOWN_ATTACK_RIGHT	16
+#define SIMON_ANI_STAIRDOWN_ATTACK_LEFT		17
+#define SIMON_ANI_WALKING_UP_RIGHT			18
+#define SIMON_ANI_WALKING_UP_LEFT			19
+#define SIMON_ANI_WALKING_DOWN_RIGHT		20
+#define SIMON_ANI_WALKING_DOWN_LEFT			21
+#define SIMON_ANI_IDLE_UP_RIGHT				22
+#define SIMON_ANI_IDLE_UP_LEFT				23
+#define SIMON_ANI_IDLE_DOWN_RIGHT			24
+#define SIMON_ANI_IDLE_DOWN_LEFT			25
+
+#define SIMON_ON_LEFT_CHECKSTAIR		1
+#define SIMON_ON_RIGHT_CHECKSTAIR		2
+#define SIMON_ONSTAIR_ERR_RANGE			3
 
 #define SIMON_LEVEL			1
 
@@ -71,6 +94,10 @@ public:
 	bool isJump;
 	bool isMoving;
 	bool isExitSit;
+	bool isOnCheckStairUp;
+	bool isOnCheckStairDown;
+	bool isOnStair;
+	bool isLeftToRight;
 
 	int ny;
 

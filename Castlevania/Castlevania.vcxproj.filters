@@ -58,6 +58,12 @@
     <Filter Include="Object\Knight">
       <UniqueIdentifier>{c80f57f8-9bd6-44d5-9e4f-1f5e5a04718b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Stair">
+      <UniqueIdentifier>{83dfcb1b-ffa0-4e44-a7e6-4c06e9102300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\CheckStair">
+      <UniqueIdentifier>{83a25e2a-d234-436c-8da3-1cde1c798173}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -124,6 +130,12 @@
     <ClCompile Include="Knight.cpp">
       <Filter>Object\Knight</Filter>
     </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Object\Stair</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckStair.cpp">
+      <Filter>Object\CheckStair</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -188,6 +200,12 @@
     </ClInclude>
     <ClInclude Include="Knight.h">
       <Filter>Object\Knight</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Object\Stair</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckStair.h">
+      <Filter>Object\CheckStair</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

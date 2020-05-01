@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Candle.cpp" />
+    <ClCompile Include="CheckStair.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Knight.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="Stair.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Candle.h" />
+    <ClInclude Include="CheckStair.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="Item.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="Stair.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="Utils.h" />
