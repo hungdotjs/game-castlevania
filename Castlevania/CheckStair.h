@@ -16,6 +16,10 @@ class CheckStair : public CGameObject
 	int type;
 
 public:
+	CheckStair(int type) {
+		this->type = type;
+	}
+
 	void SetType(int type) { this->type = type; }
 	int GetType() { return type; }
 

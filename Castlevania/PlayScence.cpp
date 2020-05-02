@@ -39,14 +39,15 @@ CPlayScene::~CPlayScene()
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_SIMON	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
-#define OBJECT_TYPE_WHIP	11
-#define OBJECT_TYPE_TORCH	100
-#define OBJECT_TYPE_CANDLE	400
-#define OBJECT_TYPE_KNIGHT	500
+#define OBJECT_TYPE_SIMON		0
+#define OBJECT_TYPE_BRICK		1
+#define OBJECT_TYPE_CHECKSTAIR	4
+#define OBJECT_TYPE_GOOMBA		2
+#define OBJECT_TYPE_KOOPAS		3
+#define OBJECT_TYPE_WHIP		11
+#define OBJECT_TYPE_TORCH		100
+#define OBJECT_TYPE_CANDLE		400
+#define OBJECT_TYPE_KNIGHT		500
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -186,6 +187,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		objects.push_back(obj);
 		return;
+	}
+	case OBJECT_TYPE_CHECKSTAIR: {
+		int type = atof(tokens[4].c_str());
+		obj = new CheckStair(type);
+		break;
 	}
 
 	case OBJECT_TYPE_PORTAL: {
@@ -528,13 +534,13 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	// Len xuong cau thang
 	if (KeyCode == DIK_UP)
 	{
-		if (simon->isOnCheckStairUp)
-		{
-			simon->SetState(SIMON_STATE_IDLE);
-		}
-		else if (simon->isOnStair)
+		if (simon->isOnStair)
 		{
 			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
+		}
+		else if (simon->isOnCheckStairUp)
+		{
+			simon->SetState(SIMON_STATE_IDLE);
 		}
 	}
 
@@ -578,10 +584,55 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Chet
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
+	// Len xuong cau thang
+	if (game->IsKeyDown(DIK_UP))
+	{
+		if (simon->ny == -1 && !simon->isOnStair)
+		{
+			if (!simon->isAttack && !simon->isSit && !simon->isJump)
+			{
+				simon->SetState(SIMON_STATE_ONCHECKSTAIR);
+			}
+		}
+		else if (simon->isOnStair && !simon->isAttack)
+		{
+			simon->ny = -1;
+			simon->SetState(SIMON_STATE_ONSTAIR);
+			if (simon->isLeftToRight)
+				simon->nx = 1;
+			else
+				simon->nx = -1;
+		}
+		else if (simon->isOnStair && simon->isAttack)
+		{
+			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
+		}
+	}
+
 	// Ngoi
 	if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (!simon->isAttack && !simon->isJump)
+		if (simon->ny == 1 && !simon->isOnStair)
+		{
+			if (!simon->isAttack && !simon->isSit && !simon->isJump)
+			{
+				simon->SetState(SIMON_STATE_ONCHECKSTAIR);
+			}
+		}
+		else if (simon->isOnStair && !simon->isAttack)
+		{
+			simon->ny = 1;
+			simon->SetState(SIMON_STATE_ONSTAIR);
+			if (simon->isLeftToRight)
+				simon->nx = -1;
+			else
+				simon->nx = 1;
+		}
+		else if (simon->isOnStair && simon->isAttack)
+		{
+			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
+		}
+		else if (!simon->isOnCheckStairDown && !simon->isOnStair && !simon->isAttack && !simon->isJump)
 			simon->SetState(SIMON_STATE_SIT);
 	}
 

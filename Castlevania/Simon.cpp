@@ -46,14 +46,17 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 			float csl, csr, cst, csb;
 			checkstair->GetBoundingBox(csl, cst, csr, csb);
 
+			DebugOut(L"[STAIR] checkstair left = %f, top = %f,\n right = %f, bottom = %f \n", csl, cst, csr, csb);
+			DebugOut(L"[STAIR] simon x = %f, y = %f \n", x, y);
+
+
 			// Xu ly truong hop simon cham vao CheckStairUp va chua nhan phim len
-			if (x < csr + 2 * SIMON_ONSTAIR_ERR_RANGE &&
-				x + SIMON_BBOX_WIDTH > csl - 2 * SIMON_ONSTAIR_ERR_RANGE &&
-				y + SIMON_BBOX_HEIGHT < csb + SIMON_ONSTAIR_ERR_RANGE &&
-				y > cst - SIMON_ONSTAIR_ERR_RANGE)
+			if (x < csr && x + SIMON_BBOX_WIDTH > csl)
 			{
 				isCollideWithCheckBox = true;
 				ny = -1.0f;
+
+				DebugOut(L"[STAIR] Va cham stair");
 
 				if (isOnStair)
 				{
@@ -72,25 +75,21 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 						if (state == SIMON_STATE_ONCHECKSTAIR)
 						{
-							nx = 1.0f;
+							nx = -1.0f;
 
 							isMoving = true;
 
-							// Truong hop simon onstair
-							if (x > csr - 2 * SIMON_ONSTAIR_ERR_RANGE &&
-								x < csr + 2 * SIMON_ONSTAIR_ERR_RANGE)
-							{
-								vx = 0;
-								vy = 0;
-								SetPosition(
-									csr - 5 * SIMON_ONSTAIR_ERR_RANGE,
-									csb - 5 * SIMON_ONSTAIR_ERR_RANGE - SIMON_BBOX_HEIGHT);
-								SetState(SIMON_STATE_ONSTAIR_IDLE);
+							vx = 0;
+							vy = 0;
 
-								isLeftToRight = false;
-								isOnStair = true;
-								isOnCheckStairUp = false;
-							}
+							SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
+
+							SetState(SIMON_STATE_ONSTAIR_IDLE);
+
+							isLeftToRight = false;
+							isOnStair = true;
+							isOnCheckStairUp = false;
+
 						}
 						else
 						{
@@ -102,25 +101,22 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 						if (state == SIMON_STATE_ONCHECKSTAIR)
 						{
-							nx = -1.0f;
+							nx = 1.0f;
 
 							isMoving = true;
 
-							// Truong hop simon onstair
-							if (x + SIMON_BBOX_WIDTH > csl - 2 * SIMON_ONSTAIR_ERR_RANGE &&
-								x + SIMON_BBOX_WIDTH < csl + 2 * SIMON_ONSTAIR_ERR_RANGE)
-							{
-								vx = 0;
-								vy = 0;
-								SetPosition(
-									csl + 5 * SIMON_ONSTAIR_ERR_RANGE - SIMON_BBOX_WIDTH,
-									csb - 5 * SIMON_ONSTAIR_ERR_RANGE - SIMON_BBOX_HEIGHT);
-								SetState(SIMON_STATE_ONSTAIR_IDLE);
 
-								isLeftToRight = true;
-								isOnStair = true;
-								isOnCheckStairUp = false;
-							}
+							vx = 0;
+							vy = 0;
+							SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
+
+							SetState(SIMON_STATE_ONSTAIR_IDLE);
+
+
+							isLeftToRight = true;
+							isOnStair = true;
+							isOnCheckStairUp = false;
+
 						}
 						else
 						{
@@ -221,6 +217,13 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		}
 	}
 
+	if (!isCollideWithCheckBox && !isOnStair)
+	{
+		isOnCheckStairDown = false;
+		isOnCheckStairUp = false;
+		ny = 0;
+	}
+
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
@@ -234,6 +237,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK)
 	{
+		isAttack = false;
 		if (isExitSit)
 		{
 			isSit = false;
@@ -241,14 +245,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isExitSit = false;
 		}
 		// Check collision between whip and game objects 
-		isAttack = false;
 		whip->Update(dt, coObjects);
 	}
 	//if (GetTickCount() - attackTime >= 300)
 	//	whip->Update(dt, coObjects);
 
 	// Simple fall down
-	vy += SIMON_GRAVITY * dt;
+	if (!isOnStair)
+	{
+		vy += SIMON_GRAVITY * dt;
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -329,13 +335,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+		/*	if (nx != 0) vx = 0;
+			if (ny != 0) vy = 0;*/
 
 
-		//
-		// Collision logic with other objects
-		//
+			//
+			// Collision logic with other objects
+			//
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
