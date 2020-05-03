@@ -264,7 +264,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -509,7 +509,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:	// Nhay
-		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false)
+		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false && simon->isOnStair == false)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
 
@@ -639,14 +639,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Di bo
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (!simon->isSit && !simon->isAttack)
+		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
 		if (!simon->isAttack)
 			simon->nx = 1;
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (!simon->isSit && !simon->isAttack)
+		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
 		if (!simon->isAttack)
 			simon->nx = -1;

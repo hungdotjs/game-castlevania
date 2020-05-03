@@ -51,80 +51,74 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 
 			// Xu ly truong hop simon cham vao CheckStairUp va chua nhan phim len
-			if (x < csr && x + SIMON_BBOX_WIDTH > csl)
+			if (x < csr && x + SIMON_BBOX_WIDTH > csl && y + SIMON_BBOX_HEIGHT > cst && y + SIMON_BBOX_HEIGHT < csb)
 			{
 				isCollideWithCheckBox = true;
 				ny = -1.0f;
 
 				DebugOut(L"[STAIR] Va cham stair");
 
-				if (isOnStair)
-				{
-					SetState(SIMON_STATE_IDLE);
-					isOnStair = false;
-				}
-				else
-				{
-					int type = checkstair->GetType();
 
-					// Xet truong hop nhan phim len
-					switch (type)
+				int type = checkstair->GetType();
+
+				// Xet truong hop nhan phim len
+				switch (type)
+				{
+				case CHECKSTAIR_UP_LEFT:
+					isOnCheckStairUp = true;
+
+					if (state == SIMON_STATE_ONCHECKSTAIR)
 					{
-					case CHECKSTAIR_UP_LEFT:
-						isOnCheckStairUp = true;
+						nx = -1.0f;
 
-						if (state == SIMON_STATE_ONCHECKSTAIR)
-						{
-							nx = -1.0f;
+						isMoving = true;
 
-							isMoving = true;
+						vx = 0;
+						vy = 0;
 
-							vx = 0;
-							vy = 0;
+						SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
 
-							SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
+						SetState(SIMON_STATE_ONSTAIR_IDLE);
 
-							SetState(SIMON_STATE_ONSTAIR_IDLE);
+						isLeftToRight = false;
+						isOnStair = true;
+						isOnCheckStairUp = false;
 
-							isLeftToRight = false;
-							isOnStair = true;
-							isOnCheckStairUp = false;
-
-						}
-						else
-						{
-							isOnCheckStairUp = false;
-						}
-						break;
-					case CHECKSTAIR_UP_RIGHT:
-						isOnCheckStairUp = true;
-
-						if (state == SIMON_STATE_ONCHECKSTAIR)
-						{
-							nx = 1.0f;
-
-							isMoving = true;
-
-
-							vx = 0;
-							vy = 0;
-							SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
-
-							SetState(SIMON_STATE_ONSTAIR_IDLE);
-
-
-							isLeftToRight = true;
-							isOnStair = true;
-							isOnCheckStairUp = false;
-
-						}
-						else
-						{
-							isOnCheckStairUp = false;
-						}
-						break;
 					}
+					else
+					{
+						isOnCheckStairUp = false;
+					}
+					break;
+				case CHECKSTAIR_UP_RIGHT:
+					isOnCheckStairUp = true;
+
+					if (state == SIMON_STATE_ONCHECKSTAIR)
+					{
+						nx = 1.0f;
+
+						isMoving = true;
+
+
+						vx = 0;
+						vy = 0;
+						SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
+
+						SetState(SIMON_STATE_ONSTAIR_IDLE);
+
+
+						isLeftToRight = true;
+						isOnStair = true;
+						isOnCheckStairUp = false;
+
+					}
+					else
+					{
+						isOnCheckStairUp = false;
+					}
+					break;
 				}
+
 			}
 
 
@@ -496,7 +490,7 @@ void Simon::Render()
 				}
 				else if (ny > 0)
 				{
-					ani = SIMON_ANI_IDLE_DOWN_RIGHT;
+					ani = SIMON_ANI_IDLE_DOWN_LEFT;
 				}
 				break;
 			case SIMON_STATE_SIT:
@@ -528,7 +522,7 @@ void Simon::Render()
 				}
 				else if (ny > 0)
 				{
-					ani = SIMON_ANI_WALKING_DOWN_LEFT;
+					ani = SIMON_ANI_WALKING_DOWN_RIGHT;
 				}
 				break;
 			case SIMON_STATE_ONSTAIR_IDLE:
@@ -626,6 +620,7 @@ void Simon::SetState(int state)
 		break;
 
 	case SIMON_STATE_ONCHECKSTAIR:
+		isOnStair = true;
 		if (nx < 0)
 		{
 			vx = -SIMON_WALKING_SPEED;
@@ -638,6 +633,7 @@ void Simon::SetState(int state)
 		break;
 
 	case SIMON_STATE_ONSTAIR:
+		isOnStair = true;
 		if (!isAttack)
 		{
 			isMoving = true;
