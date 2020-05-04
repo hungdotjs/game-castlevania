@@ -107,7 +107,7 @@ public:
 	int life;
 	int preHP;
 	bool isLevelUp;
-	bool isBonus;
+
 	static int score;
 	static int heartsAmount;
 	int currentWeapon;
