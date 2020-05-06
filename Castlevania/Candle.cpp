@@ -3,11 +3,11 @@
 void Candle::Render()
 {
 	animation_set->at(0)->Render(x, y);
+	RenderBoundingBox();
 }
 
 void Candle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
 }
 
 void Candle::SetHit()

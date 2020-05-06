@@ -25,22 +25,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		// Simon se khong va cham voi nhung vat sau:
-		if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
-			!dynamic_cast<Whip*>(coObjects->at(i)) &&
-			!dynamic_cast<Candle*>(coObjects->at(i)) &&
-			!dynamic_cast<Stair*>(coObjects->at(i)) &&
-			!dynamic_cast<CheckStair*>(coObjects->at(i))
-			)
-		{
-			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-
-			if (e->t > 0 && e->t <= 1.0f)
-				coEvents.push_back(e);
-			else
-				delete e;
-		}
-		else if (dynamic_cast<CheckStair*>(coObjects->at(i))) {
+		if (dynamic_cast<CheckStair*>(coObjects->at(i))) {
 			CheckStair* checkstair = dynamic_cast<CheckStair*>(coObjects->at(i));
 			float csl, csr, cst, csb;
 			checkstair->GetBoundingBox(csl, cst, csr, csb);
@@ -48,7 +33,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 			/*	DebugOut(L"[STAIR] checkstair left = %f, top = %f,\n right = %f, bottom = %f \n", csl, cst, csr, csb);
 				DebugOut(L"[STAIR] simon x = %f, y = %f \n", x, y);*/
 
-				// Neu Simon dung tai checkstair
+				// Neu Simon dung tai checkstair bottom
 			if (x < csr &&
 				x + SIMON_BBOX_WIDTH > csl
 				&& y + SIMON_BBOX_HEIGHT > cst
@@ -56,7 +41,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 			{
 				isCollideWithCheckBox = true;
 
-				DebugOut(L"[STATE] state = %d", state);
+				DebugOut(L"[STATE] state = %d\n", state);
 				int type = checkstair->GetType();
 
 				// Xet truong hop nhan phim len
@@ -120,73 +105,6 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 						isOnCheckStairUp = false;
 					}
 					break;
-
-				case CHECKSTAIR_DOWN_LEFT:
-					ny = 1.0f;
-
-					isOnCheckStairDown = true;
-
-					if (state == SIMON_STATE_ONCHECKSTAIR)
-					{
-						isOnCheckStairDown = true;
-						nx = -1.0f;
-
-						isMoving = true;
-
-						// Truong hop simon onstair
-						if (x + SIMON_BBOX_WIDTH > csl - 2 * SIMON_ONSTAIR_ERR_RANGE &&
-							x + SIMON_BBOX_WIDTH < csl + 2 * SIMON_ONSTAIR_ERR_RANGE)
-						{
-							vx = 0;
-							vy = 0;
-							SetPosition(
-								csl - 4 * SIMON_ONSTAIR_ERR_RANGE - SIMON_BBOX_WIDTH,
-								csb + 5 * SIMON_ONSTAIR_ERR_RANGE);
-							SetState(SIMON_STATE_ONSTAIR_IDLE);
-
-							isLeftToRight = true;
-							isOnStair = true;
-							isOnCheckStairDown = false;
-						}
-					}
-					else
-					{
-						isOnCheckStairDown = false;
-					}
-					break;
-				case CHECKSTAIR_DOWN_RIGHT:
-					ny = 1.0f;
-
-					isOnCheckStairDown = true;
-
-					if (state == SIMON_STATE_ONCHECKSTAIR)
-					{
-						isOnCheckStairDown = true;
-						nx = 1.0f;
-
-						isMoving = true;
-
-						// Truong hop simon onstair
-						if (x > csr - 4 * SIMON_ONSTAIR_ERR_RANGE &&
-							x < csr + 2 * SIMON_ONSTAIR_ERR_RANGE)
-						{
-							vx = 0;
-							vy = 0;
-							SetPosition(
-								csr + 2 * SIMON_ONSTAIR_ERR_RANGE,
-								csb + 5 * SIMON_ONSTAIR_ERR_RANGE);
-							SetState(SIMON_STATE_ONSTAIR_IDLE);
-
-							isLeftToRight = false;
-							isOnStair = true;
-							isOnCheckStairDown = false;
-						}
-					}
-					else
-					{
-						isOnCheckStairDown = false;
-					}
-					break;
 				}
 			}
 			else {
@@ -194,6 +112,43 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 			}
 
 		}
+		else if (dynamic_cast<CheckStairTop*>(coObjects->at(i)))
+		{
+			CheckStairTop* checkstair = dynamic_cast<CheckStairTop*>(coObjects->at(i));
+			float csl, csr, cst, csb;
+			checkstair->GetBoundingBox(csl, cst, csr, csb);
+
+			/*	DebugOut(L"[STAIR] checkstair left = %f, top = %f,\n right = %f, bottom = %f \n", csl, cst, csr, csb);
+				DebugOut(L"[STAIR] simon x = %f, y = %f \n", x, y);*/
+
+				// Neu Simon dung tai checkstair bottom
+			if (x < csr &&
+				x + SIMON_BBOX_WIDTH > csl &&
+				y > cst &&
+				y < csb)
+			{
+				if (ny < 0) {
+					isOnStair = false;
+					SetState(SIMON_STATE_IDLE);
+				}
+			}
+		}
+		// Simon se khong va cham voi nhung vat sau:
+		else if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
+			!dynamic_cast<Whip*>(coObjects->at(i)) &&
+			!dynamic_cast<Candle*>(coObjects->at(i)) &&
+			!dynamic_cast<CheckStair*>(coObjects->at(i)) &&
+			!dynamic_cast<CheckStairTop*>(coObjects->at(i))
+			)
+		{
+			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+			if (e->t > 0 && e->t <= 1.0f)
+				coEvents.push_back(e);
+			else
+				delete e;
+		}
+
 	}
 
 	if (!isCollideWithCheckBox && !isOnStair)
@@ -330,7 +285,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
 				// Da cham dat
-				if (isJump || isOnStair)
+				if (isJump)
 				{
 					isJump = false;
 					isOnStair = false;

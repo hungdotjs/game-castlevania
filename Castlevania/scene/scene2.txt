@@ -8,7 +8,7 @@
 30	textures\\enemies.png	116	116	116
 100	textures\map\map_2_bank.png	255	255	255
 90	textures\brick_2.png	0	0	0
-80	textures\stair_1.png	0	0	0
+80	textures\bbox.png	255	255	255
 
 # ============================ [SPRITES] ========================
 # id	left	top	right	bottom	texture_id
@@ -336,6 +336,7 @@
 1	96	157	2
 1	112	157	2
 1	128	157	2
+1	144	157	2
 # ==================== CANDLE =================
 400	80	189	400
 
@@ -349,3 +350,4 @@
 # ================= CHECK STAIR =============
 # type	x	y	ani_set_id	type_checkstair
 4	112	237	4	1
+5	176	143	4	0

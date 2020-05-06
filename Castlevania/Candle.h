@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #define CANDLE_BBOX_WIDTH  8
-#define CANDLE_BBOX_HEIGHT 14
+#define CANDLE_BBOX_HEIGHT 20
 
 class Candle : public CGameObject
 {

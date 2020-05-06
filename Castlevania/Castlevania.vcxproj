@@ -160,7 +160,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Simon.cpp" />
-    <ClCompile Include="Stair.cpp" />
+    <ClCompile Include="CheckStairTop.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -185,7 +185,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Sprites.h" />
-    <ClInclude Include="Stair.h" />
+    <ClInclude Include="CheckStairTop.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="Utils.h" />

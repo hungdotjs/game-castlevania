@@ -9,6 +9,7 @@
 #include "Torch.h"
 #include "Candle.h"
 #include "Portal.h"
+#include "CheckStairTop.h"
 
 using namespace std;
 
@@ -39,15 +40,16 @@ CPlayScene::~CPlayScene()
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_SIMON		0
-#define OBJECT_TYPE_BRICK		1
-#define OBJECT_TYPE_CHECKSTAIR	4
-#define OBJECT_TYPE_GOOMBA		2
-#define OBJECT_TYPE_KOOPAS		3
-#define OBJECT_TYPE_WHIP		11
-#define OBJECT_TYPE_TORCH		100
-#define OBJECT_TYPE_CANDLE		400
-#define OBJECT_TYPE_KNIGHT		500
+#define OBJECT_TYPE_SIMON			0
+#define OBJECT_TYPE_BRICK			1
+#define OBJECT_TYPE_CHECKSTAIR		4
+#define OBJECT_TYPE_CHECKSTAIRTOP	5
+#define OBJECT_TYPE_GOOMBA			2
+#define OBJECT_TYPE_KOOPAS			3
+#define OBJECT_TYPE_WHIP			11
+#define OBJECT_TYPE_TORCH			100
+#define OBJECT_TYPE_CANDLE			400
+#define OBJECT_TYPE_KNIGHT			500
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -191,6 +193,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CHECKSTAIR: {
 		int type = atof(tokens[4].c_str());
 		obj = new CheckStair(type);
+		break;
+	}
+	case OBJECT_TYPE_CHECKSTAIRTOP: {
+		int type = atof(tokens[4].c_str());
+		obj = new CheckStairTop(type);
 		break;
 	}
 

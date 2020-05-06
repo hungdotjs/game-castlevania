@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Utils.h"
 #include "Brick.h"
-#include "Stair.h"
+#include "CheckStairTop.h"
 #include "CheckStair.h"
 #include "Candle.h"
 #include "Goomba.h"
