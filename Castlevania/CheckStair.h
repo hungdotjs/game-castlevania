@@ -8,8 +8,6 @@
 // Check stair
 #define CHECKSTAIR_UP_LEFT				0
 #define CHECKSTAIR_UP_RIGHT				1
-#define CHECKSTAIR_DOWN_LEFT			2
-#define CHECKSTAIR_DOWN_RIGHT			3
 
 class CheckStair : public CGameObject
 {

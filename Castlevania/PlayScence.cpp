@@ -594,12 +594,13 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Len xuong cau thang
 	if (game->IsKeyDown(DIK_UP))
 	{
-		if (simon->ny == -1 && !simon->isOnStair)
+		if (simon->ny == -1 &&
+			!simon->isOnStair &&
+			!simon->isAttack &&
+			!simon->isSit &&
+			!simon->isJump)
 		{
-			if (!simon->isAttack && !simon->isSit && !simon->isJump)
-			{
-				simon->SetState(SIMON_STATE_ONCHECKSTAIR);
-			}
+			simon->SetState(SIMON_STATE_ONCHECKSTAIR);
 		}
 		else if (simon->isOnStair && !simon->isAttack)
 		{
@@ -614,6 +615,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		{
 			simon->SetState(SIMON_STATE_ONSTAIR_IDLE);
 		}
+		else if (!simon->isOnCheckStairUp && !simon->isOnStair && !simon->isAttack && !simon->isJump)
+			simon->SetState(SIMON_STATE_IDLE);
+
 	}
 
 	// Ngoi
@@ -646,6 +650,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Di bo
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
+		if (simon->isOnStair) return;
+
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
 		if (!simon->isOnStair && !simon->isAttack)
@@ -653,6 +659,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
+		if (simon->isOnStair) return;
+
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
 		if (!simon->isOnStair && !simon->isAttack)
