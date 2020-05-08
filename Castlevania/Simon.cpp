@@ -25,6 +25,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
+		// Xet va cham len xuong cau thang
 		if (dynamic_cast<CheckStair*>(coObjects->at(i))) {
 			CheckStair* checkstair = dynamic_cast<CheckStair*>(coObjects->at(i));
 			float csl, csr, cst, csb;
@@ -202,12 +203,10 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				}
 			}
 		}
+
 		// Simon se khong va cham voi nhung vat sau:
 		else if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
-			!dynamic_cast<Whip*>(coObjects->at(i)) &&
-			!dynamic_cast<Candle*>(coObjects->at(i)) &&
-			!dynamic_cast<CheckStair*>(coObjects->at(i)) &&
-			!dynamic_cast<CheckStairTop*>(coObjects->at(i))
+			!dynamic_cast<Candle*>(coObjects->at(i))
 			)
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
@@ -238,6 +237,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	DebugOut(L"[DIRECTION] nx = %d, ny = %d\n", nx, ny);
 	DebugOut(L"[POSITION] x = %f, y = %f\n", x, y);
+	DebugOut(L"[STATE] state = %d\n", state);
 
 
 	// Has completed attack animation
@@ -256,7 +256,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	//if (GetTickCount() - attackTime >= 300)
 	//	whip->Update(dt, coObjects);
-
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -278,6 +277,19 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!isOnStair && !isSit && !isMoving && !isJump && !isAttack)
 	{
 		SetState(SIMON_STATE_IDLE);
+	}
+
+	if (isHurt) {
+		SetState(SIMON_STATE_HURT);
+		vy = -SIMON_JUMP_DEFLECT_SPEED / 3;
+		if (nx > 0)
+			vx = -SIMON_JUMP_DEFLECT_SPEED / 2;
+		else
+			vx = SIMON_JUMP_DEFLECT_SPEED / 2;
+	}
+
+	if (isHurt && GetTickCount() - untouchable_start > 300) {
+		isHurt = false;
 	}
 
 	// reset untouchable timer if untouchable time has passed
@@ -314,16 +326,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x = 0;
 	}
-	// Right corner
-	else if (x > rightCorner)
-	{
-		x = rightCorner;
-	}
 
-	if (y < 92) y = 92;
+	if (y < 86) y = 86;
 
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0 || isOnStair)
+	if (coEvents.size() == 0)
 	{
 		x += dx;
 		y += dy;
@@ -343,8 +350,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//	x += nx*abs(rdx); 
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		if (untouchable != 1) {
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
+		}
 
 		/*	if (nx != 0) vx = 0;
 			if (ny != 0) vy = 0;*/
@@ -359,11 +368,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
+				if (isOnStair) {
+					x += dx;
+					y += dy;
+					continue;
+				}
+
 				// Da cham dat
 				if (isJump)
 				{
 					isJump = false;
-					isOnStair = false;
 				}
 				// Xét va chạm cứng
 				if (nx != 0) vx = 0;
@@ -393,6 +407,15 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					AddScore(1000);
 					break;
 				}
+			}
+			else if (dynamic_cast<Knight*>(e->obj))
+			{
+				if (untouchable == 1) continue;
+
+				//Knight* knight = dynamic_cast<Knight*>(e->obj);
+				StartUntouchable();
+				isHurt = true;
+				SetState(SIMON_STATE_HURT);
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
@@ -484,6 +507,12 @@ void Simon::Render()
 				ani = SIMON_ANI_JUMP_RIGHT;
 			else
 				ani = SIMON_ANI_JUMP_LEFT;
+		}
+		else if (isHurt) {
+			if (nx > 0)
+				ani = SIMON_ANI_HURT_RIGHT;
+			else
+				ani = SIMON_ANI_HURT_LEFT;
 		}
 		else if (nx > 0)
 		{
@@ -583,6 +612,8 @@ void Simon::Render()
 		{
 		case SIMON_ANI_SIT_RIGHT:
 		case SIMON_ANI_SIT_LEFT:
+		case SIMON_ANI_HURT_LEFT:
+		case SIMON_ANI_HURT_RIGHT:
 			animation_set->at(ani)->Render(x, y + 7, alpha);
 			break;
 		case SIMON_ANI_SIT_ATTACK_RIGHT:
@@ -717,7 +748,9 @@ void Simon::SetState(int state)
 		vx = 0;
 		isMoving = false;
 		break;
-
+	case SIMON_STATE_HURT:
+		isHurt = true;
+		break;
 	}
 }
 
@@ -753,10 +786,12 @@ void Simon::SetPosition(float x, float y)
 
 void Simon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+
 	left = x;
 	top = y;
 	right = x + SIMON_BBOX_WIDTH;
 	bottom = y + SIMON_BBOX_HEIGHT;
+
 }
 
 /*

@@ -2,6 +2,8 @@
 
 Knight::Knight()
 {
+	minX = 0;
+	maxX = 290;
 	SetState(KNIGHT_STATE_WALKING);
 }
 
@@ -24,12 +26,14 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	x += dx;
 	y += dy;
 
-	if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+	if (vx < 0 && x < minX) {
+		x = minX; 
+		vx = -vx;
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
+	if (vx > 0 && x + KNIGHT_BBOX_WIDTH > maxX) {
+		x = maxX - KNIGHT_BBOX_WIDTH; 
+		vx = -vx;
 	}
 }
 

@@ -1,5 +1,6 @@
 #include"Simon.h"
 #include "Whip.h"
+#include "Knight.h"
 
 void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -26,6 +27,16 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (wl < zl && wr > zr && wt > zt && wb < zb)
 			{
 				candle->isHitted = true;
+			}
+		}
+		else if (dynamic_cast<Knight*>(coObjects->at(i)))
+		{
+			Knight* knight = dynamic_cast<Knight*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			knight->GetBoundingBox(zl, zt, zr, zb);
+			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			{
+				knight->isHitted = true;
 			}
 		}
 	}

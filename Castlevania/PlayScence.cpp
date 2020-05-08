@@ -177,16 +177,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANDLE: obj = new Candle(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
-	case OBJECT_TYPE_KNIGHT: obj = new Knight(); break;
+	case OBJECT_TYPE_KNIGHT:
+	{
+		float minX = atof(tokens[4].c_str());
+		float maxX = atof(tokens[5].c_str());
+		obj = new Knight(minX, maxX);
+		break;
+	}
 	case OBJECT_TYPE_WHIP:
 	{
-		if (player->whip != NULL) {
-			return;
-		}
 		obj = new Whip();
-		player->whip = (Whip*)obj;
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
+		if (player->whip == NULL)
+			player->whip = (Whip*)obj;
 		objects.push_back(obj);
 		return;
 	}
@@ -289,6 +293,10 @@ void CPlayScene::Load()
 		map = new Map(tileset, 16, 16);
 		map->ReadMapTXT("textures\\map\\map_2.txt");
 		break;
+	case 3:
+		map = new Map(tileset, 16, 16);
+		map->ReadMapTXT("textures\\map\\map_2_2.txt");
+		break;
 	}
 
 	board = new Board();
@@ -362,6 +370,15 @@ void CPlayScene::RemoveObjects()
 		{
 			Whip* whip = dynamic_cast<Whip*>(objects.at(i));
 			objects.erase(objects.begin() + i);
+		}
+		else if (dynamic_cast<Knight*>(objects.at(i)))
+		{
+			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
+			if (knight->isHitted)
+			{
+				objects.erase(objects.begin() + i);
+				player->AddScore(100);
+			}
 		}
 		else if (dynamic_cast<Torch*>(objects.at(i)))
 		{
@@ -496,7 +513,8 @@ void CPlayScene::RemoveObjects()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+
+	for (int i = 1; i < objects.size(); i++)
 	{
 		delete objects[i];
 	}

@@ -14,11 +14,20 @@
 
 class Knight : public CGameObject
 {
+public:
+	float minX, maxX;
+	bool isHitted;
+
+	Knight();
+	Knight(float minX, float maxX) {
+		this->minX = minX;
+		this->maxX = maxX;
+		SetState(KNIGHT_STATE_WALKING);
+	}
+	virtual void SetState(int state);
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-public:
-	Knight();
-	virtual void SetState(int state);
 };

@@ -48,7 +48,6 @@ public:
 	Board();
 	~Board();
 	void Initialize(LPDIRECT3DDEVICE9 d3ddv, Simon* simon);
-	//void Update(int bossHP, int time, int life, int stage);
 	void Update(int time, int stage, Simon* simon);
 	void Render(float x, float y, Simon* simon);
 };

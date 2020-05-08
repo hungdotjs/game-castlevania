@@ -8,6 +8,7 @@
 #include "Candle.h"
 #include "Goomba.h"
 #include "Portal.h"
+#include "Knight.h"
 #include "Whip.h"
 #include "Torch.h"
 #include "Item.h"
@@ -29,6 +30,7 @@
 #define SIMON_STATE_ONSTAIR			60
 #define SIMON_STATE_ONSTAIR_IDLE	70
 #define SIMON_STATE_DIE				90
+#define SIMON_STATE_HURT			100
 
 
 // action
@@ -62,10 +64,12 @@
 #define SIMON_ANI_IDLE_UP_LEFT				23
 #define SIMON_ANI_IDLE_DOWN_RIGHT			24
 #define SIMON_ANI_IDLE_DOWN_LEFT			25
+#define SIMON_ANI_HURT_RIGHT				26
+#define SIMON_ANI_HURT_LEFT					27
+
 
 #define SIMON_ON_LEFT_CHECKSTAIR		1
 #define SIMON_ON_RIGHT_CHECKSTAIR		2
-#define SIMON_ONSTAIR_ERR_RANGE			3
 
 #define SIMON_LEVEL			1
 
@@ -74,7 +78,7 @@
 #define SIMON_SIT_BBOX_WIDTH			16
 #define SIMON_SIT_BBOX_HEIGHT			23
 
-#define SIMON_UNTOUCHABLE_TIME		5000
+#define SIMON_UNTOUCHABLE_TIME		2000
 #define SIMON_TIMER_ATTACK			300
 
 class Simon : public CGameObject
@@ -98,6 +102,7 @@ public:
 	bool isOnCheckStairDown;
 	bool isOnStair;
 	bool isLeftToRight;
+	bool isHurt;
 
 	int ny;
 

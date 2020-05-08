@@ -37,6 +37,7 @@ void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Item::Render()
 {
 	animation_set->at(0)->Render(x, y);
+	RenderBoundingBox();
 }
 
 void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
