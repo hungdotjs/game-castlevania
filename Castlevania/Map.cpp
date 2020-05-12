@@ -23,9 +23,9 @@ Map::~Map()
 }
 
 
-void Map::ReadMapTXT(char* filename)
+void Map::ReadMapTXT(LPCWSTR filename)
 {
-	DebugOut(L"[INFO] Start loading map resources from : %s \n", filename);
+	DebugOut(L"[MAP] Start loading map resources from : %s \n", filename);
 
 	ifstream f;
 	f.open(filename);
@@ -54,7 +54,7 @@ void Map::ReadMapTXT(char* filename)
 
 	f.close();
 
-	DebugOut(L"[INFO] Done loading map resources %s\n", filename);
+	DebugOut(L"[MAP] Done loading map resources %s\n", filename);
 
 }
 

@@ -4,6 +4,7 @@ void Torch::Render()
 {
 	if (!isHitted)
 		animation_set->at(0)->Render(x, y);
+	RenderBoundingBox();
 }
 void Torch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

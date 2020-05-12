@@ -25,7 +25,7 @@ public:
 	Map();
 	Map(LPDIRECT3DTEXTURE9 sprite, int tileWidth, int tileHeight);
 
-	void ReadMapTXT(char* filename);
+	void ReadMapTXT(LPCWSTR filename);
 	void DrawMap(float x, float y);
 
 	int GetColumns();

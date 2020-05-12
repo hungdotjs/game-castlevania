@@ -39,6 +39,7 @@ CPlayScene::~CPlayScene()
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
+#define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SIMON			0
 #define OBJECT_TYPE_BRICK			1
@@ -228,6 +229,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_MAP(string line)
+{
+	vector<string> tokens = split(line);
+
+	wstring path = ToWSTR(tokens[0]);
+	CTextures* textures = CTextures::GetInstance();
+	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
+
+	map = new Map(tileset, 16, 16);
+	map->ReadMapTXT(path.c_str());
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -258,6 +271,10 @@ void CPlayScene::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
+		if (line == "[MAP]")
+		{
+			section = SCENE_SECTION_MAP; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -270,6 +287,7 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
 
@@ -278,26 +296,6 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-
-	CTextures* textures = CTextures::GetInstance();
-
-	LPDIRECT3DTEXTURE9 tileset = textures->Get(ID_TEX_TILESET);
-
-	switch (CGame::GetInstance()->GetCurrentStage())
-	{
-	case 1:
-		map = new Map(tileset, 16, 16);
-		map->ReadMapTXT("textures\\map\\map_1.txt");
-		break;
-	case 2:
-		map = new Map(tileset, 16, 16);
-		map->ReadMapTXT("textures\\map\\map_2.txt");
-		break;
-	case 3:
-		map = new Map(tileset, 16, 16);
-		map->ReadMapTXT("textures\\map\\map_2_2.txt");
-		break;
-	}
 
 	board = new Board();
 	board->Initialize(CGame::GetInstance()->GetDirect3DDevice(), player);
@@ -415,24 +413,24 @@ void CPlayScene::RemoveObjects()
 					srand(time(NULL));
 					int random_portion = rand() % 100;
 
-					// Heart
-					if (random_portion < 70)
-					{
-						ani_set = animation_sets->Get(ITEM_HEART);
-						item->SetType(ITEM_HEART);
-					}
-					// Money
-					else if (random_portion >= 70 && random_portion < 90)
-					{
-						ani_set = animation_sets->Get(ITEM_MONEY);
-						item->SetType(ITEM_MONEY);
-					}
-					// Knife
-					else
-					{
+					//// Heart
+					//if (random_portion < 70)
+					//{
+					//	ani_set = animation_sets->Get(ITEM_HEART);
+					//	item->SetType(ITEM_HEART);
+					//}
+					//// Money
+					//else if (random_portion >= 70 && random_portion < 90)
+					//{
+					//	ani_set = animation_sets->Get(ITEM_MONEY);
+					//	item->SetType(ITEM_MONEY);
+					//}
+					//// Knife
+					//else
+					//{
 						ani_set = animation_sets->Get(ITEM_KNIFE);
 						item->SetType(ITEM_KNIFE);
-					}
+					//}
 				}
 
 				item->SetAnimationSet(ani_set);

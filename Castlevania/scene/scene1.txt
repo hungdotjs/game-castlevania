@@ -257,3 +257,5 @@
 # type	l	t	ani_set_id	r	b	scene_id
 50	688	205	1	704	237	2
 
+[MAP]
+textures\map\map_1.txt
