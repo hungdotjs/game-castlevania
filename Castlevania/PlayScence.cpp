@@ -172,6 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new Simon();
 		player = (Simon*)obj;
+		player->whip->SetLevel(1);
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
@@ -187,12 +188,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WHIP:
 	{
-		obj = new Whip();
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-		obj->SetAnimationSet(ani_set);
-		if (player->whip == NULL)
-			player->whip = (Whip*)obj;
-		objects.push_back(obj);
+		player->whip->SetAnimationSet(ani_set);
+		objects.push_back(player->whip);
 		return;
 	}
 	case OBJECT_TYPE_CHECKSTAIR: {
@@ -293,7 +291,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -428,8 +426,8 @@ void CPlayScene::RemoveObjects()
 					//// Knife
 					//else
 					//{
-						ani_set = animation_sets->Get(ITEM_KNIFE);
-						item->SetType(ITEM_KNIFE);
+					ani_set = animation_sets->Get(ITEM_KNIFE);
+					item->SetType(ITEM_KNIFE);
 					//}
 				}
 
@@ -511,11 +509,12 @@ void CPlayScene::RemoveObjects()
 */
 void CPlayScene::Unload()
 {
-
 	for (int i = 1; i < objects.size(); i++)
 	{
+
 		delete objects[i];
 	}
+
 
 	objects.clear();
 

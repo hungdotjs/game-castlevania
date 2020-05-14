@@ -24,13 +24,17 @@ class Whip :public CGameObject
 
 public:
 	int level = 0;
-	Whip() :CGameObject()
+	Whip(int level) :CGameObject()
 	{
+		this->level = level;
 	}
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void UpLevel() { level += 1; }
+	void SetLevel(int level) {
+		this->level = level;
+	}
 	~Whip();
 };
 

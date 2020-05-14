@@ -8,6 +8,7 @@ Simon::Simon(float x, float y) : CGameObject()
 	SetState(SIMON_STATE_IDLE);
 	level = SIMON_LEVEL;
 	untouchable = 0;
+	whip = new Whip(0);
 
 	life = 3;
 	preHP = 16;
@@ -235,10 +236,19 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
+	// Simple fall down
+	if (isJump || isAttack)
+	{
+		vy += SIMON_GRAVITY_JUMP * dt;
+	}
+	else if (!isOnStair)
+	{
+		vy += SIMON_GRAVITY * dt;
+	}
+
 	DebugOut(L"[DIRECTION] nx = %d, ny = %d\n", nx, ny);
 	DebugOut(L"[POSITION] x = %f, y = %f\n", x, y);
-	DebugOut(L"[STATE] state = %d\n", state);
-
+	DebugOut(L"[POSITION] vx = %f, vy = %f\n", vx, vy);
 
 	// Has completed attack animation
 
@@ -266,12 +276,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// turn off collision when die 
 	if (state != SIMON_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
-
-	// Simple fall down
-	if (!isOnStair)
-	{
-		vy += SIMON_GRAVITY * dt;
-	}
 
 	// Set idle state
 	if (!isOnStair && !isSit && !isMoving && !isJump && !isAttack)
@@ -355,13 +359,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y += min_ty * dy + ny * 0.4f;
 		}
 
-		/*	if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;*/
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
 
 
-			//
-			// Collision logic with other objects
-			//
+		//
+		// Collision logic with other objects
+		//
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];

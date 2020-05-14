@@ -64,6 +64,9 @@
     <Filter Include="Object\CheckStairUp">
       <UniqueIdentifier>{83dfcb1b-ffa0-4e44-a7e6-4c06e9102300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Bat">
+      <UniqueIdentifier>{f8a8806a-e22f-4cf3-9faa-aaa16b94e6d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
