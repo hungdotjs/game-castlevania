@@ -8,6 +8,7 @@
 #include "Knight.h"
 #include "Torch.h"
 #include "Candle.h"
+#include "Bat.h"
 #include "Portal.h"
 #include "CheckStairTop.h"
 
@@ -51,6 +52,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_KNIGHT			500
+#define OBJECT_TYPE_BAT				600
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -186,6 +188,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Knight(minX, maxX);
 		break;
 	}
+	case OBJECT_TYPE_BAT: obj = new Bat(); break;
 	case OBJECT_TYPE_WHIP:
 	{
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -291,7 +294,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 

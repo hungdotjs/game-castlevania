@@ -204,7 +204,24 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				}
 			}
 		}
+		else if (dynamic_cast<Bat*>(coObjects->at(i))) {
+			Bat* bat = dynamic_cast<Bat*>(coObjects->at(i));
+			float bl, bt, br, bb;
+			bat->GetBoundingBox(bl, bt, br, bb);
 
+			if (x < br + 96 &&
+				x > bl - 96 &&
+				y < bb + 48 &&
+				y > bt)
+			{
+				bat->SetState(BAT_STATE_FLYING);
+				if (bat->x < x)
+					bat->vx += BAT_FLY_SPEED;
+				else
+					bat->vx -= BAT_FLY_SPEED;
+			}
+
+		}
 		// Simon se khong va cham voi nhung vat sau:
 		else if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
 			!dynamic_cast<Candle*>(coObjects->at(i))
@@ -237,7 +254,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (isJump || isAttack)
+	if (isJump || isAttack && !isOnStair)
 	{
 		vy += SIMON_GRAVITY_JUMP * dt;
 	}

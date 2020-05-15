@@ -139,6 +139,9 @@
     <ClCompile Include="CheckStairTop.cpp">
       <Filter>Object\CheckStairUp</Filter>
     </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Object\Bat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="CheckStairTop.h">
       <Filter>Object\CheckStairUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Object\Bat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

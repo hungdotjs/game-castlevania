@@ -8,6 +8,7 @@
 #include "Candle.h"
 #include "Goomba.h"
 #include "Portal.h"
+#include "Bat.h"
 #include "Knight.h"
 #include "Whip.h"
 #include "Torch.h"
