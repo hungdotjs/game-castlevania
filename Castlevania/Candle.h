@@ -8,8 +8,11 @@ class Candle : public CGameObject
 {
 public:
 	bool isHitted;
-	Candle() :CGameObject() {
+	int itemID;
+	Candle();
+	Candle(int itemID) :CGameObject() {
 		isHitted = false;
+		this->itemID = itemID;
 	}
 	void SetHit();
 	virtual void Render();

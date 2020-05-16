@@ -178,7 +178,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_CANDLE: obj = new Candle(); break;
+	case OBJECT_TYPE_CANDLE: 
+	{
+		int itemID = atoi(tokens[4].c_str());
+		obj = new Candle(itemID);
+		break;
+	}
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_KNIGHT:
@@ -188,7 +193,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Knight(minX, maxX);
 		break;
 	}
-	case OBJECT_TYPE_BAT: obj = new Bat(); break;
+	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_WHIP:
 	{
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -294,7 +299,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -373,7 +378,17 @@ void CPlayScene::RemoveObjects()
 		else if (dynamic_cast<Knight*>(objects.at(i)))
 		{
 			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
-			if (knight->isHitted)
+
+			if (knight->isHitted) {
+				objects.erase(objects.begin() + i);
+				player->AddScore(100);
+			}
+		}
+
+		else if (dynamic_cast<Bat*>(objects.at(i)))
+		{
+			Bat* bat = dynamic_cast<Bat*>(objects.at(i));
+			if (bat->isHitted)
 			{
 				objects.erase(objects.begin() + i);
 				player->AddScore(100);
@@ -414,24 +429,24 @@ void CPlayScene::RemoveObjects()
 					srand(time(NULL));
 					int random_portion = rand() % 100;
 
-					//// Heart
-					//if (random_portion < 70)
-					//{
-					//	ani_set = animation_sets->Get(ITEM_HEART);
-					//	item->SetType(ITEM_HEART);
-					//}
-					//// Money
-					//else if (random_portion >= 70 && random_portion < 90)
-					//{
-					//	ani_set = animation_sets->Get(ITEM_MONEY);
-					//	item->SetType(ITEM_MONEY);
-					//}
-					//// Knife
-					//else
-					//{
-					ani_set = animation_sets->Get(ITEM_KNIFE);
-					item->SetType(ITEM_KNIFE);
-					//}
+					// Heart
+					if (random_portion < 70)
+					{
+						ani_set = animation_sets->Get(ITEM_HEART);
+						item->SetType(ITEM_HEART);
+					}
+					// Money
+					else if (random_portion >= 70 && random_portion < 90)
+					{
+						ani_set = animation_sets->Get(ITEM_MONEY);
+						item->SetType(ITEM_MONEY);
+					}
+					// Knife
+					else
+					{
+						ani_set = animation_sets->Get(ITEM_KNIFE);
+						item->SetType(ITEM_KNIFE);
+					}
 				}
 
 				item->SetAnimationSet(ani_set);
@@ -454,42 +469,10 @@ void CPlayScene::RemoveObjects()
 				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 				LPANIMATION_SET ani_set;
 
-				/**
-				 * Random ra item
-				 * 50% mini heart
-				 * 20% heart
-				 * 20% money
-				 * 10% knife
-				 */
-
-				srand(time(NULL));
-				int random_portion = rand() % 100;
-
-				// Heart
-				if (random_portion < 50)
-				{
-					ani_set = animation_sets->Get(ITEM_MINIHEART);
-					item->SetType(ITEM_MINIHEART);
-				}
-				else if (random_portion >= 50 && random_portion < 70)
-				{
-					ani_set = animation_sets->Get(ITEM_HEART);
-					item->SetType(ITEM_HEART);
-				}
-				// Money
-				else if (random_portion >= 70 && random_portion < 90)
-				{
-					ani_set = animation_sets->Get(ITEM_MONEY);
-					item->SetType(ITEM_MONEY);
-				}
-				// Knife
-				else
-				{
-					ani_set = animation_sets->Get(ITEM_KNIFE);
-					item->SetType(ITEM_KNIFE);
-				}
-
+				ani_set = animation_sets->Get(candle->itemID);
+				item->SetType(candle->itemID);
 				item->SetAnimationSet(ani_set);
+
 				objects.erase(objects.begin() + i);
 				delete candle;
 			}
@@ -517,7 +500,6 @@ void CPlayScene::Unload()
 
 		delete objects[i];
 	}
-
 
 	objects.clear();
 
@@ -668,7 +650,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Di bo
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (simon->isOnStair) return;
+		if (simon->isOnStair || simon->isHurt) return;
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
@@ -677,7 +659,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (simon->isOnStair) return;
+		if (simon->isOnStair || simon->isHurt) return;
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);

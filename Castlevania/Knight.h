@@ -17,6 +17,7 @@ class Knight : public CGameObject
 public:
 	float minX, maxX;
 	bool isHitted;
+	int hitCount = 0;
 
 	Knight();
 	Knight(float minX, float maxX) {

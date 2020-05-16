@@ -1,11 +1,13 @@
-#include"Simon.h"
+#include "Simon.h"
 #include "Whip.h"
 #include "Knight.h"
+#include "Bat.h"
 
 void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	float wl, wr, wt, wb;
 	GetBoundingBox(wl, wt, wr, wb);
+	DebugOut(L"[WHIP] nx = %d\n", nx);
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
@@ -14,7 +16,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			Torch* torch = dynamic_cast<Torch*>(coObjects->at(i));
 			float zl, zr, zt, zb;
 			torch->GetBoundingBox(zl, zt, zr, zb);
-			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				torch->isHitted = true;
 			}
@@ -24,7 +26,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			Candle* candle = dynamic_cast<Candle*>(coObjects->at(i));
 			float zl, zr, zt, zb;
 			candle->GetBoundingBox(zl, zt, zr, zb);
-			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				candle->isHitted = true;
 			}
@@ -34,12 +36,25 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			Knight* knight = dynamic_cast<Knight*>(coObjects->at(i));
 			float zl, zr, zt, zb;
 			knight->GetBoundingBox(zl, zt, zr, zb);
-			if (wl < zl && wr > zr && wt > zt && wb < zb)
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				knight->isHitted = true;
 			}
 		}
+		else if (dynamic_cast<Bat*>(coObjects->at(i)))
+		{
+			Bat* bat = dynamic_cast<Bat*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			bat->GetBoundingBox(zl, zt, zr, zb);
+
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
+			{
+				bat->isHitted = true;
+			}
+		}
 	}
+
+
 }
 
 void Whip::Render()
