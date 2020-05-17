@@ -98,13 +98,11 @@ void Map::DrawMap(float x, float y)
 	RECT tileRect;
 	D3DXVECTOR3 tilePos;
 	y = 16;
-	int cameraWidth = 320;
-	int cameraHeight = 240;
 
 	int colStart = (int)x / tileWidth;
-	int colEnd = ((int)x + cameraWidth) / tileWidth < columns - 1 ? (x + cameraWidth) / tileWidth : columns - 1;
+	int colEnd = ((int)x + CAMERA_WIDTH) / tileWidth < columns - 1 ? (x + CAMERA_WIDTH) / tileWidth : columns - 1;
 	int rowStart = (int)y / tileHeight;
-	int rowEnd = ((int)y + cameraHeight) / tileHeight < rows - 1 ? (y + cameraHeight) / tileHeight : rows - 1;
+	int rowEnd = ((int)y + CAMERA_HEIGHT) / tileHeight < rows - 1 ? (y + CAMERA_HEIGHT) / tileHeight : rows - 1;
 
 	for (int i = rowStart; i <= rowEnd; i++)
 	{

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -44,6 +44,8 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
+	DWORD lastTimeAttacked;
+	int health;
 
 	float x;
 	float y;
@@ -91,8 +93,18 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render() = 0;
+	
+	bool isCollitionObjectWithObject(CGameObject* obj); 	// kiểm tra bằng AABB và Sweept AABB
+	bool checkAABB(CGameObject* obj);
+
 	virtual void SetState(int state) { this->state = state; }
 
+	int GetHealth();
+	void SetHealth(int h);
+	void SubHealth(int th);
+
+	DWORD GetLastTimeAttacked();
+	void SetLastTimeAttacked(DWORD t);
 
 	~CGameObject();
 };

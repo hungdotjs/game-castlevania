@@ -88,6 +88,8 @@ public:
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
 	static CGame* GetInstance();
 
+	bool checkAABB(float b1left, float b1top, float b1right, float b1bottom, float b2left, float b2top, float b2right, float b2bottom);
+
 	~CGame();
 };
 

@@ -153,9 +153,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="KeyEventHandler.cpp" />
-    <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -163,6 +161,7 @@
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="CheckStairTop.cpp" />
     <ClCompile Include="Torch.cpp" />
+    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -175,13 +174,11 @@
     <ClInclude Include="Candle.h" />
     <ClInclude Include="CheckStair.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Goomba.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Knight.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="PlayScence.h" />
-    <ClInclude Include="Koopas.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Board.h" />
@@ -192,6 +189,7 @@
     <ClInclude Include="Torch.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Whip.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

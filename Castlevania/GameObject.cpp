@@ -1,4 +1,4 @@
-#include <d3dx9.h>
+﻿#include <d3dx9.h>
 #include <algorithm>
 
 
@@ -14,6 +14,24 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;
 }
+
+int CGameObject::GetHealth()
+{
+	return health;
+}
+
+void CGameObject::SetHealth(int h)
+{
+	health = h;
+}
+
+void CGameObject::SubHealth(int th)
+{
+	health -= th;
+	if (health < 0)
+		health = 0;
+}
+
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -132,6 +150,40 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 100);
 }
 
+bool CGameObject::isCollitionObjectWithObject(CGameObject* obj)	// kiểm tra bằng AABB và Sweept AABB
+{
+	if (checkAABB(obj)) // kiểm tra va chạm bằng AABB trước
+		return true;
+
+	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va chạm giữa 2 object bằng sweptAABB
+	bool res = e->t > 0 && e->t <= 1.0f; // ĐK va chạm
+	delete e;
+	return res;
+}
+
+bool CGameObject::checkAABB(CGameObject* obj)
+{
+	float l, t, r, b;
+	float l1, t1, r1, b1;
+	this->GetBoundingBox(l, t, r, b);
+	obj->GetBoundingBox(l1, t1, r1, b1);
+
+	if (CGame::GetInstance()->checkAABB(l, t, r, b, l1, t1, r1, b1))
+		return true;
+
+	return false;
+}
+
+
+DWORD CGameObject::GetLastTimeAttacked()
+{
+	return lastTimeAttacked;
+}
+
+void CGameObject::SetLastTimeAttacked(DWORD t)
+{
+	lastTimeAttacked = t;
+}
 
 CGameObject::~CGameObject()
 {

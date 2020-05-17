@@ -46,8 +46,6 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_BRICK			1
 #define OBJECT_TYPE_CHECKSTAIR		4
 #define OBJECT_TYPE_CHECKSTAIRTOP	5
-#define OBJECT_TYPE_GOOMBA			2
-#define OBJECT_TYPE_KOOPAS			3
 #define OBJECT_TYPE_WHIP			11
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
@@ -176,16 +174,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (Simon*)obj;
 		player->whip->SetLevel(1);
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_CANDLE: 
 	{
 		int itemID = atoi(tokens[4].c_str());
 		obj = new Candle(itemID);
 		break;
 	}
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_KNIGHT:
 	{
 		float minX = atof(tokens[4].c_str());
@@ -547,6 +543,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		}
 		else if (simon->isOnCheckStairUp)
 		{
+			simon->SetState(SIMON_STATE_IDLE);
+		}
+		else {
 			simon->SetState(SIMON_STATE_IDLE);
 		}
 	}

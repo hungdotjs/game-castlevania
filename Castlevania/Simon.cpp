@@ -398,10 +398,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 
 				// Da cham dat
-				if (isJump)
+				if (isJump && e->nx == 0 && e->ny < 0)
 				{
 					isJump = false;
 				}
+
 				// Xét va chạm cứng
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;

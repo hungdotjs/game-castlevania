@@ -5,8 +5,6 @@
 #include "GameObject.h"
 #include "Item.h"
 #include "Brick.h"
-#include "Goomba.h"
-#include "Koopas.h"
 #include "Torch.h"
 #include "Simon.h"
 #include "Map.h"

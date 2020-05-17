@@ -8,6 +8,9 @@
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16
 
+#define CAMERA_WIDTH 320
+#define CAMERA_HEIGHT 240
+
 class Map
 {
 private:

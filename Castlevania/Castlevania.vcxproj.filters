@@ -28,9 +28,6 @@
     <Filter Include="Object\Brick">
       <UniqueIdentifier>{3a2b0d8c-82d4-4e17-a008-6a4b20cca287}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Koopas">
-      <UniqueIdentifier>{cbee5f7b-383b-4cef-9533-de7ad9b39d0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Portal">
       <UniqueIdentifier>{f9d56b66-cf3f-4d39-b7ff-89e2b1cbd672}</UniqueIdentifier>
     </Filter>
@@ -52,9 +49,6 @@
     <Filter Include="Object\Candle">
       <UniqueIdentifier>{f8f028a7-f1a7-4093-9431-4797736dff97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Goomba">
-      <UniqueIdentifier>{cd7c9546-f8f9-4785-b1c6-e2f6956972d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Knight">
       <UniqueIdentifier>{c80f57f8-9bd6-44d5-9e4f-1f5e5a04718b}</UniqueIdentifier>
     </Filter>
@@ -66,6 +60,9 @@
     </Filter>
     <Filter Include="Object\Bat">
       <UniqueIdentifier>{f8a8806a-e22f-4cf3-9faa-aaa16b94e6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Weapon">
+      <UniqueIdentifier>{ca925b89-5463-4bdc-b543-dba9c838e45a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,14 +87,8 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Object\Goomba</Filter>
-    </ClCompile>
     <ClCompile Include="KeyEventHandler.cpp">
       <Filter>Library\Keyboard</Filter>
-    </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Object\Koopas</Filter>
     </ClCompile>
     <ClCompile Include="PlayScence.cpp">
       <Filter>Library\Scene\PlayScene</Filter>
@@ -142,6 +133,9 @@
     <ClCompile Include="Bat.cpp">
       <Filter>Object\Bat</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -168,14 +162,8 @@
     <ClInclude Include="GameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Object\Goomba</Filter>
-    </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Library\Keyboard</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Object\Koopas</Filter>
     </ClInclude>
     <ClInclude Include="PlayScence.h">
       <Filter>Library\Scene\PlayScene</Filter>
@@ -215,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>Object\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Object\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
