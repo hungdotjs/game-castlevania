@@ -64,6 +64,9 @@
     <Filter Include="Object\Weapon">
       <UniqueIdentifier>{ca925b89-5463-4bdc-b543-dba9c838e45a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Elevator">
+      <UniqueIdentifier>{9012254c-b0b1-4468-9de0-3cd441e9c692}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -136,6 +139,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Object\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Elevator.cpp">
+      <Filter>Object\Elevator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -206,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Elevator.h">
+      <Filter>Object\Elevator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		if (dynamic_cast<Bat*>(coObjects->at(i)))
 		{
 			Bat* bat = dynamic_cast<Bat*>(coObjects->at(i));
-			
+
 			if (x < bat->start_x + 96 &&
 				x > bat->start_x - 96 &&
 				y < bat->start_y + 48 &&
@@ -406,6 +406,24 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				// Xét va chạm cứng
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
+			}
+
+			else if (dynamic_cast<Elevator*>(e->obj)) {
+				Elevator* elevator = dynamic_cast<Elevator*>(e->obj);
+
+				if (elevator->nx > 0) {
+					vx = elevator->vx * 2;
+				}
+				else {
+					vx = -elevator->vx * 2;
+				}
+				x += dx;
+				isJump = false;
+
+				if (nx != 0) vx = 0;
+				if (ny != 0) {
+					vy = 0;
+				}
 			}
 
 			else if (dynamic_cast<Item*>(e->obj))

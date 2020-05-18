@@ -9,6 +9,7 @@
 #include "Torch.h"
 #include "Candle.h"
 #include "Bat.h"
+#include "Elevator.h"
 #include "Portal.h"
 #include "CheckStairTop.h"
 
@@ -49,6 +50,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_WHIP			11
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
+#define OBJECT_TYPE_ELEVATOR		402
 #define OBJECT_TYPE_KNIGHT			500
 #define OBJECT_TYPE_BAT				600
 
@@ -187,6 +189,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float minX = atof(tokens[4].c_str());
 		float maxX = atof(tokens[5].c_str());
 		obj = new Knight(minX, maxX);
+		break;
+	}
+	case OBJECT_TYPE_ELEVATOR:
+	{
+		float minX = atof(tokens[4].c_str());
+		float maxX = atof(tokens[5].c_str());
+		obj = new Elevator(minX, maxX);
 		break;
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
