@@ -6,7 +6,7 @@
 4	textures\whip_left.png	116	116	116
 20	textures\misc.png	116	116	116
 30	textures\\enemies.png	116	116	116
-100	textures\map\map_2_2_bank.png	255	255	255
+100	textures\map\map_4_bank.png	255	255	255
 90	textures\brick_2.png	0	0	255
 80	textures\bbox.png	255	255	255
 
@@ -404,7 +404,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	0	106	1	8	114	4
+#50	128	93	1	142	110	1
 
 # ================= CHECK STAIR =============
 # type	x	y	ani_set_id	type_checkstair
@@ -413,4 +413,4 @@
 #4	80	141	4	1
 
 [MAP]
-textures\map\map_3.txt
+textures\map\map_4.txt
