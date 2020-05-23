@@ -9,6 +9,7 @@
 #include "Simon.h"
 #include "Map.h"
 #include "Board.h"
+#include "Effect.h"
 
 
 class CPlayScene : public CScene

@@ -67,6 +67,12 @@
     <Filter Include="Object\Elevator">
       <UniqueIdentifier>{9012254c-b0b1-4468-9de0-3cd441e9c692}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Effect">
+      <UniqueIdentifier>{16e3180f-eb16-4307-aa08-6b5c45a8ccbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Fleaman">
+      <UniqueIdentifier>{3bff833d-cdb9-4387-98cf-b86a95599166}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -142,6 +148,12 @@
     <ClCompile Include="Elevator.cpp">
       <Filter>Object\Elevator</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Fleaman.cpp">
+      <Filter>Object\Fleaman</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -215,6 +227,12 @@
     </ClInclude>
     <ClInclude Include="Elevator.h">
       <Filter>Object\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Fleaman.h">
+      <Filter>Object\Fleaman</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

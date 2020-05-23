@@ -704,7 +704,6 @@ void Simon::Render()
 		else
 			whip->animation_set->at(aniWhip)->Render(fix_x, y + (SIMON_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT), alpha);
 	}
-
 	RenderBoundingBox();
 }
 

@@ -178,7 +178,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
-	case OBJECT_TYPE_CANDLE: 
+	case OBJECT_TYPE_CANDLE:
 	{
 		int itemID = atoi(tokens[4].c_str());
 		obj = new Candle(itemID);
@@ -383,11 +383,15 @@ void CPlayScene::RemoveObjects()
 		else if (dynamic_cast<Knight*>(objects.at(i)))
 		{
 			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
-
+			
 			if (knight->isHitted) {
+				Effect* effect = new Effect(GetTickCount());
+				effect->SetPosition(knight->x + KNIGHT_BBOX_WIDTH / 2, knight->y + KNIGHT_BBOX_HEIGHT / 2);
+				objects.push_back(effect);
 				objects.erase(objects.begin() + i);
 				player->AddScore(100);
 			}
+
 		}
 
 		else if (dynamic_cast<Bat*>(objects.at(i)))
@@ -395,6 +399,9 @@ void CPlayScene::RemoveObjects()
 			Bat* bat = dynamic_cast<Bat*>(objects.at(i));
 			if (bat->isHitted)
 			{
+				Effect* effect = new Effect(GetTickCount());
+				effect->SetPosition(bat->x + BAT_BBOX_WIDTH / 2, bat->y + BAT_BBOX_HEIGHT / 2);
+				objects.push_back(effect);
 				objects.erase(objects.begin() + i);
 				player->AddScore(100);
 			}
@@ -406,6 +413,10 @@ void CPlayScene::RemoveObjects()
 			{
 				float torch_x, torch_y, torch_right, torch_bottom;
 				torch->GetBoundingBox(torch_x, torch_y, torch_right, torch_bottom);
+
+				Effect* effect = new Effect(GetTickCount());
+				effect->SetPosition(torch->x + BAT_BBOX_WIDTH / 2, torch->y + BAT_BBOX_HEIGHT / 2);
+				objects.push_back(effect);
 
 				Item* item = new Item();
 				item->SetPosition(torch_x, torch_y);
@@ -466,6 +477,10 @@ void CPlayScene::RemoveObjects()
 				float x, y, r, b;
 				candle->GetBoundingBox(x, y, r, b);
 
+				Effect* effect = new Effect(GetTickCount());
+				effect->SetPosition(x , y);
+				objects.push_back(effect);
+
 				Item* item = new Item();
 				item->SetPosition(x, y);
 				item->SetSpeed(0, -0.1);
@@ -490,6 +505,16 @@ void CPlayScene::RemoveObjects()
 			{
 				objects.erase(objects.begin() + i);
 				delete item;
+			}
+		}
+		else if (dynamic_cast<Effect*>(objects.at(i)))
+		{
+			Effect* effect = dynamic_cast<Effect*>(objects.at(i));
+
+			if (effect->GetExposed())
+			{
+				objects.erase(objects.begin() + i);
+				delete effect;
 			}
 		}
 	}
