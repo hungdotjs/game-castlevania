@@ -12,6 +12,7 @@
 #include "Elevator.h"
 #include "Portal.h"
 #include "CheckStairTop.h"
+#include "Fleaman.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_CHECKSTAIR		4
 #define OBJECT_TYPE_CHECKSTAIRTOP	5
 #define OBJECT_TYPE_WHIP			11
+#define OBJECT_TYPE_FLEAMAN			14
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -199,6 +201,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
+	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
 	case OBJECT_TYPE_WHIP:
 	{
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -393,7 +396,19 @@ void CPlayScene::RemoveObjects()
 			}
 
 		}
+		else if (dynamic_cast<Fleaman*>(objects.at(i)))
+		{
+			Fleaman* fleaman = dynamic_cast<Fleaman*>(objects.at(i));
 
+			if (fleaman->isHitted) {
+				Effect* effect = new Effect(GetTickCount());
+				effect->SetPosition(fleaman->x + FLEAMAN_BBOX_WIDTH / 2, fleaman->y + FLEAMAN_BBOX_HEIGHT / 2);
+				objects.push_back(effect);
+				objects.erase(objects.begin() + i);
+				player->AddScore(100);
+			}
+
+		}
 		else if (dynamic_cast<Bat*>(objects.at(i)))
 		{
 			Bat* bat = dynamic_cast<Bat*>(objects.at(i));

@@ -43,6 +43,24 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					bat->vx = BAT_FLY_SPEED;
 			}
 		}
+		else if (dynamic_cast<Fleaman*>(coObjects->at(i)))
+		{
+			Fleaman* fleaman = dynamic_cast<Fleaman*>(coObjects->at(i));
+
+			if (x < fleaman->start_x + 112 &&
+				x > fleaman->start_x - 112 &&
+				y < fleaman->start_y + 96 &&
+				y > fleaman->start_y - 96)
+			{
+
+				if (x < fleaman->x)
+					fleaman->nx = -1;
+				else
+					fleaman->nx = 1;
+				if (fleaman->state == FLEAMAN_STATE_IDLE)
+					fleaman->SetState(FLEAMAN_STATE_ATTACK);
+			}
+		}
 
 		// Xet va cham len xuong cau thang
 		if (dynamic_cast<CheckStair*>(coObjects->at(i))) {
@@ -454,7 +472,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			else if (
 				dynamic_cast<Knight*>(e->obj) ||
-				dynamic_cast<Bat*>(e->obj))
+				dynamic_cast<Bat*>(e->obj) ||
+				dynamic_cast<Fleaman*>(e->obj))
 			{
 				if (untouchable == 1) continue;
 

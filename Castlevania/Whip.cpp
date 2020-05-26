@@ -52,8 +52,21 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				bat->isHitted = true;
 			}
 		}
+		else if (dynamic_cast<Fleaman*>(coObjects->at(i)))
+		{
+			Fleaman* fleaman = dynamic_cast<Fleaman*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			fleaman->GetBoundingBox(zl, zt, zr, zb);
+
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
+			{
+				fleaman->isHitted = true;
+			}
+		}
 	}
 
+	x = 0; 
+	y = 0;
 
 }
 

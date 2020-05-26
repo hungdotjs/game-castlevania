@@ -7,6 +7,7 @@
 #include "CheckStair.h"
 #include "Candle.h"
 #include "Elevator.h"
+#include "Fleaman.h"
 #include "Goomba.h"
 #include "Portal.h"
 #include "Bat.h"
