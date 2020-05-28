@@ -12,11 +12,11 @@
 
 
 #define WHIP_LV0_BBOX_WIDTH				46
-#define WHIP_LV0_BBOX_HEIGHT			8
+#define WHIP_LV0_BBOX_HEIGHT			12
 #define WHIP_LV1_BBOX_WIDTH				46
-#define WHIP_LV1_BBOX_HEIGHT			8
+#define WHIP_LV1_BBOX_HEIGHT			12
 #define WHIP_LV2_BBOX_WIDTH				62
-#define WHIP_LV2_BBOX_HEIGHT			8
+#define WHIP_LV2_BBOX_HEIGHT			12
 
 class Whip :public CGameObject
 {

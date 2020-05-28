@@ -39,6 +39,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				knight->isHitted = true;
+				knight->health -= 1;
+				DebugOut(L"Hitted: health = %d \n", knight->health);
 			}
 		}
 		else if (dynamic_cast<Bat*>(coObjects->at(i)))
@@ -61,6 +63,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				fleaman->isHitted = true;
+				fleaman->health -= 1;
 			}
 		}
 	}

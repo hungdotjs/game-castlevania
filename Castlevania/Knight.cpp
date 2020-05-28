@@ -4,6 +4,7 @@ Knight::Knight()
 {
 	minX = 0;
 	maxX = 290;
+	health = 2;
 	SetState(KNIGHT_STATE_WALKING);
 }
 

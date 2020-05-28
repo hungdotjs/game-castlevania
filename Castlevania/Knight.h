@@ -23,6 +23,7 @@ public:
 	Knight(float minX, float maxX) {
 		this->minX = minX;
 		this->maxX = maxX;
+		health = 2;
 		SetState(KNIGHT_STATE_WALKING);
 	}
 	virtual void SetState(int state);

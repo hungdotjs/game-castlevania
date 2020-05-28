@@ -13,6 +13,7 @@
 #include "Portal.h"
 #include "CheckStairTop.h"
 #include "Fleaman.h"
+#include "Skeleton.h"
 
 using namespace std;
 
@@ -50,6 +51,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_CHECKSTAIRTOP	5
 #define OBJECT_TYPE_WHIP			11
 #define OBJECT_TYPE_FLEAMAN			14
+#define OBJECT_TYPE_SKELETON		18
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -202,6 +204,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
+	//case OBJECT_TYPE_SKELETON: {
+	//	obj = new Skeleton(x, y);
+	//	break;
+	//}
 	case OBJECT_TYPE_WHIP:
 	{
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -307,7 +313,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -386,8 +392,8 @@ void CPlayScene::RemoveObjects()
 		else if (dynamic_cast<Knight*>(objects.at(i)))
 		{
 			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
-			
-			if (knight->isHitted) {
+
+			if (knight->isHitted && knight->health == 0) {
 				Effect* effect = new Effect(GetTickCount());
 				effect->SetPosition(knight->x + KNIGHT_BBOX_WIDTH / 2, knight->y + KNIGHT_BBOX_HEIGHT / 2);
 				objects.push_back(effect);
@@ -400,7 +406,7 @@ void CPlayScene::RemoveObjects()
 		{
 			Fleaman* fleaman = dynamic_cast<Fleaman*>(objects.at(i));
 
-			if (fleaman->isHitted) {
+			if (fleaman->isHitted && fleaman->health == 0) {
 				Effect* effect = new Effect(GetTickCount());
 				effect->SetPosition(fleaman->x + FLEAMAN_BBOX_WIDTH / 2, fleaman->y + FLEAMAN_BBOX_HEIGHT / 2);
 				objects.push_back(effect);
@@ -493,7 +499,7 @@ void CPlayScene::RemoveObjects()
 				candle->GetBoundingBox(x, y, r, b);
 
 				Effect* effect = new Effect(GetTickCount());
-				effect->SetPosition(x , y);
+				effect->SetPosition(x, y);
 				objects.push_back(effect);
 
 				Item* item = new Item();

@@ -73,6 +73,9 @@
     <Filter Include="Object\Fleaman">
       <UniqueIdentifier>{3bff833d-cdb9-4387-98cf-b86a95599166}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Skeleton">
+      <UniqueIdentifier>{6e3fcbee-7144-4ed8-b4af-e9dcd10f47ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -154,6 +157,12 @@
     <ClCompile Include="Fleaman.cpp">
       <Filter>Object\Fleaman</Filter>
     </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Object\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Object\Skeleton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -233,6 +242,12 @@
     </ClInclude>
     <ClInclude Include="Fleaman.h">
       <Filter>Object\Fleaman</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Object\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Object\Skeleton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

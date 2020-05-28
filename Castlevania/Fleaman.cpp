@@ -7,6 +7,7 @@ Fleaman::Fleaman(float x, float y) : CGameObject()
 	start_y = y;
 	this->x = x;
 	this->y = y;
+	health = 1;
 	lastTimeAttack = 0;
 }
 
@@ -25,7 +26,6 @@ void Fleaman::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	vy += FLEAMAN_GRAVITY * dt;
 
-	DebugOut(L"[FLEAMAN] state = %d\n", state);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -42,7 +42,7 @@ void Fleaman::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;                             
+		float rdx = 0;
 		float rdy = 0;
 
 		bool isCollision = false;
@@ -70,7 +70,8 @@ void Fleaman::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (ny != 0)
 					vy = 0;
 
-				SetState(FLEAMAN_STATE_IDLE);
+				if (state == FLEAMAN_STATE_ATTACK && GetTickCount() > lastTimeAttack + 1000)
+					SetState(FLEAMAN_STATE_IDLE);
 
 				isCollision = true;
 			}
@@ -111,6 +112,7 @@ void Fleaman::SetState(int state)
 		vy = 0;
 		break;
 	case FLEAMAN_STATE_ATTACK:
+		lastTimeAttack = GetTickCount();
 		vy = -FLEAMAN_FLY_SPEED_Y;
 		vx = FLEAMAN_FLY_SPEED_X;
 		if (nx < 0)

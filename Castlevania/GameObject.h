@@ -61,6 +61,7 @@ public:
 	int state;
 
 	DWORD dt;
+	bool isEnable;
 
 	LPANIMATION_SET animation_set;
 

@@ -12,6 +12,7 @@ Simon::Simon(float x, float y) : CGameObject()
 
 	life = 3;
 	preHP = 16;
+	hp = 16;
 	currentWeapon = 0;
 
 	start_x = x;
@@ -43,14 +44,15 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					bat->vx = BAT_FLY_SPEED;
 			}
 		}
+
 		else if (dynamic_cast<Fleaman*>(coObjects->at(i)))
 		{
 			Fleaman* fleaman = dynamic_cast<Fleaman*>(coObjects->at(i));
 
-			if (x < fleaman->start_x + 112 &&
-				x > fleaman->start_x - 112 &&
-				y < fleaman->start_y + 96 &&
-				y > fleaman->start_y - 96)
+			if (x < fleaman->x + 112 &&
+				x > fleaman->x - 112 &&
+				y < fleaman->y + 96 &&
+				y > fleaman->y - 96)
 			{
 
 				if (x < fleaman->x)
@@ -61,6 +63,25 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					fleaman->SetState(FLEAMAN_STATE_ATTACK);
 			}
 		}
+
+		/*else if (dynamic_cast<Skeleton*>(coObjects->at(i)))
+		{
+			Skeleton* skeleton = dynamic_cast<Skeleton*>(coObjects->at(i));
+
+			if (x < skeleton->x + 112 &&
+				x > skeleton->x - 112 &&
+				y < skeleton->y + 96 &&
+				y > skeleton->y - 96)
+			{
+				skeleton->isEnable = true;
+				if (x < skeleton->x)
+					skeleton->nx = -1;
+				else
+					skeleton->nx = 1;
+				if (skeleton->state == FLEAMAN_STATE_IDLE)
+					skeleton->SetState(FLEAMAN_STATE_ATTACK);
+			}
+		}*/
 
 		// Xet va cham len xuong cau thang
 		if (dynamic_cast<CheckStair*>(coObjects->at(i))) {
@@ -287,7 +308,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Has completed attack animation
 		// when simon attack
-	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK - 50)
+	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK)
 	{
 		if (nx > 0)
 		{
@@ -306,10 +327,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		// Check collision between whip and game objects 
 		whip->Update(dt, coObjects);
-	}
 
-	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK)
-	{
 		isAttack = false;
 		if (isExitSit)
 		{
@@ -318,8 +336,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isExitSit = false;
 		}
 	}
-	//if (GetTickCount() - attackTime >= 300)
-	//	whip->Update(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -502,13 +518,7 @@ void Simon::Render()
 		ani = SIMON_ANI_DIE_RIGHT;
 	else
 	{
-		if (isHurt) {
-			if (nx > 0)
-				ani = SIMON_ANI_HURT_RIGHT;
-			else
-				ani = SIMON_ANI_HURT_LEFT;
-		}
-		else if (isAttack)
+		if (isAttack)
 		{
 			if (nx > 0)
 			{
@@ -571,6 +581,12 @@ void Simon::Render()
 					break;
 				}
 			}
+		}
+		else if (isHurt) {
+			if (nx > 0)
+				ani = SIMON_ANI_HURT_RIGHT;
+			else
+				ani = SIMON_ANI_HURT_LEFT;
 		}
 		else if (isJump)
 		{
@@ -723,6 +739,7 @@ void Simon::Render()
 		else
 			whip->animation_set->at(aniWhip)->Render(fix_x, y + (SIMON_BBOX_HEIGHT - SIMON_SIT_BBOX_HEIGHT), alpha);
 	}
+	/*whip->RenderBoundingBox();*/
 	RenderBoundingBox();
 }
 
@@ -813,7 +830,8 @@ void Simon::SetState(int state)
 		isMoving = false;
 		break;
 	case SIMON_STATE_HURT:
-		isHurt = true;
+		if (!isAttack)
+			isHurt = true;
 		break;
 	}
 }
@@ -828,6 +846,7 @@ void Simon::SetAction(int action)
 		isAttack = true;
 		if (!isJump)
 			vx = 0;
+
 		isJump = false;
 		isMoving = false;
 		attackTime = GetTickCount();
@@ -868,3 +887,14 @@ void Simon::Reset()
 	SetSpeed(0, 0);
 }
 
+void Simon::Hurted(int damage)
+{
+	if (hp > 0)
+	{
+		hp -= damage;
+		StartUntouchable();
+		SetState(SIMON_STATE_HURT);
+	}
+	else
+		SetState(SIMON_STATE_DIE);
+}

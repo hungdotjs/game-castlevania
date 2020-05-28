@@ -15,6 +15,7 @@
 #include "Whip.h"
 #include "Torch.h"
 #include "Item.h"
+#include "Skeleton.h"
 
 #define SIMON_WALKING_SPEED			0.08f 
 #define SIMON_JUMP_SPEED_Y			0.28f
@@ -115,6 +116,7 @@ public:
 	Whip* whip;
 	int life;
 	int preHP;
+	int hp;
 	bool isLevelUp;
 
 	static int score;
@@ -137,6 +139,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 
+	void Hurted(int damage);
 
 	void SetPosition(float x, float y);
 
