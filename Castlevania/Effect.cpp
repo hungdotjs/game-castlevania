@@ -1,23 +1,18 @@
 #include "Effect.h"
 
-void Effect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Effect::AddAnimation(int aniId)
 {
-	if (GetTickCount() - firstRenderTime > EFFECT_TIME)
-		isExposed = true;
+	LPANIMATION ani = CAnimations::GetInstance()->Get(aniId);
+
+	//LPANIMATION temp = new CAnimation(ani->GetDefaultTime(), ani->IsLoop());
+	//temp->SetFrames(ani->getFrames());
+	animations.push_back(ani);
 }
 
-void Effect::Render()
+Effect::Effect()
 {
-	animation_set->at(0)->Render(x, y);
-	//RenderBoundingBox();
-	//DebugOut(L"[EFFECT] render %f %f\n", x, y);
 }
 
-void Effect::GetBoundingBox(float& l, float& t, float& r, float& b)
+Effect::~Effect()
 {
-	l = 0;
-	t = 0;
-	r = 0;
-	b = 0;
 }
-

@@ -61,11 +61,20 @@ public:
 	int state;
 
 	DWORD dt;
+
+	int id;
 	bool isEnable;
+	bool isDeadth;
+
+	int type;
+	int typeItem;
 
 	LPANIMATION_SET animation_set;
 
 public:
+	void SetID(int ID) { id = ID; }
+	int GetID() { return id; }
+
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
@@ -76,9 +85,9 @@ public:
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
+	void SetAnimationSet(int ani_set_id);
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
-	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 	void FilterCollision(
 		vector<LPCOLLISIONEVENT>& coEvents,
 		vector<LPCOLLISIONEVENT>& coEventsResult,
@@ -91,18 +100,20 @@ public:
 
 	CGameObject();
 
+	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Update(float xs, float ys, DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+
 	virtual void Render() = 0;
 	
-	bool isCollitionObjectWithObject(CGameObject* obj); 	// kiểm tra bằng AABB và Sweept AABB
-	bool checkAABB(CGameObject* obj);
-
 	virtual void SetState(int state) { this->state = state; }
 
 	int GetHealth();
 	void SetHealth(int h);
 	void SubHealth(int th);
+
+	void ResetAni(int aniID) { animation_set->at(aniID)->Reset(); }
 
 	DWORD GetLastTimeAttacked();
 	void SetLastTimeAttacked(DWORD t);

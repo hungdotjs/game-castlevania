@@ -47,6 +47,8 @@ class CGame
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+	void _ParseSection_PLAYER(string line);
+
 
 public:
 	void InitKeyboard();
@@ -89,6 +91,8 @@ public:
 	static CGame* GetInstance();
 
 	bool checkAABB(float b1left, float b1top, float b1right, float b1bottom, float b2left, float b2top, float b2right, float b2bottom);
+	
+	static bool AABBCheck(float ml, float mt, float mr, float mb, float sl, float st, float sr, float sb);
 
 	~CGame();
 };

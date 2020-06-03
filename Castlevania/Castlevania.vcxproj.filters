@@ -61,9 +61,6 @@
     <Filter Include="Object\Bat">
       <UniqueIdentifier>{f8a8806a-e22f-4cf3-9faa-aaa16b94e6d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Weapon">
-      <UniqueIdentifier>{ca925b89-5463-4bdc-b543-dba9c838e45a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Elevator">
       <UniqueIdentifier>{9012254c-b0b1-4468-9de0-3cd441e9c692}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,12 @@
     </Filter>
     <Filter Include="Object\Skeleton">
       <UniqueIdentifier>{6e3fcbee-7144-4ed8-b4af-e9dcd10f47ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Grid">
+      <UniqueIdentifier>{45a00391-0793-4311-94ab-2283f01c9002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy">
+      <UniqueIdentifier>{e288b401-7a31-45ab-b20e-194a00df1cc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,9 +148,6 @@
     <ClCompile Include="Bat.cpp">
       <Filter>Object\Bat</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>Object\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="Elevator.cpp">
       <Filter>Object\Elevator</Filter>
     </ClCompile>
@@ -162,6 +162,21 @@
     </ClCompile>
     <ClCompile Include="Bone.cpp">
       <Filter>Object\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Library\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Library\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadEffect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEffect.cpp">
+      <Filter>Object\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +246,6 @@
     <ClInclude Include="Bat.h">
       <Filter>Object\Bat</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Object\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="Elevator.h">
       <Filter>Object\Elevator</Filter>
     </ClInclude>
@@ -248,6 +260,21 @@
     </ClInclude>
     <ClInclude Include="Bone.h">
       <Filter>Object\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Library\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Library\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadEffect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEffect.h">
+      <Filter>Object\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

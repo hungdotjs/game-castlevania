@@ -349,6 +349,17 @@ void CGame::_ParseSection_SCENES(string line)
 	scenes[id] = scene;
 }
 
+void CGame::_ParseSection_PLAYER(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 1) return;
+	LPCWSTR path = ToLPCWSTR(tokens[0]);
+
+	Simon::GetInstance()->Load(path);
+}
+
+
 /*
 	Load game campaign file and load/initiate first scene
 */
@@ -403,4 +414,14 @@ void CGame::SwitchScene(int scene_id)
 	LPSCENE s = scenes[scene_id];
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
+}
+
+
+bool CGame::AABBCheck(float ml, float mt, float mr, float mb, float sl, float st, float sr, float sb)
+{
+	if (mt <= sb && mb >= st && ml <= sr && mr >= sl)
+	{
+		return true;
+	}
+	return false;
 }

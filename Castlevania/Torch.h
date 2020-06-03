@@ -1,11 +1,15 @@
 #pragma once
 #include "GameObject.h"
+#include "CollisionEffect.h"
+#include "DeadEffect.h"
 
 #define TORCH_BBOX_WIDTH				16
 #define TORCH_BBOX_HEIGHT				32
 
 class Torch : public CGameObject
 {
+	CollisionEffect* collisionEffect;
+	DeadEffect* deadEffect;
 
 public:
 	bool isHitted;
@@ -21,4 +25,7 @@ public:
 		this->x = x;
 		this->y = y;
 	}
+
+	CollisionEffect* GetCollisionEffect() { return collisionEffect; }
+	DeadEffect* GetDeadEffect() { return deadEffect; }
 };

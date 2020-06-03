@@ -32,6 +32,12 @@ void CGameObject::SubHealth(int th)
 		health = 0;
 }
 
+void CGameObject::Update(float xs, float ys, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	this->dt = dt;
+	dx = vx * dt;
+	dy = vy * dt;
+}
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -150,28 +156,11 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 100);
 }
 
-bool CGameObject::isCollitionObjectWithObject(CGameObject* obj)	// kiểm tra bằng AABB và Sweept AABB
+void CGameObject::SetAnimationSet(int ani_set_id)
 {
-	if (checkAABB(obj)) // kiểm tra va chạm bằng AABB trước
-		return true;
-
-	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va chạm giữa 2 object bằng sweptAABB
-	bool res = e->t > 0 && e->t <= 1.0f; // ĐK va chạm
-	delete e;
-	return res;
-}
-
-bool CGameObject::checkAABB(CGameObject* obj)
-{
-	float l, t, r, b;
-	float l1, t1, r1, b1;
-	this->GetBoundingBox(l, t, r, b);
-	obj->GetBoundingBox(l1, t1, r1, b1);
-
-	if (CGame::GetInstance()->checkAABB(l, t, r, b, l1, t1, r1, b1))
-		return true;
-
-	return false;
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+	SetAnimationSet(ani_set);
 }
 
 

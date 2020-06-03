@@ -5,6 +5,7 @@
 #include "Brick.h"
 #include "CheckStairTop.h"
 #include "CheckStair.h"
+#include "PlayScence.h"
 #include "Candle.h"
 #include "Elevator.h"
 #include "Fleaman.h"
@@ -88,6 +89,8 @@
 
 class Simon : public CGameObject
 {
+	static Simon* __instance;
+
 	int level;
 	int action;
 	int untouchable;
@@ -95,6 +98,12 @@ class Simon : public CGameObject
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
+
+	void _ParseSection_TEXTURES(string line);
+	void _ParseSection_SPRITES(string line);
+	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_ANIMATION_SETS(string line);
+	void _ParseSection_SETTINGS(string line);
 
 public:
 	bool isDead;
@@ -123,8 +132,10 @@ public:
 	static int heartsAmount;
 	int currentWeapon;
 
-public:
 	Simon(float x = 0.0f, float y = 0.0f);
+
+	static Simon* GetInstance();
+	void Load(LPCWSTR simonFile);
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
@@ -142,6 +153,8 @@ public:
 	void Hurted(int damage);
 
 	void SetPosition(float x, float y);
+	void SetAnimationSetWhip(LPANIMATION_SET ani_set);
+
 
 	void SetCurrentWeapon(int weapon) { currentWeapon = weapon; }
 	int GetCurrentWeapon() { return currentWeapon; }

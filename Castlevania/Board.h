@@ -1,17 +1,17 @@
 #pragma once
 #include "Utils.h"
 #include "Sprites.h"
-#include "Simon.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "Simon.h"
 
+class Simon;
 
 class Board
 {
 private:
 	ID3DXFont* font;
 	RECT rect;
-	Simon* simon;
 
 	string information;
 

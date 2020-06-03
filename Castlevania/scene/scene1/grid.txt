@@ -1,0 +1,16 @@
+[SETTINGS]
+#cell_size	num_x_cells	num_y_cells
+160 5 2
+[OBJECTS]
+#index_x	index_y	object_id_1	object_id_2... 	object_id_n
+0 0 1 7
+0 1 7
+1 0 2 7
+1 1 7
+2 0 3 7
+2 1 7
+3 0 4 5 7
+3 1 7
+4 0 6 7
+4 1 7
+END

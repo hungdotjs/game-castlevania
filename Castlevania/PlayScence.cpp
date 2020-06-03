@@ -2,6 +2,9 @@
 #include <fstream>
 
 #include "PlayScence.h"
+#include "Item.h"
+#include "Brick.h"
+#include "Torch.h"
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -37,31 +40,28 @@ CPlayScene::~CPlayScene()
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-#define SCENE_SECTION_MAP	7
+void CPlayScene::_ParseSection_SETTINGS(string line)
+{
+	vector<string> tokens = split(line);
+	float simonX, simonY;
 
-#define OBJECT_TYPE_SIMON			0
-#define OBJECT_TYPE_BRICK			1
-#define OBJECT_TYPE_CHECKSTAIR		4
-#define OBJECT_TYPE_CHECKSTAIRTOP	5
-#define OBJECT_TYPE_WHIP			11
-#define OBJECT_TYPE_FLEAMAN			14
-#define OBJECT_TYPE_SKELETON		18
-#define OBJECT_TYPE_TORCH			100
-#define OBJECT_TYPE_CANDLE			400
-#define OBJECT_TYPE_ELEVATOR		402
-#define OBJECT_TYPE_KNIGHT			500
-#define OBJECT_TYPE_BAT				600
+	if (tokens.size() < 2)
+		return;
 
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 2048
-
+	if (tokens[0] == "stage")
+		stage = atoi(tokens[1].c_str());
+	else if (tokens[0] == "time")
+	{
+		int timeDefault = atoi(tokens[1].c_str());
+		if (timeDefault > 0)
+		{
+			defaultTimeGame = timeDefault;
+		}
+		remainTime = atoi(tokens[1].c_str());
+	}
+	else
+		DebugOut(L"[ERROR] Unknown scene setting %s\n", ToWSTR(tokens[0]).c_str());
+}
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -147,6 +147,46 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 }
 
+void CPlayScene::_ParseSection_GRID(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2)
+		return;
+
+	string pathFile = tokens[0];
+
+	int cellSize = atoi(tokens[1].c_str());
+
+	grid = new Grid(pathFile, &objects);
+}
+
+void CPlayScene::_Load_OBJECTS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 1)
+		return;
+
+	string pathFile = tokens[0];
+
+	fstream pFile;
+	pFile.open(line, fstream::in);
+	string temp;
+
+	while (pFile.good())
+	{
+		getline(pFile, temp);
+
+		if (temp[0] == '#')
+			continue; // skip comment lines
+
+		_ParseSection_OBJECTS(temp);
+	}
+
+	pFile.close();
+}
+
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -158,11 +198,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
-	int object_type = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
-
-	int ani_set_id = atoi(tokens[3].c_str());
+	int id = atoi(tokens[0].c_str());
+	int object_type = atoi(tokens[1].c_str());
+	float x = atof(tokens[2].c_str());
+	float y = atof(tokens[3].c_str());
+	int ani_set_id = atoi(tokens[4].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -171,15 +211,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
+	{
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] SIMON object was created before!\n");
 			return;
 		}
-		obj = new Simon();
-		player = (Simon*)obj;
-		player->whip->SetLevel(1);
-		break;
+		player = Simon::GetInstance();
+		player->SetPosition(x, y);
+		objects.push_back(obj);
+		return;
+	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_CANDLE:
@@ -227,9 +269,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT_TYPE_PORTAL: {
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
+		float r = atof(tokens[5].c_str());
+		float b = atof(tokens[6].c_str());
+		int scene_id = atoi(tokens[7].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
 		break;
 	}
@@ -278,7 +320,12 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
+		if (line == "[SETTINGS]") {
+			section = SCENE_SECTION_SETTINGS; continue;
+		}
+		if (line == "[TEXTURES]") { 
+			section = SCENE_SECTION_TEXTURES; continue; 
+		}
 		if (line == "[SPRITES]") {
 			section = SCENE_SECTION_SPRITES; continue;
 		}
@@ -295,6 +342,10 @@ void CPlayScene::Load()
 		{
 			section = SCENE_SECTION_MAP; continue;
 		}
+		if (line == "[GRID]")
+		{
+			section = SCENE_SECTION_GRID; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -302,12 +353,14 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
+		case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_OBJECTS: _Load_OBJECTS(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
+		case SCENE_SECTION_GRID: _ParseSection_GRID(line); break;
 		}
 	}
 
@@ -315,22 +368,60 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
 	board = new Board();
 	board->Initialize(CGame::GetInstance()->GetDirect3DDevice(), player);
+
+	gameTime = 0;
+
+	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+/*
+	Unload current scene
+*/
+void CPlayScene::Unload()
+{
+	for (int i = 1; i < objects.size(); i++)
+	{
+		delete objects[i];
+	}
+
+	objects.clear();
+	player = NULL;
+
+	if (grid)
+	{
+		grid->Unload();
+		delete grid;
+		grid = NULL;
+	}
+
+	CTextures::GetInstance()->Clear(arrTexturesID);
+	CSprites::GetInstance()->Clear(arrSpritesID);
+	CAnimations::GetInstance()->Clear(arrAnimationsID);
+	CAnimationSets::GetInstance()->Clear(arrAnimationSetsID);
+
+	arrTexturesID.clear();
+	arrSpritesID.clear();
+	arrAnimationsID.clear();
+	arrAnimationSetsID.clear();
+
+	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+	grid->GetListOfObjects(&coObjects, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < listItems.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		coObjects.push_back(listItems.at(i));
 	}
+
+	player->Update(dt, &coObjects);
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -372,11 +463,23 @@ void CPlayScene::Render()
 	float x, y;
 	CGame::GetInstance()->GetCamPos(x, y);
 
-	map->DrawMap(x, y);
-	board->Render(x, y, player);
+	grid->GetListOfObjects(&coObjects, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	map->DrawMap(x, y);
+
+	for (size_t i = 0; i < listItems.size(); i++)
+	{
+		listItems.at(i)->Render();
+	}
+
+	for (int i = 0; i < coObjects.size(); i++)
+	{
+		coObjects[i]->Render();
+	}
+
+	player->Render();
+
+	board->Render(x, y, player);
 }
 
 
@@ -541,24 +644,11 @@ void CPlayScene::RemoveObjects()
 	}
 }
 
-/*
-	Unload current scene
-*/
-void CPlayScene::Unload()
-{
-	for (int i = 1; i < objects.size(); i++)
-	{
-
-		delete objects[i];
-	}
-
-	objects.clear();
-
-	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
-}
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
 	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
 
 	// Chet

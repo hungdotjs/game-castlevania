@@ -1,7 +1,14 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Sprites.h"
 #include "Utils.h"
+#include "Enemy.h"
+
+#define WHIP_LEVEL_1		1
+#define WHIP_LEVEL_2		2
+#define WHIP_LEVEL_3		3
+
+#define WHIP_SITTING		8
 
 #define WHIP_RIGHT 						0
 #define WHIP_LEFT						1
@@ -10,6 +17,7 @@
 #define WHIP_RIGHT_2					4
 #define WHIP_LEFT_2						5
 
+#define WHIP_STATE_HIT		1
 
 #define WHIP_LV0_BBOX_WIDTH				46
 #define WHIP_LV0_BBOX_HEIGHT			12
@@ -20,21 +28,29 @@
 
 class Whip :public CGameObject
 {
-	int step = 0;
+	CAnimation* ani;
+
+	int indexAni;
+	int damage;
+	int level;
 
 public:
-	int level = 0;
-	Whip(int level) :CGameObject()
-	{
-		this->level = level;
-	}
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	virtual void Render();
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void UpLevel() { level += 1; }
-	void SetLevel(int level) {
-		this->level = level;
-	}
+	Whip();
+
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
+	void Render(bool isRight);
+	void Render();
+
+	void SetPosition(float x, float y, bool isSitting);
+
+	void SetLevel(int level) { this->level = level; }
+	int GetLevel() { return this->level; }
+
+	int GetCurrentFrame();
+
+	void ResetAnimation();
+
 	~Whip();
 };
 
