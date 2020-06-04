@@ -325,6 +325,7 @@ CGame* CGame::GetInstance()
 #define GAME_FILE_SECTION_UNKNOWN -1
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
+#define GAME_FILE_SECTION_SIMON	3
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -349,6 +350,15 @@ void CGame::_ParseSection_SCENES(string line)
 	scenes[id] = scene;
 }
 
+void CGame::_ParseSection_SIMON(string line)
+{
+	vector<string> tokens = split(line);
+
+	LPCWSTR path = ToLPCWSTR(tokens[0]);
+
+	Simon::GetInstance()->Load(path);
+}
+
 /*
 	Load game campaign file and load/initiate first scene
 */
@@ -371,7 +381,7 @@ void CGame::Load(LPCWSTR gameFile)
 
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
-
+		if (line == "[PLAYER]") { section = GAME_FILE_SECTION_SIMON; continue; }
 		//
 		// data section
 		//
@@ -379,6 +389,7 @@ void CGame::Load(LPCWSTR gameFile)
 		{
 		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
+		case GAME_FILE_SECTION_SIMON: _ParseSection_SIMON(line); break;
 		}
 	}
 	f.close();
@@ -391,12 +402,7 @@ void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
-	if (scene_id != 1)
-		scenes[current_scene]->Unload();
-
-	CTextures::GetInstance()->Clear();
-	CSprites::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
+	scenes[current_scene]->Unload();
 
 	current_scene = scene_id;
 

@@ -74,6 +74,17 @@ void CAnimations::Clear()
 	animations.clear();
 }
 
+void CAnimations::Clear(vector<int> listId)
+{
+	for (size_t i = 0; i < listId.size(); i++)
+	{
+		LPANIMATION ani = Get(listId.at(i));
+
+		delete ani;
+		animations.erase(listId.at(i));
+	}
+}
+
 CAnimationSets::CAnimationSets()
 {
 
@@ -97,4 +108,27 @@ LPANIMATION_SET CAnimationSets::Get(unsigned int id)
 void CAnimationSets::Add(int id, LPANIMATION_SET ani_set)
 {
 	animation_sets[id] = ani_set;
+}
+
+
+void CAnimationSets::Clear()
+{
+	for (auto x : animation_sets)
+	{
+		LPANIMATION_SET ani = x.second;
+		delete ani;
+	}
+
+	animation_sets.clear();
+}
+
+void CAnimationSets::Clear(vector<int> listId)
+{
+	for (size_t i = 0; i < listId.size(); i++)
+	{
+		LPANIMATION_SET ani = Get(listId.at(i));
+
+		delete ani;
+		animation_sets.erase(listId.at(i));
+	}
 }

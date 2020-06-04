@@ -55,3 +55,13 @@ void CSprites::Clear()
 
 
 
+void CSprites::Clear(vector<int> listId)
+{
+	for (size_t i = 0; i < listId.size(); i++)
+	{
+		LPSPRITE s = Get(listId.at(i));
+
+		delete s;
+		sprites.erase(listId.at(i));
+	}
+}

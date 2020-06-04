@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include "Grid.h"
 #include "Textures.h"
 #include "Scence.h"
 #include "GameObject.h"
@@ -19,6 +20,11 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 
+	vector<int> arrTexturesID;
+	vector<int> arrSpritesID;
+	vector<int> arrAnimationsID;
+	vector<int> arrAnimationSetsID;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -29,9 +35,9 @@ protected:
 public:
 	Map* map;
 	Board* board;
-	DWORD gameTime = 999999;
+	DWORD gameTime = 300000;
 	int stage;
-
+	ListGrids* listGrids;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);

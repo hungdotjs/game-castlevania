@@ -76,6 +76,9 @@
     <Filter Include="Object\Skeleton">
       <UniqueIdentifier>{6e3fcbee-7144-4ed8-b4af-e9dcd10f47ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Gird">
+      <UniqueIdentifier>{dc62411b-ebfb-44a8-9ec3-7dcd5db8f1a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -163,6 +166,9 @@
     <ClCompile Include="Bone.cpp">
       <Filter>Object\Skeleton</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Library\Gird</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -248,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="Bone.h">
       <Filter>Object\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Library\Gird</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

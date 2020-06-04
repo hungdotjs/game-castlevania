@@ -46,6 +46,7 @@ public:
 	void Add(int id, LPANIMATION ani);
 	LPANIMATION Get(int id);
 	void Clear();
+	void CAnimations::Clear(vector<int> listId);
 
 	static CAnimations* GetInstance();
 };
@@ -67,7 +68,8 @@ public:
 	CAnimationSets();
 	void Add(int id, LPANIMATION_SET ani);
 	LPANIMATION_SET Get(unsigned int id);
-
+	void Clear();
+	void Clear(vector<int> listId);
 
 	static CAnimationSets* GetInstance();
 };

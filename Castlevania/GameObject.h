@@ -63,6 +63,9 @@ public:
 	DWORD dt;
 	bool isEnable;
 
+	int gridNumber;
+
+
 	LPANIMATION_SET animation_set;
 
 public:

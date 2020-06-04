@@ -47,6 +47,7 @@ class CGame
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+	void _ParseSection_SIMON(string line);
 
 public:
 	void InitKeyboard();

@@ -151,6 +151,7 @@
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="Fleaman.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Fleaman.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Elevator.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Knight.h" />
     <ClInclude Include="Map.h" />

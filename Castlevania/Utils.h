@@ -24,6 +24,23 @@
 #define ID_TEX_MISC		20
 
 #define MAX_FRAME_RATE 120
+#define MAX_SCENE_LINE			 2048
+
+#define MAP_1_WIDTH		768
+#define MAP_2_WIDTH		240
+#define MAP_3_WIDTH		512
+#define MAP_4_WIDTH		768
+
+
+#define SCENE_SECTION_UNKNOWN			-1
+#define SCENE_SECTION_SETTINGS			1
+#define SCENE_SECTION_TEXTURES			2
+#define SCENE_SECTION_SPRITES			3
+#define SCENE_SECTION_ANIMATIONS		4
+#define SCENE_SECTION_ANIMATION_SETS	5
+#define SCENE_SECTION_OBJECTS			6
+#define SCENE_SECTION_MAP				7
+
 
 using namespace std;
 

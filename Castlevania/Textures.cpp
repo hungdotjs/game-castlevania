@@ -81,3 +81,15 @@ void CTextures::Clear()
 
 
 
+void CTextures::Clear(vector<int> listId)
+{
+	for (size_t i = 0; i < listId.size(); i++)
+	{
+		LPDIRECT3DTEXTURE9 tex = Get(listId.at(i));
+
+		if (tex != NULL) {
+			tex->Release();
+			textures.erase(listId.at(i));
+		}
+	}
+}

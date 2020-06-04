@@ -21,6 +21,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
+	listGrids = ListGrids::GetInstance();
 }
 
 CPlayScene::~CPlayScene()
@@ -37,14 +38,6 @@ CPlayScene::~CPlayScene()
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-#define SCENE_SECTION_MAP	7
-
 #define OBJECT_TYPE_SIMON			0
 #define OBJECT_TYPE_BRICK			1
 #define OBJECT_TYPE_CHECKSTAIR		4
@@ -57,11 +50,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_ELEVATOR		402
 #define OBJECT_TYPE_KNIGHT			500
 #define OBJECT_TYPE_BAT				600
-
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 2048
-
+#define OBJECT_TYPE_PORTAL			50
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -76,6 +65,7 @@ void CPlayScene::_ParseSection_TEXTURES(string line)
 	int B = atoi(tokens[4].c_str());
 
 	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
+	arrTexturesID.push_back(texID);
 }
 
 void CPlayScene::_ParseSection_SPRITES(string line)
@@ -99,6 +89,8 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	}
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+	arrSpritesID.push_back(ID);
+
 }
 
 void CPlayScene::_ParseSection_ANIMATIONS(string line)
@@ -120,6 +112,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	}
 
 	CAnimations::GetInstance()->Add(ani_id, ani);
+	arrAnimationsID.push_back(ani_id);
 
 	DebugOut(L"[ANIMATION] Load animation id: %d\n", ani_id);
 }
@@ -145,6 +138,8 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	}
 
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
+	arrAnimationSetsID.push_back(ani_set_id);
+
 }
 
 /*
@@ -152,6 +147,23 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
+	if (listGrids->isEmpty()) {
+		int stage = CGame::GetInstance()->GetCurrentStage();
+		switch (stage)
+		{
+		case 1:
+			listGrids->InitList(MAP_1_WIDTH);
+		case 2:
+			listGrids->InitList(MAP_2_WIDTH);
+		case 3:
+			listGrids->InitList(MAP_3_WIDTH);
+		case 4:
+			listGrids->InitList(MAP_4_WIDTH);
+		default:
+			break;
+		}
+	}
+
 	vector<string> tokens = split(line);
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
@@ -176,10 +188,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] SIMON object was created before!\n");
 			return;
 		}
-		obj = new Simon();
-		player = (Simon*)obj;
-		player->whip->SetLevel(1);
-		break;
+		player = Simon::GetInstance();
+		player->SetPosition(x, y);
+		objects.push_back(player);
+		return;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
 	case OBJECT_TYPE_CANDLE:
@@ -204,17 +216,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
-	//case OBJECT_TYPE_SKELETON: {
-	//	obj = new Skeleton(x, y);
-	//	break;
-	//}
-	case OBJECT_TYPE_WHIP:
-	{
-		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-		player->whip->SetAnimationSet(ani_set);
-		objects.push_back(player->whip);
-		return;
-	}
+		//case OBJECT_TYPE_SKELETON: {
+		//	obj = new Skeleton(x, y);
+		//	break;
+		//}
+
 	case OBJECT_TYPE_CHECKSTAIR: {
 		int type = atof(tokens[4].c_str());
 		obj = new CheckStair(type);
@@ -247,6 +253,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+	listGrids->AddObject(obj);
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -327,7 +334,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
 	}
@@ -510,9 +517,18 @@ void CPlayScene::RemoveObjects()
 				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 				LPANIMATION_SET ani_set;
 
-				ani_set = animation_sets->Get(candle->itemID);
-				item->SetType(candle->itemID);
-				item->SetAnimationSet(ani_set);
+				// Whip item
+				if (player->whip->level < 2)
+				{
+					ani_set = animation_sets->Get(ITEM_WHIP);
+					item->SetAnimationSet(ani_set);
+					item->SetType(ITEM_WHIP);
+				}
+				else {
+					ani_set = animation_sets->Get(candle->itemID);
+					item->SetType(candle->itemID);
+					item->SetAnimationSet(ani_set);
+				}
 
 				objects.erase(objects.begin() + i);
 				delete candle;
@@ -553,6 +569,17 @@ void CPlayScene::Unload()
 	}
 
 	objects.clear();
+	listGrids->ReleaseList();
+
+	CTextures::GetInstance()->Clear(arrTexturesID);
+	CSprites::GetInstance()->Clear(arrSpritesID);
+	CAnimations::GetInstance()->Clear(arrAnimationsID);
+	CAnimationSets::GetInstance()->Clear(arrAnimationSetsID);
+
+	arrTexturesID.clear();
+	arrSpritesID.clear();
+	arrAnimationsID.clear();
+	arrAnimationSetsID.clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

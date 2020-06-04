@@ -1,4 +1,7 @@
 #pragma once
+#include "Textures.h"
+#include "Sprites.h"
+#include "Animations.h"
 #include "GameObject.h"
 #include "Game.h"
 #include "Utils.h"
@@ -88,6 +91,7 @@
 
 class Simon : public CGameObject
 {
+public:
 	int level;
 	int action;
 	int untouchable;
@@ -96,7 +100,6 @@ class Simon : public CGameObject
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 
-public:
 	bool isDead;
 	bool isAttack;
 	bool isSit;
@@ -123,14 +126,31 @@ public:
 	static int heartsAmount;
 	int currentWeapon;
 
+	static Simon* __instance;
+
 public:
 	Simon(float x = 0.0f, float y = 0.0f);
+
+	static Simon* GetInstance() {
+		if (__instance == NULL)
+			__instance = new Simon();
+		return __instance;
+	}
+
+	void _ParseSection_TEXTURES(string line);
+	void _ParseSection_SPRITES(string line);
+	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_ANIMATION_SETS(string line);
+	void _ParseSection_SETTINGS(string line);
+
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
 	void Reset();
+	void Load(LPCWSTR simonFile);
+	void SetWhipAnimationSet(LPANIMATION_SET ani_set);
 
 	void SetAction(int action);
 	int GetAction() { return action; }
