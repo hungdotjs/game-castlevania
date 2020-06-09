@@ -45,7 +45,7 @@ public:
 	bool isEmpty();                                                    
 	void AddObject(LPGAMEOBJECT object);
 	void RemoveObject(LPGAMEOBJECT object);
-
+	vector<GridObjects*> GetListGrids() { return listGrids; }
 	static ListGrids* GetInstance();
 	vector<GridObjects*> GetCurrentGrids(float cam_x);
 	void UpdateObjectInGrid(LPGAMEOBJECT object);

@@ -1,5 +1,10 @@
 ﻿#include "Item.h"
 
+Item::Item()
+{
+	this->appearTime = GetTickCount();
+}
+
 void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 

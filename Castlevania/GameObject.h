@@ -44,7 +44,6 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
-	DWORD lastTimeAttacked;
 	int health;
 
 	float x;
@@ -106,9 +105,6 @@ public:
 	int GetHealth();
 	void SetHealth(int h);
 	void SubHealth(int th);
-
-	DWORD GetLastTimeAttacked();
-	void SetLastTimeAttacked(DWORD t);
 
 	~CGameObject();
 };

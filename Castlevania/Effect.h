@@ -13,8 +13,8 @@ class Effect : public CGameObject
 	bool isExposed;
 	DWORD firstRenderTime;
 public:
-	Effect(DWORD time) { 
-		firstRenderTime = time; 
+	Effect() { 
+		firstRenderTime = GetTickCount(); 
 		isExposed = false; 
 		LPANIMATION_SET ani_set = CAnimationSets::GetInstance()->Get(EFFECT_ANIMATION_ID);
 		SetAnimationSet(ani_set);

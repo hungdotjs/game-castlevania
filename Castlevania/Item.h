@@ -32,11 +32,15 @@
 #define MONEY_BBOX_WIDTH				15
 #define MONEY_BBOX_HEIGHT				15
 
+#define ITEM_LIVE_TIME					5000
+
 class Item : public CGameObject
 {
 	int type;
 	bool isEaten;
 public:
+	Item();
+	DWORD appearTime;
 	void SetType(int _type) { type = _type; }
 	int GetType() { return type; }
 	void SetEaten() { isEaten = true; }

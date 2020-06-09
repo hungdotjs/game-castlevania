@@ -34,9 +34,6 @@
     <Filter Include="Object\Simon">
       <UniqueIdentifier>{ff61bc6b-58ad-418c-9be9-be7ea7905080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Whip">
-      <UniqueIdentifier>{7c9f3001-9bcb-4179-b8fc-ae6cf12f0598}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Torch">
       <UniqueIdentifier>{88440f48-f7d1-4b19-b0a2-fd9bc61c7580}</UniqueIdentifier>
     </Filter>
@@ -70,14 +67,17 @@
     <Filter Include="Object\Effect">
       <UniqueIdentifier>{16e3180f-eb16-4307-aa08-6b5c45a8ccbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Fleaman">
-      <UniqueIdentifier>{3bff833d-cdb9-4387-98cf-b86a95599166}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Skeleton">
-      <UniqueIdentifier>{6e3fcbee-7144-4ed8-b4af-e9dcd10f47ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Gird">
       <UniqueIdentifier>{dc62411b-ebfb-44a8-9ec3-7dcd5db8f1a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy">
+      <UniqueIdentifier>{fe305011-2299-4fe9-85af-e5b3d5517ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy\Skeleton">
+      <UniqueIdentifier>{29bd761e-0d0d-4b3f-ab4e-0f85b603d9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy\Fleaman">
+      <UniqueIdentifier>{3bff833d-cdb9-4387-98cf-b86a95599166}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +121,6 @@
       <Filter>Object\Simon</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Whip.cpp">
-      <Filter>Object\Whip</Filter>
-    </ClCompile>
     <ClCompile Include="Torch.cpp">
       <Filter>Object\Torch</Filter>
     </ClCompile>
@@ -158,16 +155,22 @@
       <Filter>Object\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Fleaman.cpp">
-      <Filter>Object\Fleaman</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Object\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Bone.cpp">
-      <Filter>Object\Skeleton</Filter>
+      <Filter>Object\Enemy\Fleaman</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Library\Gird</Filter>
+    </ClCompile>
+    <ClCompile Include="Whip.cpp">
+      <Filter>Object\Simon</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Object\Enemy\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Object\Enemy\Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +213,6 @@
     <ClInclude Include="Simon.h">
       <Filter>Object\Simon</Filter>
     </ClInclude>
-    <ClInclude Include="Whip.h">
-      <Filter>Object\Whip</Filter>
-    </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Object\Torch</Filter>
     </ClInclude>
@@ -247,16 +247,22 @@
       <Filter>Object\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Fleaman.h">
-      <Filter>Object\Fleaman</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Object\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Bone.h">
-      <Filter>Object\Skeleton</Filter>
+      <Filter>Object\Enemy\Fleaman</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Library\Gird</Filter>
+    </ClInclude>
+    <ClInclude Include="Whip.h">
+      <Filter>Object\Simon</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Object\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Object\Enemy\Skeleton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -190,7 +190,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		player = Simon::GetInstance();
 		player->SetPosition(x, y);
-		objects.push_back(player);
+		//objects.push_back(player);
 		return;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_TORCH: obj = new Torch(); break;
@@ -216,11 +216,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
-		//case OBJECT_TYPE_SKELETON: {
-		//	obj = new Skeleton(x, y);
-		//	break;
-		//}
-
+	case OBJECT_TYPE_SKELETON:
+		obj = new Skeleton();
+		break;
 	case OBJECT_TYPE_CHECKSTAIR: {
 		int type = atof(tokens[4].c_str());
 		obj = new CheckStair(type);
@@ -320,7 +318,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -330,22 +328,66 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+
+	//skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
+
+	if (player->x < 0)
+		currentGrids = listGrids->GetCurrentGrids(0);
+	else
+		currentGrids = listGrids->GetCurrentGrids(player->x);
+
+	for (int i = 0; i < currentGrids.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		vector<LPGAMEOBJECT> listObjects = currentGrids[i]->GetListObject();
+		int listObjectSize = listObjects.size();
+		for (int j = 0; j < listObjectSize; j++)
+		{
+			coObjects.push_back(listObjects[j]);
+		}
 	}
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
+	player->Update(dt, &coObjects);
 
-	//skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+
+	for (int i = 0; i < coObjects.size(); i++)
+	{
+		if (!dynamic_cast<Enemy*>(coObjects.at(i)))
+			coObjects[i]->Update(dt, &coObjects);
+
+		if (dynamic_cast<Enemy*>(coObjects.at(i))) {
+			Enemy* enemy = dynamic_cast<Enemy*>(coObjects.at(i));
+
+			if (player->isClockWeaponUsed) {
+				enemy->isFrozen = true;
+			}
+			else {
+				enemy->isFrozen = false;
+
+				if (dynamic_cast<Skeleton*>(coObjects.at(i)))
+				{
+					Skeleton* skeleton = dynamic_cast<Skeleton*>(coObjects.at(i));
+					int nx = skeleton->nx;
+					if (GetTickCount() - skeleton->timer > 2000)
+					{
+						enemy = new Bone(nx);
+						enemy->SetPosition(skeleton->x, skeleton->y - 10);
+						listGrids->AddObject(enemy);
+						skeleton->timer += 2000;
+					}
+				}
+			}
+
+
+		}
+
+		listGrids->UpdateObjectInGrid(coObjects[i]);
+	}
 
 
 	// Update camera to follow simon
@@ -371,7 +413,7 @@ void CPlayScene::Update(DWORD dt)
 
 	gameTime -= dt;
 	board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
-	RemoveObjects();
+	RemoveObjects(coObjects);
 }
 
 void CPlayScene::Render()
@@ -382,30 +424,44 @@ void CPlayScene::Render()
 	map->DrawMap(x, y);
 	board->Render(x, y, player);
 
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	player->Render();
+
+	//for (int i = 0; i < objects.size(); i++)
+	//	objects[i]->Render();
+
+	for (int i = 0; i < listGrids->GetListGrids().size(); i++)
+	{
+		vector<LPGAMEOBJECT> listObject = listGrids->GetListGrids()[i]->GetListObject();
+		int listObjectSize = listObject.size();
+
+		for (int j = 0; j < listObjectSize; j++)
+		{
+			listObject[j]->Render();
+		}
+	}
 }
 
 
-void CPlayScene::RemoveObjects()
+void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 {
+	/**
+	* Không remove trực tiếp trong mảng khi đang duyệt, thêm vào danh sách các object sẽ bị remove và sau đó mới bắt đầu remove
+	*/
+
+	vector<LPGAMEOBJECT> listRemoveObjects;
+
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<Whip*>(objects.at(i)))
-		{
-			Whip* whip = dynamic_cast<Whip*>(objects.at(i));
-			objects.erase(objects.begin() + i);
-		}
-		else if (dynamic_cast<Knight*>(objects.at(i)))
+		if (dynamic_cast<Knight*>(objects.at(i)))
 		{
 			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
 
 			if (knight->isHitted && knight->health == 0) {
-				Effect* effect = new Effect(GetTickCount());
+				Effect* effect = new Effect();
 				effect->SetPosition(knight->x + KNIGHT_BBOX_WIDTH / 2, knight->y + KNIGHT_BBOX_HEIGHT / 2);
-				objects.push_back(effect);
-				objects.erase(objects.begin() + i);
 				player->AddScore(100);
+				objects.push_back(effect);
+				listRemoveObjects.push_back(knight);
 			}
 
 		}
@@ -414,11 +470,15 @@ void CPlayScene::RemoveObjects()
 			Fleaman* fleaman = dynamic_cast<Fleaman*>(objects.at(i));
 
 			if (fleaman->isHitted && fleaman->health == 0) {
-				Effect* effect = new Effect(GetTickCount());
-				effect->SetPosition(fleaman->x + FLEAMAN_BBOX_WIDTH / 2, fleaman->y + FLEAMAN_BBOX_HEIGHT / 2);
+				float x, y, r, b;
+				fleaman->GetBoundingBox(x, y, r, b);
+
+				Effect* effect = new Effect();
+				effect->SetPosition(r / 2, b / 2);
 				objects.push_back(effect);
-				objects.erase(objects.begin() + i);
+
 				player->AddScore(100);
+				listRemoveObjects.push_back(fleaman);
 			}
 
 		}
@@ -427,7 +487,7 @@ void CPlayScene::RemoveObjects()
 			Bat* bat = dynamic_cast<Bat*>(objects.at(i));
 			if (bat->isHitted)
 			{
-				Effect* effect = new Effect(GetTickCount());
+				Effect* effect = new Effect();
 				effect->SetPosition(bat->x + BAT_BBOX_WIDTH / 2, bat->y + BAT_BBOX_HEIGHT / 2);
 				objects.push_back(effect);
 				objects.erase(objects.begin() + i);
@@ -442,7 +502,7 @@ void CPlayScene::RemoveObjects()
 				float torch_x, torch_y, torch_right, torch_bottom;
 				torch->GetBoundingBox(torch_x, torch_y, torch_right, torch_bottom);
 
-				Effect* effect = new Effect(GetTickCount());
+				Effect* effect = new Effect();
 				effect->SetPosition(torch->x + BAT_BBOX_WIDTH / 2, torch->y + BAT_BBOX_HEIGHT / 2);
 				objects.push_back(effect);
 
@@ -494,8 +554,8 @@ void CPlayScene::RemoveObjects()
 				}
 
 				item->SetAnimationSet(ani_set);
-				objects.erase(objects.begin() + i);
-				delete torch;
+				listRemoveObjects.push_back(torch);
+
 			}
 		}
 		else if (dynamic_cast<Candle*>(objects.at(i))) {
@@ -505,14 +565,16 @@ void CPlayScene::RemoveObjects()
 				float x, y, r, b;
 				candle->GetBoundingBox(x, y, r, b);
 
-				Effect* effect = new Effect(GetTickCount());
+				Effect* effect = new Effect();
 				effect->SetPosition(x, y);
 				objects.push_back(effect);
+				listGrids->AddObject(effect);
 
 				Item* item = new Item();
 				item->SetPosition(x, y);
 				item->SetSpeed(0, -0.1);
 				objects.push_back(item);
+				listGrids->AddObject(item);
 
 				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 				LPANIMATION_SET ani_set;
@@ -530,18 +592,17 @@ void CPlayScene::RemoveObjects()
 					item->SetAnimationSet(ani_set);
 				}
 
-				objects.erase(objects.begin() + i);
-				delete candle;
+				listRemoveObjects.push_back(candle);
 			}
 		}
 		else if (dynamic_cast<Item*>(objects.at(i)))
 		{
 			Item* item = dynamic_cast<Item*>(objects.at(i));
 
-			if (item->GetEaten())
+			if (item->GetEaten() || GetTickCount() - item->appearTime > ITEM_LIVE_TIME)
 			{
-				objects.erase(objects.begin() + i);
-				delete item;
+				listRemoveObjects.push_back(item);
+
 			}
 		}
 		else if (dynamic_cast<Effect*>(objects.at(i)))
@@ -550,10 +611,16 @@ void CPlayScene::RemoveObjects()
 
 			if (effect->GetExposed())
 			{
-				objects.erase(objects.begin() + i);
-				delete effect;
+				listRemoveObjects.push_back(effect);
 			}
 		}
+	}
+
+	// Remove lần lượt từng object từ listRemoveObjects trong listGrids
+	for (int i = 0; i < listRemoveObjects.size(); i++)
+	{
+		listGrids->RemoveObject(listRemoveObjects[i]);
+		delete listRemoveObjects[i];
 	}
 }
 
@@ -567,7 +634,7 @@ void CPlayScene::Unload()
 
 		delete objects[i];
 	}
-
+	player = NULL;
 	objects.clear();
 	listGrids->ReleaseList();
 
@@ -735,7 +802,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
-		if (!simon->isOnStair && !simon->isAttack)
+		if (simon->isJump) {
+			simon->vx = SIMON_JUMP_SPEED_X;
+		}
+		if (!simon->isOnStair && !simon->isAttack || !simon->isJump)
 			simon->nx = 1;
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
@@ -744,7 +814,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
-		if (!simon->isOnStair && !simon->isAttack)
+		if (simon->isJump) {
+			simon->vx = -SIMON_JUMP_SPEED_X;
+		}
+		if (!simon->isOnStair && !simon->isAttack || !simon->isJump)
 			simon->nx = -1;
 	}
 

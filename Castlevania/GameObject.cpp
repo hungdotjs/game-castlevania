@@ -175,15 +175,6 @@ bool CGameObject::checkAABB(CGameObject* obj)
 }
 
 
-DWORD CGameObject::GetLastTimeAttacked()
-{
-	return lastTimeAttacked;
-}
-
-void CGameObject::SetLastTimeAttacked(DWORD t)
-{
-	lastTimeAttacked = t;
-}
 
 CGameObject::~CGameObject()
 {

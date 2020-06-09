@@ -132,7 +132,7 @@ vector<GridObjects*> ListGrids::GetCurrentGrids(float cam_x)
 
 	if (gridNumber + 1 < listGrids.size())
 		result.push_back(listGrids[gridNumber + 1]);
-
+	DebugOut(L"[GRID] Current grid: %d\n", gridNumber);
 	return result;
 }
 

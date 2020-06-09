@@ -51,8 +51,8 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		{
 			Fleaman* fleaman = dynamic_cast<Fleaman*>(coObjects->at(i));
 
-			if (x < fleaman->x + 112 &&
-				x > fleaman->x - 112 &&
+			if (x < fleaman->x + 160 &&
+				x > fleaman->x - 160 &&
 				y < fleaman->y + 96 &&
 				y > fleaman->y - 96)
 			{
@@ -309,7 +309,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"[POSITION] vx = %f, vy = %f\n", vx, vy);
 
 	// Has completed attack animation
-		// when simon attack
+	// when simon attack
 	if (isAttack == true && GetTickCount() - attackTime >= SIMON_TIMER_ATTACK)
 	{
 		if (nx > 0)
@@ -339,6 +339,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	if (y > 480)
+	{
+		SetState(SIMON_STATE_DIE);
+	}
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -350,19 +355,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// Set idle state
-	if (!isOnStair && !isSit && !isMoving && !isJump && !isAttack)
+	if (!isDead && !isOnStair && !isSit && !isMoving && !isJump && !isAttack && !isHurt)
 	{
 		SetState(SIMON_STATE_IDLE);
 	}
 
-	if (isHurt) {
-		SetState(SIMON_STATE_HURT);
-		vy = -SIMON_JUMP_DEFLECT_SPEED / 3;
-		if (nx > 0)
-			vx = -SIMON_JUMP_DEFLECT_SPEED / 2;
-		else
-			vx = SIMON_JUMP_DEFLECT_SPEED / 2;
-	}
+	if (isHurt) SetState(SIMON_STATE_HURT);
 
 	if (isHurt && GetTickCount() - untouchable_start > 300) {
 		isHurt = false;
@@ -403,10 +401,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
 
 		// block every object first!
 		if (untouchable != 1) {
@@ -832,8 +826,21 @@ void Simon::SetState(int state)
 		isMoving = false;
 		break;
 	case SIMON_STATE_HURT:
-		if (!isAttack)
-			isHurt = true;
+		vy = -SIMON_JUMP_DEFLECT_SPEED / 3;
+		if (nx > 0)
+			vx = -SIMON_JUMP_DEFLECT_SPEED / 2;
+		else
+			vx = SIMON_JUMP_DEFLECT_SPEED / 2;
+
+		isAttack = false;
+		isJump = false;
+		isMoving = false;
+		isOnStair = false;
+		isOnCheckStairDown = false;
+		isOnCheckStairUp = false;
+		isSit = false;
+		isExitSit = false;
+
 		break;
 	}
 }
@@ -903,9 +910,6 @@ void Simon::Hurted(int damage)
 
 
 // Load Simon 
-#include <iostream>
-#include <fstream>
-
 void Simon::Load(LPCWSTR simonFile)
 {
 	DebugOut(L"[INFO] Start loading simon resources from : %s \n", simonFile);

@@ -38,6 +38,7 @@ public:
 	DWORD gameTime = 300000;
 	int stage;
 	ListGrids* listGrids;
+	vector<GridObjects*> currentGrids;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);
@@ -46,7 +47,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	void RemoveObjects();
+	void RemoveObjects(vector<LPGAMEOBJECT>& coObjects);
 
 	Simon* GetPlayer() { return player; }
 
