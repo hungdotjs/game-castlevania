@@ -1,6 +1,6 @@
 ﻿#include "Fleaman.h"
 
-Fleaman::Fleaman(float x, float y) : CGameObject()
+Fleaman::Fleaman(float x, float y)
 {
 	SetState(FLEAMAN_STATE_IDLE);
 	start_x = x;
@@ -22,7 +22,7 @@ void Fleaman::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void Fleaman::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 
 	vy += FLEAMAN_GRAVITY * dt;
 

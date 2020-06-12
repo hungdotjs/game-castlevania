@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Board.h"
 #include "Effect.h"
+#include "EffectWhip.h"
 
 
 class CPlayScene : public CScene

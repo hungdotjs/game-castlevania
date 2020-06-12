@@ -148,6 +148,7 @@
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="CheckStair.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectWhip.cpp" />
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fleaman.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Candle.h" />
     <ClInclude Include="CheckStair.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectWhip.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fleaman.h" />
     <ClInclude Include="GameObject.h" />

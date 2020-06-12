@@ -172,6 +172,9 @@
     <ClCompile Include="Bone.cpp">
       <Filter>Object\Enemy\Skeleton</Filter>
     </ClCompile>
+    <ClCompile Include="EffectWhip.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="Bone.h">
       <Filter>Object\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectWhip.h">
+      <Filter>Object\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -378,12 +378,12 @@ void CPlayScene::Update(DWORD dt)
 						enemy = new Bone(nx);
 						enemy->SetPosition(skeleton->x, skeleton->y - 10);
 						listGrids->AddObject(enemy);
-						skeleton->timer += 2000;
+						skeleton->timer = GetTickCount();
 					}
 				}
 			}
 
-
+			enemy->Update(dt, &coObjects);
 		}
 
 		listGrids->UpdateObjectInGrid(coObjects[i]);
@@ -424,7 +424,6 @@ void CPlayScene::Render()
 	map->DrawMap(x, y);
 	board->Render(x, y, player);
 
-	player->Render();
 
 	//for (int i = 0; i < objects.size(); i++)
 	//	objects[i]->Render();
@@ -439,6 +438,8 @@ void CPlayScene::Render()
 			listObject[j]->Render();
 		}
 	}
+
+	player->Render();
 }
 
 
@@ -452,6 +453,35 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 
 	for (int i = 0; i < objects.size(); i++)
 	{
+		if (dynamic_cast<Enemy*>(objects.at(i)))
+		{
+			Enemy* enemy = dynamic_cast<Enemy*>(objects.at(i));
+
+			float x, y, right, bottom;
+			enemy->GetBoundingBox(x, y, right, bottom);
+
+			if (enemy->health == 0)
+			{
+
+				Effect* effect = new Effect();
+				effect->SetPosition(x, y);
+				objects.push_back(effect);
+				listGrids->AddObject(effect);
+
+				listRemoveObjects.push_back(enemy);
+
+				Simon::score += 100;
+			}
+			else if (enemy->isHitted) {
+				// Thêm hiệu ứng tóe lửa
+				EffectWhip* whipEffect = new EffectWhip();
+				whipEffect->SetPosition(x, y + (bottom - y) / 4);
+				objects.push_back(whipEffect);
+				listGrids->AddObject(whipEffect);
+
+				enemy->isHitted = false;
+			}
+		}
 		if (dynamic_cast<Knight*>(objects.at(i)))
 		{
 			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
@@ -614,6 +644,16 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				listRemoveObjects.push_back(effect);
 			}
 		}
+		else if (dynamic_cast<EffectWhip*>(objects.at(i)))
+		{
+			EffectWhip* effect = dynamic_cast<EffectWhip*>(objects.at(i));
+
+			if (effect->GetExposed())
+			{
+				listRemoveObjects.push_back(effect);
+			}
+		}
+
 	}
 
 	// Remove lần lượt từng object từ listRemoveObjects trong listGrids
@@ -629,13 +669,15 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 */
 void CPlayScene::Unload()
 {
-	for (int i = 1; i < objects.size(); i++)
+	/*for (int i = 1; i < objects.size(); i++)
 	{
-
 		delete objects[i];
-	}
+	}*/
+
 	player = NULL;
-	objects.clear();
+
+	//objects.clear();
+
 	listGrids->ReleaseList();
 
 	CTextures::GetInstance()->Clear(arrTexturesID);
@@ -666,10 +708,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_A: // Danh
-		if (simon->isAttack == false)
+		if (simon->isAttack == false) {
+			simon->ResetAnimationAttack();
 			simon->SetAction(SIMON_ACTION_ATTACK);
+			simon->isUseWhip = true;
+		}
 		break;
-
 	case DIK_R:	// Reset
 		simon->Reset();
 		break;

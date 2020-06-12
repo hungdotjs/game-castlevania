@@ -11,6 +11,7 @@ public:
 
 	bool isFrozen;
 	bool isDie;
+	bool isHitted;
 
 	bool isUntouchable;
 	DWORD untouchable_start;

@@ -42,7 +42,8 @@ public:
 	bool isOnStair;
 	bool isLeftToRight;
 	bool isHurt;
-
+	bool isUntouchable;
+	bool isUseWhip;
 	int ny;
 
 	DWORD attackTime;
@@ -52,7 +53,8 @@ public:
 	int preHP;
 	int hp;
 	bool isLevelUp;
-
+	bool willHurt;
+	bool transparent;
 	static int score;
 	static int heartsAmount;
 	int currentWeapon;
@@ -77,7 +79,7 @@ public:
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void StartUntouchable() { isUntouchable = true; untouchable_start = GetTickCount(); }
 
 	void Reset();
 	void Load(LPCWSTR simonFile);
@@ -89,8 +91,6 @@ public:
 	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
-
-	void Hurted(int damage);
 
 	void SetPosition(float x, float y);
 
@@ -104,6 +104,8 @@ public:
 	int GetLife() { return life; }
 	int GetHP() { return preHP; }
 	int GetHeart() { return heartsAmount; }
+
+	void ResetAnimationAttack();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

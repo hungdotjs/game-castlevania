@@ -5,6 +5,30 @@ Item::Item()
 	this->appearTime = GetTickCount();
 }
 
+void Item::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents)
+{
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (!dynamic_cast<Candle*>(coObjects->at(i)) &&
+			!dynamic_cast<Torch*>(coObjects->at(i)) &&
+			!dynamic_cast<CheckStair*>(coObjects->at(i)) &&
+			!dynamic_cast<Enemy*>(coObjects->at(i)) &&
+			!dynamic_cast<Item*>(coObjects->at(i))
+			)
+		{
+			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+
+			if (e->t > 0 && e->t <= 1.0f)
+				coEvents.push_back(e);
+			else
+				delete e;
+		}
+	}
+
+	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+}
+
+
 void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 

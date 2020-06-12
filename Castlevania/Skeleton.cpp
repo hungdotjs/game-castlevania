@@ -1,4 +1,5 @@
 #include "Skeleton.h"
+#include "Simon.h"
 
 void Skeleton::SetState(int state)
 {
@@ -7,7 +8,14 @@ void Skeleton::SetState(int state)
 	switch (state)
 	{
 	case SKELETON_STATE_WALKING:
-		vx = SKELETON_WALKING_SPEED;
+		if (nx < 0) {
+			vx = -SKELETON_WALKING_SPEED;
+		}
+		else {
+			vx = SKELETON_WALKING_SPEED;
+		}
+		vy = -SKELETON_JUMPING_SPEED;
+		break;
 	}
 }
 
@@ -38,7 +46,9 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 
-		float min_tx, min_ty, nx = 0, ny, rdx, rdy;
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
@@ -57,42 +67,24 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (ny != 0) vy = 0;
 
-				if (e->nx != 0)
-				{
-					x = x + 15;
-					vx = -vx;
-				}
-
 			}
 		}
 	}
-	if (x > 1320)
-	{
-		vx = -vx;
-		x = x - 20;
-		old_cordinate = x;
-	}
-	else
-		if (abs(old_cordinate - x) > 30 && abs(old_cordinate - x) < 50)
-		{
-			int i = rand() % (2);
-			if (i == 0)
-				vx = -vx;
-			else
-				vx = vx;
-			old_cordinate = x;
-		}
 
-
-
+	
 }
 
 void Skeleton::Render()
 {
 	int ani = 0;
+	if (nx < 0) {
+		ani = SKELETON_ANI_WALKING_LEFT;
+	}
+	else {
+		ani = SKELETON_ANI_WALKING_RIGHT;
+	}
+	animation_set->at(ani)->Render(x, y);
 
-	animation_set->at(0)->Render(x, y);
-
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 

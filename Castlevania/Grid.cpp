@@ -23,7 +23,6 @@ void GridObjects::RemoveObject(int i)
 
 ListGrids* ListGrids::instance = NULL;
 
-#define GRID_WIDTH	(SCREEN_WIDTH / 5)
 
 void ListGrids::InitList(float mapWidth)
 {
@@ -132,7 +131,7 @@ vector<GridObjects*> ListGrids::GetCurrentGrids(float cam_x)
 
 	if (gridNumber + 1 < listGrids.size())
 		result.push_back(listGrids[gridNumber + 1]);
-	DebugOut(L"[GRID] Current grid: %d\n", gridNumber);
+	//DebugOut(L"[GRID] Current grid: %d\n", gridNumber);
 	return result;
 }
 

@@ -14,13 +14,14 @@ public:
 		SetAnimationSet(ani_set);
 
 		if (nx > 0)
-			vx = ENEMY_BULLET_SPEED;
+			vx = BONE_SPEED_X;
 		else
-			vx = -ENEMY_BULLET_SPEED;
-		vy = -0.8f;
+			vx = -BONE_SPEED_X;
+		vy = -BONE_SPEED_Y;
 	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
 };
 
