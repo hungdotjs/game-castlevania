@@ -40,7 +40,9 @@ void ListGrids::InitList(float mapWidth)
 
 void ListGrids::ReleaseList()
 {
-	vector<LPGAMEOBJECT> listRemoveObjects;
+	listGrids.clear();
+
+	/*vector<LPGAMEOBJECT> listRemoveObjects;
 
 	int listGridSize = listGrids.size();
 	for (int i = 0; i < listGridSize; i++)
@@ -62,9 +64,9 @@ void ListGrids::ReleaseList()
 	for (int i = 0; i < listGrids.size(); )
 	{
 		GridObjects* grid = listGrids[i];
-		RemoveGrid(0);
+		RemoveGrid(i);
 		delete grid;
-	}
+	}*/
 }
 
 void ListGrids::RemoveGrid(int i)
@@ -82,8 +84,8 @@ void ListGrids::AddObject(LPGAMEOBJECT object)
 
 	int gridNumber = floor(objectX / GRID_WIDTH);
 	// Tránh trường hợp vật ra khỏi map
-	if (gridNumber == this->listGrids.size())
-		gridNumber = this->listGrids.size() - 1;
+	if (gridNumber == listGrids.size())
+		gridNumber = listGrids.size() - 1;
 
 	object->gridNumber = gridNumber;
 	listGrids[gridNumber]->AddObject(object);

@@ -402,6 +402,7 @@ void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
+
 	scenes[current_scene]->Unload();
 
 	current_scene = scene_id;

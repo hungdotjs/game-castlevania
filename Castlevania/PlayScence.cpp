@@ -250,8 +250,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	//objects.push_back(obj);
 	listGrids->AddObject(obj);
+
+	DebugOut(L"[OBJECT] Load object %d!\n", object_type);
+
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -482,36 +485,8 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				enemy->isHitted = false;
 			}
 		}
-		if (dynamic_cast<Knight*>(objects.at(i)))
-		{
-			Knight* knight = dynamic_cast<Knight*>(objects.at(i));
 
-			if (knight->isHitted && knight->health == 0) {
-				Effect* effect = new Effect();
-				effect->SetPosition(knight->x + KNIGHT_BBOX_WIDTH / 2, knight->y + KNIGHT_BBOX_HEIGHT / 2);
-				player->AddScore(100);
-				objects.push_back(effect);
-				listRemoveObjects.push_back(knight);
-			}
 
-		}
-		else if (dynamic_cast<Fleaman*>(objects.at(i)))
-		{
-			Fleaman* fleaman = dynamic_cast<Fleaman*>(objects.at(i));
-
-			if (fleaman->isHitted && fleaman->health == 0) {
-				float x, y, r, b;
-				fleaman->GetBoundingBox(x, y, r, b);
-
-				Effect* effect = new Effect();
-				effect->SetPosition(r / 2, b / 2);
-				objects.push_back(effect);
-
-				player->AddScore(100);
-				listRemoveObjects.push_back(fleaman);
-			}
-
-		}
 		else if (dynamic_cast<Bat*>(objects.at(i)))
 		{
 			Bat* bat = dynamic_cast<Bat*>(objects.at(i));
@@ -533,13 +508,15 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				torch->GetBoundingBox(torch_x, torch_y, torch_right, torch_bottom);
 
 				Effect* effect = new Effect();
-				effect->SetPosition(torch->x + BAT_BBOX_WIDTH / 2, torch->y + BAT_BBOX_HEIGHT / 2);
+				effect->SetPosition(torch_x + TORCH_BBOX_WIDTH / 2, torch_y + TORCH_BBOX_HEIGHT / 2);
 				objects.push_back(effect);
+				listGrids->AddObject(effect);
 
 				Item* item = new Item();
 				item->SetPosition(torch_x, torch_y);
 				item->SetSpeed(0, -0.1);
 				objects.push_back(item);
+				listGrids->AddObject(item);
 
 				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 				LPANIMATION_SET ani_set;
@@ -669,14 +646,9 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 */
 void CPlayScene::Unload()
 {
-	/*for (int i = 1; i < objects.size(); i++)
-	{
-		delete objects[i];
-	}*/
+	//player = NULL;
 
-	player = NULL;
-
-	//objects.clear();
+	objects.clear();
 
 	listGrids->ReleaseList();
 

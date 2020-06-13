@@ -1,6 +1,6 @@
 #include "Bat.h"
 
-Bat::Bat(float x, float y) : CGameObject()
+Bat::Bat(float x, float y)
 {
 	SetState(BAT_STATE_IDLE);
 	start_x = x;
@@ -19,7 +19,7 @@ void Bat::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void Bat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	x += dx;
 	y += dy;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Enemy.h"
 #include "Simon.h"
 
 #define BAT_FLY_SPEED			0.05f
@@ -15,7 +16,7 @@
 #define BAT_ANI_FLYING_RIGHT	1
 #define BAT_ANI_FLYING_LEFT	2
 
-class Bat : public CGameObject
+class Bat : public Enemy
 {
 public:
 	bool isHitted;

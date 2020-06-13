@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Enemy.h"
 #include "GameObject.h"
 
 #define KNIGHT_WALKING_SPEED 0.03f;
@@ -12,7 +12,7 @@
 #define KNIGHT_ANI_WALKING_RIGHT	0
 #define KNIGHT_ANI_WALKING_LEFT		1
 
-class Knight : public CGameObject
+class Knight : public Enemy
 {
 public:
 	float minX, maxX;

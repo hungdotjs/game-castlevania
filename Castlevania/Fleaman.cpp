@@ -7,7 +7,7 @@ Fleaman::Fleaman(float x, float y)
 	start_y = y;
 	this->x = x;
 	this->y = y;
-	health = 1;
+	health = 2;
 	lastTimeAttack = 0;
 }
 

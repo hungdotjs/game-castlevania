@@ -20,6 +20,7 @@ protected:
 	Simon* player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
+	//vector<LPGAMEOBJECT> coObjects;
 
 	vector<int> arrTexturesID;
 	vector<int> arrSpritesID;

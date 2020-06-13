@@ -28,6 +28,9 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
+		float cbl, cbr, cbt, cbb;
+		coObjects->at(i)->GetBoundingBox(cbl, cbt, cbr, cbb);
+
 		if (dynamic_cast<Bat*>(coObjects->at(i)))
 		{
 			Bat* bat = dynamic_cast<Bat*>(coObjects->at(i));
@@ -243,10 +246,10 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				}
 			}
 		}
-
 		// Simon se khong va cham voi nhung vat sau:
 		else if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
 			!dynamic_cast<Candle*>(coObjects->at(i)) &&
+			!dynamic_cast<Item*>(coObjects->at(i)) &&
 			!dynamic_cast<Enemy*>(coObjects->at(i))
 			)
 		{
@@ -259,11 +262,43 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		}
 
 		if (!isDead) {
-			if (dynamic_cast<Enemy*>(coObjects->at(i)) && !isUntouchable)
+			if (dynamic_cast<Item*>(coObjects->at(i)))
 			{
-				float cbl, cbr, cbt, cbb;
+				Item* item = dynamic_cast<Item*>(coObjects->at(i));
+
 				float sl, sr, st, sb;
-				coObjects->at(i)->GetBoundingBox(cbl, cbt, cbr, cbb);
+				GetBoundingBox(sl, st, sr, sb);
+
+				if (sl < cbr && sr > cbl && st < cbb && sb > cbt)
+				{
+					item->SetEaten();
+
+					int type = item->GetType();
+					switch (type)
+					{
+					case ITEM_MINIHEART:
+						AddHeart(1);
+						break;
+					case ITEM_HEART:
+						AddHeart(5);
+						break;
+					case ITEM_WHIP:
+						whip->UpLevel();
+						break;
+					case ITEM_KNIFE:
+						SetCurrentWeapon(ITEM_KNIFE);
+						break;
+					case ITEM_MONEY:
+						AddScore(1000);
+						break;
+					}
+
+				}
+				
+			}
+			else if (dynamic_cast<Enemy*>(coObjects->at(i)) && !isUntouchable)
+			{
+				float sl, sr, st, sb;
 				GetBoundingBox(sl, st, sr, sb);
 
 				if (sl < cbr && sr > cbl && st < cbb && sb > cbt)
@@ -468,31 +503,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 
-			else if (dynamic_cast<Item*>(e->obj))
-			{
-				Item* item = dynamic_cast<Item*>(e->obj);
-				item->SetEaten();
-
-				int type = item->GetType();
-				switch (type)
-				{
-				case ITEM_MINIHEART:
-					AddHeart(1);
-					break;
-				case ITEM_HEART:
-					AddHeart(5);
-					break;
-				case ITEM_WHIP:
-					whip->UpLevel();
-					break;
-				case ITEM_KNIFE:
-					SetCurrentWeapon(ITEM_KNIFE);
-					break;
-				case ITEM_MONEY:
-					AddScore(1000);
-					break;
-				}
-			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
