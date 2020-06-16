@@ -14,6 +14,11 @@
 #define ITEM_MONEY						302
 #define ITEM_KNIFE						303
 #define ITEM_MINIHEART					304
+#define ITEM_AXE						305
+#define ITEM_HOLYWATER					306
+#define ITEM_CROSS						307
+#define ITEM_CLOCK						308
+
 
 // Heart
 #define HEART_BBOX_WIDTH				12

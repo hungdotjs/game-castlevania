@@ -141,12 +141,15 @@
 //bone
 #define BONE_BBOX_WIDTH			15
 #define BONE_BBOX_HEIGHT		15
-#define BONE_GRAVITY 0.0007f
-#define BONE_DAMAGE 1
-#define BONE_SPEED_Y	0.25f
-#define BONE_SPEED_X	0.1f
-#define BONE_STATE_DIE 0
-#define BONE_STATE_FLY 1
+#define BONE_GRAVITY		0.0007f
+#define BONE_DAMAGE			1
+#define BONE_SPEED_Y		0.25f
+#define BONE_SPEED_X		0.1f
+#define BONE_STATE_DIE		0
+#define BONE_STATE_FLY		1
+
+#define WEAPON_ACTIVATE_TIME			300
+
 
 using namespace std;
 

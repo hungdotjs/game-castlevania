@@ -602,6 +602,15 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				listRemoveObjects.push_back(candle);
 			}
 		}
+		else if (dynamic_cast<Weapon*>(objects.at(i)))
+		{
+			Weapon* weapon = dynamic_cast<Weapon*>(objects.at(i));
+
+			if (weapon->isExposed)
+			{
+				listRemoveObjects.push_back(weapon);
+			}
+		}
 		else if (dynamic_cast<Item*>(objects.at(i)))
 		{
 			Item* item = dynamic_cast<Item*>(objects.at(i));
@@ -641,6 +650,7 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 	}
 }
 
+
 /*
 	Unload current scene
 */
@@ -667,6 +677,7 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	CGame* game = CGame::GetInstance();
 	Simon* simon = ((CPlayScene*)scence)->GetPlayer();
 
 	// Chet
@@ -679,8 +690,29 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
 
+	case DIK_1:
+		simon->currentWeapon = ITEM_KNIFE;
+		((CPlayScene*)scence)->GenerateWeapon();
+		break;
+
+	case DIK_2:
+		simon->currentWeapon = ITEM_AXE;
+		((CPlayScene*)scence)->GenerateWeapon();
+		break;
+
 	case DIK_A: // Danh
-		if (simon->isAttack == false) {
+		if (game->IsKeyDown(DIK_UP))
+		{
+			if (simon->isAttack == false && simon->currentWeapon != 0)
+			{
+				if (simon->heartsAmount > 0)
+				{
+					simon->heartsAmount -= 1;
+					((CPlayScene*)scence)->GenerateWeapon();
+				}
+			}
+		}
+		else if (simon->isAttack == false) {
 			simon->ResetAnimationAttack();
 			simon->SetAction(SIMON_ACTION_ATTACK);
 			simon->isUseWhip = true;
@@ -837,4 +869,92 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			simon->nx = -1;
 	}
 
+}
+
+void CPlayScene::GenerateWeapon() {
+	int nx = player->nx;
+
+	player->SetAction(SIMON_ACTION_ATTACK);
+	player->isUseWhip = false;
+
+	switch (player->currentWeapon)
+	{
+	case ITEM_KNIFE:
+		weapon = new Knife(player, SCREEN_WIDTH);
+		weapon->nx = nx;
+		if (nx > 0)
+		{
+			weapon->SetSpeed(KNIFE_SPEED, 0);
+		}
+		else if (nx < 0)
+		{
+			weapon->SetSpeed(-KNIFE_SPEED, 0);
+		}
+
+		weapon->SetPosition(player->x, player->y);
+		weapon->firstCast = GetTickCount();
+		listGrids->AddObject(weapon);
+		break;
+
+	case ITEM_AXE:
+		weapon = new Axe(player);
+		weapon->nx = nx;
+
+		if (nx > 0)
+		{
+			weapon->SetSpeed(AXE_SPEED_X, -AXE_SPEED_Y);
+		}
+		else if (nx < 0)
+		{
+			weapon->SetSpeed(-AXE_SPEED_X, -AXE_SPEED_Y);
+		}
+
+		weapon->SetPosition(player->x, player->y);
+		weapon->firstCast = GetTickCount();
+		listGrids->AddObject(weapon);
+		break;
+
+		//case ITEM_HOLYWATER:
+		//	weapon = new HolyWater(simon);
+
+		//	if (nx > 0)
+		//	{
+		//		weapon->SetSpeed(HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+		//	}
+		//	else if (nx < 0)
+		//	{
+		//		weapon->SetSpeed(-HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+		//	}
+
+		//	weapon->AddAnimation(WEAPON_ANI_HOLYWATER);
+		//	weapon->AddAnimation(WEAPON_ANI_HOLYWATER_FIRE);
+		//	weapon->SetPosition(simon->x, simon->y);
+		//	weapon->firstCast = GetTickCount();
+		//	listGrids->AddObject(weapon);
+		//	break;
+
+	case ITEM_CROSS:
+		weapon = new Cross(player, 2 * SCREEN_WIDTH / 5);
+		weapon->nx = nx;
+
+		if (nx > 0)
+		{
+			weapon->SetSpeed(CROSS_SPEED, 0);
+		}
+		else if (nx < 0)
+		{
+			weapon->SetSpeed(-CROSS_SPEED, 0);
+		}
+
+		weapon->SetPosition(player->x, player->y);
+		weapon->firstCast = GetTickCount();
+		listGrids->AddObject(weapon);
+		break;
+
+		//case ITEM_CLOCK:
+		//	isClockWeaponUsed = true;
+		//	clockWeaponCast = GetTickCount();
+		//	break;
+		//}
+	}
 }

@@ -1,32 +1,31 @@
 ﻿#pragma once
 
-#include "Utils.h"
-#include "GameObject.h"
-#include "Item.h"
-
+#include "Torch.h"
+#include "Candle.h"
+#include "CheckStair.h"
+#include "Simon.h"
 
 class Weapon : public CGameObject
 {
-protected:
-	bool isFinish;
-	DWORD LastTimeAttack; // Thời điểm tấn công cuối cùng
 
 public:
-	Weapon();
-	~Weapon();
+	float max_width;
+	float max_x;
+	Simon* simon;
 
-	int GetDirection();
-	void SetDirection(int Direction);
+	bool isExposed;
+	bool isActivate;
+	DWORD firstCast;
 
-	virtual void Attack(float X, float Y, int Direction);
+	Weapon() {}
 
+	Weapon(Simon* simon, float max_width = SCREEN_WIDTH)
+	{
+		this->simon = simon;
+		this->max_width = max_width;
+	}
 
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
-	virtual bool isCollision(CGameObject* obj); // kiểm tra vũ khí này có va chạm với object kia hay không?
-	virtual void RenderIcon(float X, float Y) = 0;
-	bool GetFinish();
-
-	void SetFinish(bool b);
-
-	DWORD GetLastTimeAttack();
 };
+

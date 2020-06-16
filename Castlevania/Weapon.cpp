@@ -1,61 +1,42 @@
 ﻿#include "Weapon.h"
 
-
-
-Weapon::Weapon()
+void Weapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	isFinish = 1;
-}
+	if (!isActivate)
+	{
+		if (GetTickCount() - firstCast > WEAPON_ACTIVATE_TIME)
+		{
+			float x = simon->x;
+			float y = simon->y;
+			if (simon->isSit)
+				y += 10;
 
+			nx = simon->nx;
 
-Weapon::~Weapon()
-{
-}
+			if (nx > 0)
+			{
+				this->max_x = x + max_width;
+			}
+			else if (nx < 0)
+			{
+				this->max_x = x - max_width;
+			}
 
-void Weapon::Attack(float X, float Y, int Direction)
-{
-	this->x = X;
-	this->y = Y;
-	this->nx = Direction;
-	isFinish = false; // chưa kết thúc
+			SetPosition(x, y + 10);
 
-
-	LastTimeAttack = GetTickCount(); // lưu lại thời điểm lúc vừa tấn công, làm đánh dấu tránh 1 hit đánh nhiều lần cho các object, có health >1.
+			isActivate = true;
+		}
+	}
 }
 
 void Weapon::Render()
 {
-	if (isFinish)
-		return;
+	if (isActivate)
+	{
+		if (nx > 0)
+			animation_set->at(0)->Render(x, y);
+		else
+			animation_set->at(1)->Render(x, y);
 
-	RenderBoundingBox();
-}
-
-
-bool Weapon::isCollision(CGameObject* obj)
-{
-	if (isFinish == true)
-		return false;
-
-	// dt, dx, dy đã update 
-	if (obj->GetHealth() <= 0) // vật này die rồi thì ko va chạm
-		return false;
-	return isCollitionObjectWithObject(obj);
-}
-
-
-
-bool Weapon::GetFinish()
-{
-	return isFinish;
-}
-
-void Weapon::SetFinish(bool b)
-{
-	isFinish = b;
-}
-
-DWORD Weapon::GetLastTimeAttack()
-{
-	return LastTimeAttack;
+	}
 }

@@ -78,6 +78,10 @@ public:
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
+	void SetAnimationSet(int ani_id) { 
+		LPANIMATION_SET ani_set = CAnimationSets::GetInstance()->Get(ani_id);
+		animation_set = ani_set; 
+	}
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);

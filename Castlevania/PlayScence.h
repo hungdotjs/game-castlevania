@@ -12,6 +12,10 @@
 #include "Board.h"
 #include "Effect.h"
 #include "EffectWhip.h"
+#include "Weapon.h"
+#include "Knife.h"
+#include "Axe.h"
+#include "Cross.h"
 
 
 class CPlayScene : public CScene
@@ -37,6 +41,7 @@ protected:
 public:
 	Map* map;
 	Board* board;
+	Weapon* weapon;
 	DWORD gameTime = 300000;
 	int stage;
 	ListGrids* listGrids;
@@ -50,7 +55,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 	void RemoveObjects(vector<LPGAMEOBJECT>& coObjects);
-
+	void GenerateWeapon();
 	Simon* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;
