@@ -10,7 +10,7 @@
 #include "Fleaman.h"
 #include "Knight.h"
 
-#define GRID_WIDTH	(SCREEN_WIDTH / 3)
+#define GRID_WIDTH	(SCREEN_WIDTH / 2)
 
 
 using namespace std;

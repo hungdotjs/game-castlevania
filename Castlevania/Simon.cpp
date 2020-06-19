@@ -111,7 +111,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 						vx = 0;
 						vy = 0;
 
-						SetPosition(csl - SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
+						SetPosition(csl + SIMON_BBOX_WIDTH / 2, cst - SIMON_BBOX_HEIGHT / 2);
 
 						SetState(SIMON_STATE_ONSTAIR_IDLE);
 
@@ -228,12 +228,12 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 						vx = 0;
 						vy = 0;
-						SetPosition(csl - SIMON_BBOX_WIDTH / 2, csb);
+						SetPosition(csl + SIMON_BBOX_WIDTH / 2, csb);
 
 						SetState(SIMON_STATE_ONSTAIR_IDLE);
 
 
-						isLeftToRight = true;
+						isLeftToRight = false;
 						isOnStair = true;
 						isOnCheckStairDown = false;
 

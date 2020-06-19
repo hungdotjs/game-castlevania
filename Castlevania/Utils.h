@@ -31,6 +31,7 @@
 #define MAP_2_WIDTH		240
 #define MAP_3_WIDTH		512
 #define MAP_4_WIDTH		768
+#define MAP_5_WIDTH		768
 
 
 #define SCENE_SECTION_UNKNOWN			-1
@@ -126,6 +127,25 @@
 #define ENEMY_BULLET_BBOX_HEIGHT		10
 
 #define ENEMY_BULLET_SPEED				0.2f
+
+//Ghost
+#define GHOST_HP					2
+#define GHOST_DAMAGE				1
+#define GHOST_DISTANCE_ATTACK_X		100
+#define GHOST_DISTANCE_WAITING_X	30
+
+#define GHOST_STATE_DIE			0
+#define GHOST_STATE_HIDE		1
+#define GHOST_STATE_FLYING		2
+#define GHOST_STATE_WAITTING	3
+
+#define GHOST_BBOX_WIDTH		16
+#define GHOST_BBOX_HEIGHT		16
+
+#define GHOST_ANI_FLYING_LEFT	0
+#define GHOST_ANI_FLYING_RIGHT	1
+
+#define GHOST_FLYING_SPEED_X	0.04
 
 //Skeleton
 #define SKELETON_BBOX_WIDTH				16

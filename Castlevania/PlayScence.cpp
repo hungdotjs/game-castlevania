@@ -14,6 +14,7 @@
 #include "CheckStairTop.h"
 #include "Fleaman.h"
 #include "Skeleton.h"
+#include "Ghost.h"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_WHIP			11
 #define OBJECT_TYPE_FLEAMAN			14
 #define OBJECT_TYPE_SKELETON		18
+#define OBJECT_TYPE_GHOST			28
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -140,6 +142,8 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 	arrAnimationSetsID.push_back(ani_set_id);
 
+	DebugOut(L"[ANIMATION] Load animation  set id: %d\n", ani_set_id);
+
 }
 
 /*
@@ -147,23 +151,6 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
-	if (listGrids->isEmpty()) {
-		int stage = CGame::GetInstance()->GetCurrentStage();
-		switch (stage)
-		{
-		case 1:
-			listGrids->InitList(MAP_1_WIDTH);
-		case 2:
-			listGrids->InitList(MAP_2_WIDTH);
-		case 3:
-			listGrids->InitList(MAP_3_WIDTH);
-		case 4:
-			listGrids->InitList(MAP_4_WIDTH);
-		default:
-			break;
-		}
-	}
-
 	vector<string> tokens = split(line);
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
@@ -216,6 +203,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
+	case OBJECT_TYPE_GHOST: obj = new Ghost(x, y); break;
 	case OBJECT_TYPE_SKELETON:
 		obj = new Skeleton();
 		break;
@@ -253,7 +241,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//objects.push_back(obj);
 	listGrids->AddObject(obj);
 
-	DebugOut(L"[OBJECT] Load object %d!\n", object_type);
+	DebugOut(L"[OBJECT] Load object %d\n", object_type);
 
 }
 
@@ -272,6 +260,25 @@ void CPlayScene::_ParseSection_MAP(string line)
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+
+	if (listGrids->isEmpty()) {
+		int stage = CGame::GetInstance()->GetCurrentStage();
+		switch (stage)
+		{
+		case 1:
+			listGrids->InitList(MAP_1_WIDTH);
+		case 2:
+			listGrids->InitList(MAP_2_WIDTH);
+		case 3:
+			listGrids->InitList(MAP_3_WIDTH);
+		case 4:
+			listGrids->InitList(MAP_4_WIDTH);
+		case 5:
+			listGrids->InitList(MAP_5_WIDTH);
+		default:
+			break;
+		}
+	}
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -321,7 +328,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
