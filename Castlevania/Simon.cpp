@@ -288,6 +288,9 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					case ITEM_KNIFE:
 						SetCurrentWeapon(ITEM_KNIFE);
 						break;
+					case ITEM_AXE:
+						SetCurrentWeapon(ITEM_AXE);
+						break;
 					case ITEM_MONEY:
 						AddScore(1000);
 						break;

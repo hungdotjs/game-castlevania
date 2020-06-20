@@ -12,7 +12,6 @@
 
 #define GRID_WIDTH	(SCREEN_WIDTH / 2)
 
-
 using namespace std;
 
 class GridObjects

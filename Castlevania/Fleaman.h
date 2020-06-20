@@ -5,6 +5,7 @@
 #include "Brick.h"
 #include "Enemy.h"
 
+#define FLEAMAN_HEALTH				1
 #define FLEAMAN_FLY_SPEED_Y			0.2f
 #define FLEAMAN_FLY_SPEED_X			0.1f
 

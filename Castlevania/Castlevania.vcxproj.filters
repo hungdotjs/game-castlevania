@@ -82,6 +82,9 @@
     <Filter Include="Object\Enemy\Ghost">
       <UniqueIdentifier>{c8fd337b-b513-426c-9ca9-da8dd6eb1b11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Enemy\Raven">
+      <UniqueIdentifier>{cb9d7e49-c4d3-4eb1-9fa7-b4a9570882bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -190,6 +193,9 @@
     <ClCompile Include="Ghost.cpp">
       <Filter>Object\Enemy\Ghost</Filter>
     </ClCompile>
+    <ClCompile Include="Raven.cpp">
+      <Filter>Object\Enemy\Raven</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -296,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="Ghost.h">
       <Filter>Object\Enemy\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven.h">
+      <Filter>Object\Enemy\Raven</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

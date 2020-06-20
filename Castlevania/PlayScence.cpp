@@ -15,6 +15,7 @@
 #include "Fleaman.h"
 #include "Skeleton.h"
 #include "Ghost.h"
+#include "Raven.h"
 
 using namespace std;
 
@@ -47,6 +48,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_FLEAMAN			14
 #define OBJECT_TYPE_SKELETON		18
 #define OBJECT_TYPE_GHOST			28
+#define OBJECT_TYPE_RAVEN			32
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -204,6 +206,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
 	case OBJECT_TYPE_GHOST: obj = new Ghost(x, y); break;
+	case OBJECT_TYPE_RAVEN: obj = new Raven(); break;
 	case OBJECT_TYPE_SKELETON:
 		obj = new Skeleton();
 		break;
@@ -382,6 +385,13 @@ void CPlayScene::Update(DWORD dt)
 				if (dynamic_cast<Skeleton*>(coObjects.at(i)))
 				{
 					Skeleton* skeleton = dynamic_cast<Skeleton*>(coObjects.at(i));
+
+					if (skeleton->x < player->x) {
+						skeleton->nx = 1;
+					}
+					else
+						skeleton->nx = -1;
+
 					int nx = skeleton->nx;
 					if (GetTickCount() - skeleton->timer > 2000)
 					{
