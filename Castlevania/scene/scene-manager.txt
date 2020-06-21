@@ -11,3 +11,4 @@ start	5
 3	scene\\scene3.txt
 4	scene\\scene4.txt
 5	scene\\scene5.txt
+6	scene\\scene6.txt

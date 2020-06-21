@@ -58,7 +58,8 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
 
 					Simon::score += 100;
-					enemy->isDie = true;
+					enemy->isHitted = true;
+					enemy->health -= 1;
 
 				}
 				else if (dynamic_cast<Torch*>(e->obj))

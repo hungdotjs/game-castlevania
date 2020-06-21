@@ -32,6 +32,7 @@
 #define MAP_3_WIDTH		512
 #define MAP_4_WIDTH		768
 #define MAP_5_WIDTH		768
+#define MAP_6_WIDTH		768
 
 
 #define SCENE_SECTION_UNKNOWN			-1
@@ -169,6 +170,57 @@
 #define BONE_STATE_FLY		1
 
 #define WEAPON_ACTIVATE_TIME			300
+
+
+#define ITEM_GRAVITY		0.002f
+
+// Item
+#define ITEM_WHIP						300
+#define ITEM_HEART						301
+#define ITEM_MONEY						302
+#define ITEM_KNIFE						303
+#define ITEM_MINIHEART					304
+#define ITEM_AXE						305
+#define ITEM_CROSS						306
+#define ITEM_HOLYWATER					307
+#define ITEM_CLOCK						308
+
+
+// Heart
+#define HEART_BBOX_WIDTH				12
+#define HEART_BBOX_HEIGHT				10
+
+// Mini heart
+#define MINIHEART_BBOX_WIDTH			8
+#define MINIHEART_BBOX_HEIGHT			8
+
+// Whip item
+#define WHIPITEM_BBOX_WIDTH				16
+#define WHIPITEM_BBOX_HEIGHT			16
+
+// Knife
+#define KNIFE_BBOX_WIDTH				16
+#define KNIFE_BBOX_HEIGHT				9
+
+// Money
+#define MONEY_BBOX_WIDTH				15
+#define MONEY_BBOX_HEIGHT				15
+
+#define ITEM_LIVE_TIME					5000
+
+// Axe
+#define AXE_BBOX_WIDTH					15
+#define AXE_BBOX_HEIGHT					15
+
+#define AXE_SPEED_X						0.15f
+#define AXE_SPEED_Y						0.45f
+
+// Holy water
+#define HOLYWATER_BBOX_WIDTH			16
+#define HOLYWATER_BBOX_HEIGHT			16
+
+#define HOLYWATER_SPEED_X				0.15f
+#define HOLYWATER_SPEED_Y				0.45f
 
 
 using namespace std;

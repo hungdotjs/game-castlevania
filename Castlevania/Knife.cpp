@@ -50,7 +50,8 @@ void Knife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 					Simon::score += 100;
-					enemy->isDie = true;
+					enemy->isHitted = true;
+					enemy->health -= 1;
 
 
 					this->isExposed = true;

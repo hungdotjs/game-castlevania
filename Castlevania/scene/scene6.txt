@@ -2,7 +2,7 @@
 [TEXTURES]
 20	textures\misc.png	116	116	116
 30	textures\\enemies.png	116	116	116
-100	textures\map\map_5_bank.png	255	255	255
+100	textures\map\map_6_bank.png	255	255	255
 90	textures\brick_3.png	0	0	255
 80	textures\bbox.png	255	255	255
 
@@ -201,9 +201,6 @@
 
 # =============== RAVEN =============
 32	272	108	32
-32	416	156	32
-32	480	124	32
-32	528	236	32
 
 #================= BRICK =================
 # --- platform (hint: I created the list using Excel!) ----
@@ -298,7 +295,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	752	172	1	754	176	6
+#50	80	76	1	86	80	1
 
 # ================= CHECK STAIR =============
 # type	x	y	ani_set_id	type_checkstair
@@ -314,4 +311,4 @@
 4	624	220	4	0
 
 [MAP]
-textures\map\map_5.txt
+textures\map\map_6.txt

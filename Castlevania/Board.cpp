@@ -16,24 +16,24 @@ void Board::Initialize(LPDIRECT3DDEVICE9 d3ddv, Simon* simon)
 {
 	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(ID_TEX_MISC);
 
-	this->heart = new CSprite(100000, 29, 6, 41, 16, tex);
-	this->redRect = new CSprite(100001, 153, 74, 185, 96, tex);
-	this->axe = new CSprite(100002, 18, 18, 33, 32, tex);
-	this->holyWater = new CSprite(100003, 35, 18, 51, 34, tex);
-	this->cross = new CSprite(100004, 69, 19, 84, 33, tex);
-	this->knife = new CSprite(100005, 1, 22, 17, 31, tex);
-	this->stopWatch = new CSprite(100006, 104, 18, 119, 34, tex);
+	heart = new CSprite(100000, 29, 6, 41, 16, tex);
+	redRect = new CSprite(100001, 153, 74, 185, 96, tex);
+	axe = new CSprite(100002, 18, 18, 33, 32, tex);
+	holyWater = new CSprite(100003, 35, 18, 51, 34, tex);
+	cross = new CSprite(100004, 69, 19, 84, 33, tex);
+	knife = new CSprite(100005, 1, 22, 17, 31, tex);
+	stopWatch = new CSprite(100006, 104, 18, 119, 34, tex);
+	noHP = new CSprite(100007, 28, 84, 32, 92, tex);
 
 	for (int i = 0; i < 16; i++)
 	{
-		CSprite* sprite = new CSprite(100007, 8, 84, 12, 92, tex);
-
+		CSprite* sprite = new CSprite(100008, 8, 84, 12, 92, tex);
 		simonHPList.push_back(sprite);
 	}
 
 	for (int i = 0; i < 16; i++)
 	{
-		CSprite* sprite = new CSprite(100008, 18, 84, 22, 92, tex);
+		CSprite* sprite = new CSprite(100009, 18, 84, 22, 92, tex);
 		enemyHPList.push_back(sprite);
 	}
 
@@ -94,6 +94,12 @@ void Board::Render(float x, float y, Simon* simon)
 	{
 		simonHPList[i]->Draw(x + 60 + 5 * i, 60);
 	}
+
+	for (int i = 0; i < 16 - simon->preHP; i++)
+	{
+		noHP->Draw(x + 135 - 5 * i, 60);
+	}
+
 	for (int i = 0; i < enemyHPList.size(); i++)
 	{
 		enemyHPList[i]->Draw(x + 60 + 5 * i, 70);
@@ -110,9 +116,22 @@ void Board::Render(float x, float y, Simon* simon)
 			case ITEM_KNIFE:
 				knife->Draw(x + SCREEN_WIDTH / 2, 65);
 				break;
+			case ITEM_AXE:
+				axe->Draw(x + SCREEN_WIDTH / 2, 65);
+				break;
+			case ITEM_HOLYWATER:
+				holyWater->Draw(x + SCREEN_WIDTH / 2, 65);
+				break;
+			case ITEM_CROSS:
+				cross->Draw(x + SCREEN_WIDTH / 2, 65);
+				break;
+			case ITEM_CLOCK:
+				stopWatch->Draw(x + SCREEN_WIDTH / 2, 65);
+				break;
 			}
 		}
 	}
+
 }
 
 

@@ -16,6 +16,7 @@
 #include "Knife.h"
 #include "Axe.h"
 #include "Cross.h"
+#include "HolyWater.h"
 
 
 class CPlayScene : public CScene

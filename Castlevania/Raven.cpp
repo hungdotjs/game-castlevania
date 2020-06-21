@@ -14,7 +14,7 @@ void Raven::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	Enemy::Update(dt, coObjects);
-	
+
 	x += dx;
 	y += dy;
 
@@ -46,10 +46,11 @@ void Raven::Render()
 	{
 		ani = RAVEN_ANI_FLYING_RIGHT;
 	}
-	if (nx < 0)
+	else if (nx < 0)
 	{
 		ani = RAVEN_ANI_FLYING_LEFT;
 	}
+
 
 	animation_set->at(ani)->Render(x, y);
 
@@ -71,20 +72,20 @@ void Raven::SetState(int state)
 		break;
 	case RAVEN_STATE_FLY:
 		if (x < simonX) {
-			vx = RAVEN_FLYING_SPEED;
+			vx = RAVEN_FLYING_SPEED_X;
 			nx = 1;
 		}
 		else {
 			nx = -1;
-			vx = -RAVEN_FLYING_SPEED;
+			vx = -RAVEN_FLYING_SPEED_X;
 
 		}
 
 		if (y < simonY) {
-			vy = RAVEN_FLYING_SPEED;
+			vy = RAVEN_FLYING_SPEED_Y;
 		}
 		else {
-			vy = -RAVEN_FLYING_SPEED;
+			vy = -RAVEN_FLYING_SPEED_Y;
 		}
 		break;
 	}

@@ -6,41 +6,6 @@
 #include "CheckStair.h"
 #include "Enemy.h"
 
-#define ITEM_GRAVITY		0.002f
-
-// Item
-#define ITEM_WHIP						300
-#define ITEM_HEART						301
-#define ITEM_MONEY						302
-#define ITEM_KNIFE						303
-#define ITEM_MINIHEART					304
-#define ITEM_AXE						305
-#define ITEM_HOLYWATER					306
-#define ITEM_CROSS						307
-#define ITEM_CLOCK						308
-
-
-// Heart
-#define HEART_BBOX_WIDTH				12
-#define HEART_BBOX_HEIGHT				10
-
-// Mini heart
-#define MINIHEART_BBOX_WIDTH				8
-#define MINIHEART_BBOX_HEIGHT				8
-
-// Whip item
-#define WHIPITEM_BBOX_WIDTH				16
-#define WHIPITEM_BBOX_HEIGHT			16
-
-//Knife
-#define KNIFE_BBOX_WIDTH				16
-#define KNIFE_BBOX_HEIGHT				9
-
-//Money
-#define MONEY_BBOX_WIDTH				15
-#define MONEY_BBOX_HEIGHT				15
-
-#define ITEM_LIVE_TIME					5000
 
 class Item : public CGameObject
 {

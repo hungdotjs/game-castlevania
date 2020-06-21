@@ -4,7 +4,7 @@
 #define CROSS_BBOX_WIDTH				16
 #define CROSS_BBOX_HEIGHT				16
 
-#define CROSS_SPEED						0.25f
+#define CROSS_SPEED						0.15f
 
 #define CROSS_ANIMATION_ID			3012
 
@@ -12,12 +12,13 @@ class Cross : public Weapon
 {
 public:
 	bool isReturn;
+	float rangeL, rangeR;
 
 	Cross(Simon* simon, float max_width = SCREEN_WIDTH) { 
 		this->simon = simon; 
 		this->max_width = max_width; 
 		SetAnimationSet(CROSS_ANIMATION_ID);
-
+		
 	}
 
 	virtual void CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT>& coEvents);

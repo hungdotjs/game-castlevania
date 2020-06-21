@@ -96,6 +96,10 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = x + KNIFE_BBOX_WIDTH;
 		b = y + KNIFE_BBOX_HEIGHT;
 		break;
+	case ITEM_AXE:
+		r = x + AXE_BBOX_WIDTH;
+		b = y + AXE_BBOX_HEIGHT;
+		break;
 	}
 }
 

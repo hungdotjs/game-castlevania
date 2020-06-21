@@ -196,6 +196,9 @@
     <ClCompile Include="Raven.cpp">
       <Filter>Object\Enemy\Raven</Filter>
     </ClCompile>
+    <ClCompile Include="HolyWater.cpp">
+      <Filter>Object\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Raven.h">
       <Filter>Object\Enemy\Raven</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyWater.h">
+      <Filter>Object\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

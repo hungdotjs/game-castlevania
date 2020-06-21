@@ -278,6 +278,8 @@ void CPlayScene::Load()
 			listGrids->InitList(MAP_4_WIDTH);
 		case 5:
 			listGrids->InitList(MAP_5_WIDTH);
+		case 6:
+			listGrids->InitList(MAP_6_WIDTH);
 		default:
 			break;
 		}
@@ -331,7 +333,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -717,11 +719,23 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		((CPlayScene*)scence)->GenerateWeapon();
 		break;
 
+	case DIK_3:
+		simon->currentWeapon = ITEM_CROSS;
+		((CPlayScene*)scence)->GenerateWeapon();
+		break;
+
+	case DIK_4:
+		simon->currentWeapon = ITEM_HOLYWATER;
+		((CPlayScene*)scence)->GenerateWeapon();
+		break;
+
 	case DIK_A: // Danh
 		if (game->IsKeyDown(DIK_UP))
 		{
 			if (simon->isAttack == false && simon->currentWeapon != 0)
 			{
+				simon->ResetAnimationAttack();
+
 				if (simon->heartsAmount > 0)
 				{
 					simon->heartsAmount -= 1;
@@ -811,7 +825,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			!simon->isOnStair &&
 			!simon->isAttack &&
 			!simon->isSit &&
-			!simon->isJump)
+			!simon->isJump && 
+			!simon->isHurt)
 		{
 			simon->SetState(SIMON_STATE_ONCHECKSTAIR);
 		}
@@ -863,7 +878,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// Di bo
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (simon->isOnStair || simon->isHurt) return;
+		if (simon->isOnStair || simon->isHurt || simon->isAttack) return;
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
@@ -875,7 +890,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (simon->isOnStair || simon->isHurt) return;
+		if (simon->isOnStair || simon->isHurt || simon->isAttack) return;
 
 		if (!simon->isSit && !simon->isAttack && !simon->isOnStair)
 			simon->SetState(SIMON_STATE_WALK);
@@ -931,27 +946,25 @@ void CPlayScene::GenerateWeapon() {
 		listGrids->AddObject(weapon);
 		break;
 
-		//case ITEM_HOLYWATER:
-		//	weapon = new HolyWater(simon);
+		case ITEM_HOLYWATER:
+			weapon = new HolyWater(player);
 
-		//	if (nx > 0)
-		//	{
-		//		weapon->SetSpeed(HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
-		//	}
-		//	else if (nx < 0)
-		//	{
-		//		weapon->SetSpeed(-HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
-		//	}
+			if (nx > 0)
+			{
+				weapon->SetSpeed(HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+			}
+			else if (nx < 0)
+			{
+				weapon->SetSpeed(-HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+			}
 
-		//	weapon->AddAnimation(WEAPON_ANI_HOLYWATER);
-		//	weapon->AddAnimation(WEAPON_ANI_HOLYWATER_FIRE);
-		//	weapon->SetPosition(simon->x, simon->y);
-		//	weapon->firstCast = GetTickCount();
-		//	listGrids->AddObject(weapon);
-		//	break;
+			weapon->SetPosition(player->x, player->y);
+			weapon->firstCast = GetTickCount();
+			listGrids->AddObject(weapon);
+			break;
 
 	case ITEM_CROSS:
-		weapon = new Cross(player, 2 * SCREEN_WIDTH / 5);
+		weapon = new Cross(player, SCREEN_WIDTH / 2);
 		weapon->nx = nx;
 
 		if (nx > 0)
@@ -968,10 +981,10 @@ void CPlayScene::GenerateWeapon() {
 		listGrids->AddObject(weapon);
 		break;
 
-		//case ITEM_CLOCK:
-		//	isClockWeaponUsed = true;
-		//	clockWeaponCast = GetTickCount();
-		//	break;
-		//}
+		/*case ITEM_CLOCK:
+			isClockWeaponUsed = true;
+			clockWeaponCast = GetTickCount();
+			break;
+		}*/
 	}
 }

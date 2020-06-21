@@ -11,6 +11,7 @@ void Cross::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		if (!dynamic_cast<CheckStair*>(coObjects->at(i)) &&
+			!dynamic_cast<CheckStairTop*>(coObjects->at(i)) &&
 			!dynamic_cast<Effect*>(coObjects->at(i)) &&
 			!dynamic_cast<CPortal*>(coObjects->at(i)) &&
 			!dynamic_cast<Item*>(coObjects->at(i)) &&
@@ -31,7 +32,9 @@ void Cross::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 
 
 					Simon::score += 100;
-					enemy->isDie = true;
+					enemy->isHitted = true;
+					enemy->health -= 1;
+
 
 				}
 				else if (dynamic_cast<Simon*>(e->obj) && isReturn)
@@ -59,9 +62,16 @@ void Cross::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
 
+		float camX, camY;
+		CGame::GetInstance()->GetCamPos(camX, camY);
+
 		// Outrange
 		if (nx > 0)
 		{
+			if (x < camX) {
+				isExposed = true;
+				return;
+			}
 			if (x > max_x)
 			{
 				if (!isReturn)
@@ -77,7 +87,19 @@ void Cross::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else if (nx < 0)
 		{
-			if (x < max_x)
+
+			if (x > camX + SCREEN_WIDTH ) {
+				isExposed = true;
+				return;
+			}
+			if (x < 0) {
+				x = 0;
+				vx = -vx;
+				dx = 0;
+				isReturn = true;
+
+			}
+			else if (x < max_x )
 			{
 				if (!isReturn)
 				{
