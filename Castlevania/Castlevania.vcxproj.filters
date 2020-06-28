@@ -85,6 +85,9 @@
     <Filter Include="Object\Enemy\Raven">
       <UniqueIdentifier>{cb9d7e49-c4d3-4eb1-9fa7-b4a9570882bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Enemy\Zombie">
+      <UniqueIdentifier>{bbae0b61-02e9-4a27-95b4-2ca13e8eac8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -199,6 +202,9 @@
     <ClCompile Include="HolyWater.cpp">
       <Filter>Object\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Object\Enemy\Zombie</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -311,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="HolyWater.h">
       <Filter>Object\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Object\Enemy\Zombie</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

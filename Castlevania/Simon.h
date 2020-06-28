@@ -55,6 +55,7 @@ public:
 	bool isLevelUp;
 	bool willHurt;
 	bool transparent;
+	bool isCollideHorizontal;
 	static int score;
 	static int heartsAmount;
 	int currentWeapon;

@@ -83,6 +83,10 @@ void Skeleton::Render()
 	else {
 		ani = SKELETON_ANI_WALKING_RIGHT;
 	}
+
+	if (isFrozen)
+		animation_set->at(ani)->ResetFrame();
+
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();

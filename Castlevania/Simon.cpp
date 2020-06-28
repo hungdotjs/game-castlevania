@@ -1,4 +1,6 @@
 ﻿#include "Simon.h"
+#include "Weapon.h"
+
 
 int Simon::score = 0;
 int Simon::heartsAmount = 5;
@@ -250,7 +252,8 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		else if (!dynamic_cast<Torch*>(coObjects->at(i)) &&
 			!dynamic_cast<Candle*>(coObjects->at(i)) &&
 			!dynamic_cast<Item*>(coObjects->at(i)) &&
-			!dynamic_cast<Enemy*>(coObjects->at(i))
+			!dynamic_cast<Enemy*>(coObjects->at(i)) &&
+			!dynamic_cast<Weapon*>(coObjects->at(i))
 			)
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
@@ -414,10 +417,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	float leftCorner = cam_x;
 	float rightCorner = leftCorner + SCREEN_WIDTH - SIMON_BBOX_WIDTH;
+
 	// Left corner
 	if (x < leftCorner)
 	{
 		x = 0;
+	}
+	if (x + SIMON_BBOX_WIDTH > rightCorner) {
+		x = rightCorner - SIMON_BBOX_WIDTH;
 	}
 
 	if (y < 76) y = 76;
@@ -467,6 +474,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y += dy;
 					continue;
 				}
+
 
 				// Da cham dat
 				if (isJump && e->nx == 0 && e->ny < 0)

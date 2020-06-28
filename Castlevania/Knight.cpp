@@ -44,6 +44,9 @@ void Knight::Render()
 	if (vx > 0) ani = KNIGHT_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KNIGHT_ANI_WALKING_LEFT;
 
+	if (isFrozen)
+		animation_set->at(ani)->ResetFrame();
+
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();

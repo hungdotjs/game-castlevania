@@ -49,6 +49,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_SKELETON		18
 #define OBJECT_TYPE_GHOST			28
 #define OBJECT_TYPE_RAVEN			32
+#define OBJECT_TYPE_ZOMBIE			40
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -369,6 +370,13 @@ void CPlayScene::Update(DWORD dt)
 
 	player->Update(dt, &coObjects);
 
+	if (isClockWeaponUsed)
+	{
+		if (GetTickCount() - clockWeaponCast > CLOCK_WEAPON_FREEZE_TIME)
+		{
+			isClockWeaponUsed = false;
+		}
+	}
 
 	for (int i = 0; i < coObjects.size(); i++)
 	{
@@ -378,7 +386,7 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<Enemy*>(coObjects.at(i))) {
 			Enemy* enemy = dynamic_cast<Enemy*>(coObjects.at(i));
 
-			if (player->isClockWeaponUsed) {
+			if (isClockWeaponUsed) {
 				enemy->isFrozen = true;
 			}
 			else {
@@ -403,9 +411,9 @@ void CPlayScene::Update(DWORD dt)
 						skeleton->timer = GetTickCount();
 					}
 				}
+				enemy->Update(dt, &coObjects);
 			}
 
-			enemy->Update(dt, &coObjects);
 		}
 
 		listGrids->UpdateObjectInGrid(coObjects[i]);
@@ -705,7 +713,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:	// Nhay
-		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false && simon->isOnStair == false)
+		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false && simon->isOnStair == false && !simon->isHurt)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
 
@@ -726,6 +734,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	case DIK_4:
 		simon->currentWeapon = ITEM_HOLYWATER;
+		((CPlayScene*)scence)->GenerateWeapon();
+		break;
+
+	case DIK_5:
+		simon->currentWeapon = ITEM_CLOCK;
 		((CPlayScene*)scence)->GenerateWeapon();
 		break;
 
@@ -825,7 +838,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			!simon->isOnStair &&
 			!simon->isAttack &&
 			!simon->isSit &&
-			!simon->isJump && 
+			!simon->isJump &&
 			!simon->isHurt)
 		{
 			simon->SetState(SIMON_STATE_ONCHECKSTAIR);
@@ -946,22 +959,22 @@ void CPlayScene::GenerateWeapon() {
 		listGrids->AddObject(weapon);
 		break;
 
-		case ITEM_HOLYWATER:
-			weapon = new HolyWater(player);
+	case ITEM_HOLYWATER:
+		weapon = new HolyWater(player);
 
-			if (nx > 0)
-			{
-				weapon->SetSpeed(HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
-			}
-			else if (nx < 0)
-			{
-				weapon->SetSpeed(-HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
-			}
+		if (nx > 0)
+		{
+			weapon->SetSpeed(HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+		}
+		else if (nx < 0)
+		{
+			weapon->SetSpeed(-HOLYWATER_SPEED_X, -HOLYWATER_SPEED_Y);
+		}
 
-			weapon->SetPosition(player->x, player->y);
-			weapon->firstCast = GetTickCount();
-			listGrids->AddObject(weapon);
-			break;
+		weapon->SetPosition(player->x, player->y);
+		weapon->firstCast = GetTickCount();
+		listGrids->AddObject(weapon);
+		break;
 
 	case ITEM_CROSS:
 		weapon = new Cross(player, SCREEN_WIDTH / 2);
@@ -981,10 +994,10 @@ void CPlayScene::GenerateWeapon() {
 		listGrids->AddObject(weapon);
 		break;
 
-		/*case ITEM_CLOCK:
-			isClockWeaponUsed = true;
-			clockWeaponCast = GetTickCount();
-			break;
-		}*/
+	case ITEM_CLOCK:
+		isClockWeaponUsed = true;
+		clockWeaponCast = GetTickCount();
+		break;
+
 	}
 }

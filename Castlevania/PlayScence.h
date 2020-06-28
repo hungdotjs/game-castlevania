@@ -47,6 +47,8 @@ public:
 	int stage;
 	ListGrids* listGrids;
 	vector<GridObjects*> currentGrids;
+	bool isClockWeaponUsed = false;
+	DWORD clockWeaponCast;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);

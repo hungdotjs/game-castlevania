@@ -94,6 +94,9 @@ void Fleaman::Render()
 		ani = FLEAMAN_ANI_LEFT;
 	}
 
+	if (isFrozen)
+		animation_set->at(ani)->ResetFrame();
+
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
