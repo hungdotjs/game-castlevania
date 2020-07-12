@@ -16,6 +16,8 @@
 #include "Skeleton.h"
 #include "Ghost.h"
 #include "Raven.h"
+#include "PhantomBat.h"
+#include "Zombie.h"
 
 using namespace std;
 
@@ -50,6 +52,7 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_GHOST			28
 #define OBJECT_TYPE_RAVEN			32
 #define OBJECT_TYPE_ZOMBIE			40
+#define OBJECT_TYPE_PHANTOMBAT		44
 #define OBJECT_TYPE_TORCH			100
 #define OBJECT_TYPE_CANDLE			400
 #define OBJECT_TYPE_ELEVATOR		402
@@ -180,6 +183,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		player = Simon::GetInstance();
 		player->SetPosition(x, y);
+
 		//objects.push_back(player);
 		return;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
@@ -207,6 +211,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BAT: obj = new Bat(x, y); break;
 	case OBJECT_TYPE_FLEAMAN: obj = new Fleaman(x, y); break;
 	case OBJECT_TYPE_GHOST: obj = new Ghost(x, y); break;
+	case OBJECT_TYPE_ZOMBIE: obj = new Zombie(); break;
+	case OBJECT_TYPE_PHANTOMBAT: obj = new PhantomBat(); break;
 	case OBJECT_TYPE_RAVEN: obj = new Raven(); break;
 	case OBJECT_TYPE_SKELETON:
 		obj = new Skeleton();

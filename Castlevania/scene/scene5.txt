@@ -189,7 +189,7 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # ================= SIMON ============
-0	80	200	1
+0	96	252	1
 
 # ================= SKELETON ===========
 18	368	200	18

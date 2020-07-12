@@ -88,6 +88,9 @@
     <Filter Include="Object\Enemy\Zombie">
       <UniqueIdentifier>{bbae0b61-02e9-4a27-95b4-2ca13e8eac8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Enemy\PhantomBat">
+      <UniqueIdentifier>{49c1acb1-385d-43ec-8205-1d87c6a4f5d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -205,6 +208,9 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Object\Enemy\Zombie</Filter>
     </ClCompile>
+    <ClCompile Include="PhantomBat.cpp">
+      <Filter>Object\Enemy\PhantomBat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -320,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="Zombie.h">
       <Filter>Object\Enemy\Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="PhantomBat.h">
+      <Filter>Object\Enemy\PhantomBat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

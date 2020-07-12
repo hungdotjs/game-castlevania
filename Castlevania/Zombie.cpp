@@ -83,7 +83,7 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Zombie::Render()
 {
-	int ani = -1;
+	int ani = 0;
 
 	if (vx < 0)
 		ani = ZOMBIE_ANI_WALKING_LEFT;

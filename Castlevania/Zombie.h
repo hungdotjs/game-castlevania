@@ -5,6 +5,9 @@
 class Zombie : public Enemy
 {
 public:
+	Zombie() {
+		SetState(ZOMBIE_STATE_WALKING);
+	}
 	virtual void SetState(int state, int i = 0);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

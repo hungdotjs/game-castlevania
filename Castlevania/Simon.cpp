@@ -346,6 +346,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += SIMON_GRAVITY * dt;
 	}
 
+	DebugOut(L"[SIMON] x = %f y = %f \n", x, y);
+
+
 	if (isOnStair) vy = 0;
 
 	//DebugOut(L"[DIRECTION] nx = %d, ny = %d\n", nx, ny);
@@ -423,9 +426,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x = 0;
 	}
-	if (x + SIMON_BBOX_WIDTH > rightCorner) {
-		x = rightCorner - SIMON_BBOX_WIDTH;
-	}
+	//if (x + SIMON_BBOX_WIDTH > rightCorner) {
+	//	x = rightCorner - SIMON_BBOX_WIDTH;
+	//}
 
 	if (y < 76) y = 76;
 
