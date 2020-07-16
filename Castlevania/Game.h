@@ -88,7 +88,8 @@ public:
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
 	static CGame* GetInstance();
-
+	static int bossHeath;
+	static bool startFightBoss;
 	bool checkAABB(float b1left, float b1top, float b1right, float b1bottom, float b2left, float b2top, float b2right, float b2bottom);
 
 	~CGame();

@@ -5,7 +5,7 @@
 #define KNIFE_BBOX_WIDTH				16
 #define KNIFE_BBOX_HEIGHT				9
 
-#define KNIFE_SPEED						0.35f
+#define KNIFE_SPEED						0.3f
 #define KNIFE_ANIMATION_ID				3011			
 
 class Knife : public Weapon

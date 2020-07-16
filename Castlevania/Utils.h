@@ -121,7 +121,7 @@
 
 
 // Enemy
-#define ENEMY_UNTOUCHABLE_TIME			300
+#define ENEMY_UNTOUCHABLE_TIME			200
 
 // Enemy bullet
 #define ENEMY_BULLET_BBOX_WIDTH			10
@@ -208,6 +208,8 @@
 
 
 #define WEAPON_ACTIVATE_TIME			300
+#define WEAPON_GRAVITY					0.001f
+#define WEAPON_DAME						2
 #define CLOCK_WEAPON_FREEZE_TIME		2000
 
 
@@ -251,15 +253,15 @@
 #define AXE_BBOX_WIDTH					15
 #define AXE_BBOX_HEIGHT					15
 
-#define AXE_SPEED_X						0.15f
-#define AXE_SPEED_Y						0.45f
+#define AXE_SPEED_X						0.12f
+#define AXE_SPEED_Y						0.3f
 
 // Holy water
 #define HOLYWATER_BBOX_WIDTH			16
 #define HOLYWATER_BBOX_HEIGHT			16
 
-#define HOLYWATER_SPEED_X				0.15f
-#define HOLYWATER_SPEED_Y				0.45f
+#define HOLYWATER_SPEED_X				0.12f
+#define HOLYWATER_SPEED_Y				0.3f
 
 
 using namespace std;

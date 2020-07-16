@@ -48,10 +48,32 @@ void Knife::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
 
+					if (dynamic_cast<PhantomBat*>(e->obj))
+					{
+						PhantomBat* phantomBat = dynamic_cast<PhantomBat*>(e->obj);
 
-					Simon::score += 100;
-					enemy->isHitted = true;
-					enemy->health -= 1;
+						if (!phantomBat->isUntouchable)
+						{
+							CGame::GetInstance()->bossHeath -= WEAPON_DAME;
+							phantomBat->isHurt = true;
+							phantomBat->isHitted = true;
+
+							phantomBat->hurtTime = GetTickCount();
+							phantomBat->StartUntouchable();
+						}
+
+						if (CGame::GetInstance()->bossHeath <= 0)
+						{
+							phantomBat->isDie = true;
+							Simon::score += 1000;
+							CGame::GetInstance()->startFightBoss = false;
+						}
+					}
+					else {
+						enemy->health -= 1;
+						enemy->isHitted = true;
+
+					}
 
 
 					this->isExposed = true;

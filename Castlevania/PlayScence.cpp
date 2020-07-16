@@ -273,20 +273,28 @@ void CPlayScene::Load()
 
 	if (listGrids->isEmpty()) {
 		int stage = CGame::GetInstance()->GetCurrentStage();
+		if (stage == 7) stage = 2;
 		switch (stage)
 		{
 		case 1:
 			listGrids->InitList(MAP_1_WIDTH);
+			break;
 		case 2:
 			listGrids->InitList(MAP_2_WIDTH);
+			break;
 		case 3:
 			listGrids->InitList(MAP_3_WIDTH);
+			break;
 		case 4:
 			listGrids->InitList(MAP_4_WIDTH);
+			break;
 		case 5:
 			listGrids->InitList(MAP_5_WIDTH);
+			break;
 		case 6:
 			listGrids->InitList(MAP_6_WIDTH);
+			break;
+
 		default:
 			break;
 		}
@@ -458,7 +466,7 @@ void CPlayScene::Render()
 	CGame::GetInstance()->GetCamPos(x, y);
 
 	map->DrawMap(x, y);
-	board->Render(x, y, player);
+	board->Render(x, y, player, CGame::bossHeath);
 
 
 	//for (int i = 0; i < objects.size(); i++)
@@ -481,10 +489,6 @@ void CPlayScene::Render()
 
 void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 {
-	/**
-	* Không remove trực tiếp trong mảng khi đang duyệt, thêm vào danh sách các object sẽ bị remove và sau đó mới bắt đầu remove
-	*/
-
 	vector<LPGAMEOBJECT> listRemoveObjects;
 
 	for (int i = 0; i < objects.size(); i++)
@@ -496,11 +500,22 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 			float x, y, right, bottom;
 			enemy->GetBoundingBox(x, y, right, bottom);
 
+			if (dynamic_cast<PhantomBat*>(objects.at(i))) {
+				if (CGame::GetInstance()->bossHeath <= 0) {
+					Effect* effect = new Effect();
+
+					effect->SetPosition(x + (right - x) / 2, y + (bottom - y) / 2);
+					objects.push_back(effect);
+					listGrids->AddObject(effect);
+
+					listRemoveObjects.push_back(enemy);
+				}
+			}
+
 			if (enemy->health == 0)
 			{
-
 				Effect* effect = new Effect();
-				effect->SetPosition(x, y);
+				effect->SetPosition(x + (right - x) / 2, y + (bottom - y) / 2);
 				objects.push_back(effect);
 				listGrids->AddObject(effect);
 
@@ -511,15 +526,13 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 			else if (enemy->isHitted) {
 				// Thêm hiệu ứng tóe lửa
 				EffectWhip* whipEffect = new EffectWhip();
-				whipEffect->SetPosition(x, y + (bottom - y) / 4);
+				whipEffect->SetPosition(x + (right - x) / 2, y + (bottom - y) / 2);
 				objects.push_back(whipEffect);
 				listGrids->AddObject(whipEffect);
 
 				enemy->isHitted = false;
 			}
 		}
-
-
 		else if (dynamic_cast<Bat*>(objects.at(i)))
 		{
 			Bat* bat = dynamic_cast<Bat*>(objects.at(i));
@@ -622,9 +635,20 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				// Whip item
 				if (player->whip->level < 2)
 				{
-					ani_set = animation_sets->Get(ITEM_WHIP);
-					item->SetAnimationSet(ani_set);
-					item->SetType(ITEM_WHIP);
+					srand(time(NULL));
+					int random_portion = rand() % 100;
+
+					// Heart
+					if (random_portion < 50) {
+						ani_set = animation_sets->Get(ITEM_WHIP);
+						item->SetAnimationSet(ani_set);
+						item->SetType(ITEM_WHIP);
+					}
+					else {
+						ani_set = animation_sets->Get(candle->itemID);
+						item->SetType(candle->itemID);
+						item->SetAnimationSet(ani_set);
+					}
 				}
 				else {
 					ani_set = animation_sets->Get(candle->itemID);

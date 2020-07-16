@@ -16,6 +16,7 @@ public:
 	bool isAttack;
 	bool isTop;
 	bool isBottom;
+	bool transparent;
 
 	DWORD waitTime;
 	DWORD attackTime;
@@ -24,6 +25,7 @@ public:
 	float destination_x, destination_y;
 
 	PhantomBat() { 
+		SetState(PHANTOMBAT_STATE_WAIT);
 		this->simon = Simon::GetInstance(); 
 		this->game = CGame::GetInstance();
 		maxHealth = 16;

@@ -31,7 +31,10 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void UpLevel() { level += 1; }
+	void UpLevel() {
+		if (level < 2)
+			level += 1;
+	}
 	void SetLevel(int level) {
 		this->level = level;
 	}

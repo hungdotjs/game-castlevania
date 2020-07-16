@@ -20,7 +20,7 @@ void Cross::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
-			float sl, sr, st, sb;
+		/*	float sl, sr, st, sb;
 
 			coObjects->at(i)->GetBoundingBox(sl, st, sr, sb);
 
@@ -41,7 +41,7 @@ void Cross::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				{
 					isExposed = true;
 				}
-			}
+			}*/
 
 			if (e->t > 0 && e->t <= 1.0f)
 				coEvents.push_back(e);
@@ -147,6 +147,41 @@ void Cross::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				candle->isHitted = true;
 			}
 			else if (dynamic_cast<Simon*>(e->obj))
+			{
+				isExposed = true;
+				Simon::GetInstance()->heartsAmount += 1;
+			}
+			else if (dynamic_cast<Enemy*>(e->obj))
+			{
+				Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
+
+				if (dynamic_cast<PhantomBat*>(e->obj))
+				{
+					PhantomBat* phantomBat = dynamic_cast<PhantomBat*>(e->obj);
+
+					if (!phantomBat->isUntouchable)
+					{
+						CGame::GetInstance()->bossHeath -= WEAPON_DAME;
+						phantomBat->isHurt = true;
+						phantomBat->isHitted = true;
+						phantomBat->hurtTime = GetTickCount();
+						phantomBat->StartUntouchable();
+					}
+
+					if (CGame::GetInstance()->bossHeath <= 0)
+					{
+						phantomBat->isDie = true;
+						Simon::score += 1000;
+						CGame::GetInstance()->startFightBoss = false;
+					}
+				}
+				else {
+					enemy->health -= 1;
+					enemy->isHitted = true;
+
+				}
+			}
+			else if (dynamic_cast<Simon*>(e->obj) && isReturn)
 			{
 				isExposed = true;
 			}

@@ -33,7 +33,7 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 		// Gravity
-		vy += SIMON_GRAVITY * dt;
+		vy += WEAPON_GRAVITY * dt;
 
 		x += dx;
 		y += dy;
@@ -57,9 +57,31 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
 
-					Simon::score += 100;
-					enemy->isHitted = true;
-					enemy->health -= 1;
+					if (dynamic_cast<PhantomBat*>(e->obj))
+					{
+						PhantomBat* phantomBat = dynamic_cast<PhantomBat*>(e->obj);
+
+						if (!phantomBat->isUntouchable)
+						{
+							CGame::GetInstance()->bossHeath -= WEAPON_DAME;
+							phantomBat->isHurt = true;
+							phantomBat->isHitted = true;
+							phantomBat->hurtTime = GetTickCount();
+							phantomBat->StartUntouchable();
+						}
+
+						if (CGame::GetInstance()->bossHeath <= 0)
+						{
+							phantomBat->isDie = true;
+							Simon::score += 1000;
+							CGame::GetInstance()->startFightBoss = false;
+						}
+					}
+					else {
+						enemy->isHitted = true;
+						enemy->health -= 1;
+
+					}
 
 				}
 				else if (dynamic_cast<Torch*>(e->obj))

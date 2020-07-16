@@ -86,7 +86,7 @@ void Board::Update(int time, int stage, Simon* simon)
 	information += "ENEMY                  P-" + std::to_string(simon->GetLife()) + "\n";
 }
 
-void Board::Render(float x, float y, Simon* simon)
+void Board::Render(float x, float y, Simon* simon, int bossHeath)
 {
 	if (font)
 		font->DrawTextA(NULL, information.c_str(), -1, &rect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
@@ -100,10 +100,16 @@ void Board::Render(float x, float y, Simon* simon)
 		noHP->Draw(x + 135 - 5 * i, 60);
 	}
 
-	for (int i = 0; i < enemyHPList.size(); i++)
+	for (int i = 0; i < bossHeath; i++)
 	{
 		enemyHPList[i]->Draw(x + 60 + 5 * i, 70);
 	}
+
+	for (int i = 0; i < 16 - bossHeath; i++)
+	{
+		noHP->Draw(x + 135 - 5 * i, 70);
+	}
+
 
 	heart->Draw(x + SCREEN_WIDTH / 2 + 30, 60);
 	redRect->Draw(x + SCREEN_WIDTH / 2 - 8, 60);

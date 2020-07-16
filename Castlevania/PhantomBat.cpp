@@ -173,7 +173,15 @@ void PhantomBat::Render()
 		break;
 	}
 
-	animation_set->at(ani)->Render(x, y);
+	int alpha = 255;
+	if (isUntouchable) {
+		// Nhap nhay
+		if (transparent)
+			alpha = 125;
+		transparent = !transparent;
+	}
+
+	animation_set->at(ani)->Render(x, y, alpha);
 
 	RenderBoundingBox();
 }

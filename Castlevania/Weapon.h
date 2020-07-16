@@ -4,6 +4,7 @@
 #include "Candle.h"
 #include "CheckStair.h"
 #include "Simon.h"
+#include "PhantomBat.h"
 
 class Weapon : public CGameObject
 {

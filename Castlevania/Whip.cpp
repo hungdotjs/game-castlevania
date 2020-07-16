@@ -3,6 +3,7 @@
 #include "Knight.h"
 #include "Bat.h"
 #include "EffectWhip.h"
+#include "PhantomBat.h"
 
 void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -13,9 +14,36 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		if (dynamic_cast<Enemy*>(coObjects->at(i))) {
+			if (dynamic_cast<PhantomBat*>(coObjects->at(i)))
+			{
+				PhantomBat* phantomBat = dynamic_cast<PhantomBat*>(coObjects->at(i));
 
-			/*if (dynamic_cast<Fleaman*>(coObjects->at(i)))
-			{*/
+				float zl, zr, zt, zb;
+				phantomBat->GetBoundingBox(zl, zt, zr, zb);
+
+				if (wl < zr && wr > zl && wt < zb && wb > zt)
+				{
+					if (!phantomBat->isUntouchable)
+					{
+						CGame::GetInstance()->bossHeath -= WEAPON_DAME;
+						phantomBat->isHurt = true;
+						phantomBat->isHitted = true;
+						phantomBat->hurtTime = GetTickCount();
+						phantomBat->StartUntouchable();
+					}
+
+					if (CGame::GetInstance()->bossHeath <= 0)
+					{
+						phantomBat->isDie = true;
+						Simon::score += 1000;
+						CGame::GetInstance()->startFightBoss = false;
+						//CGame::GetInstance()->bossHeath = 16;
+					}
+				}
+			}
+			else {
+				/*if (dynamic_cast<Fleaman*>(coObjects->at(i)))
+				{*/
 				Enemy* enemy = dynamic_cast<Enemy*>(coObjects->at(i));
 
 				float zl, zt, zr, zb;
@@ -26,8 +54,9 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					enemy->isHitted = true;
 					enemy->health -= 1;
 				}
-			//}
-			
+				//}
+			}
+
 		}
 		else if (dynamic_cast<Torch*>(coObjects->at(i)))
 		{

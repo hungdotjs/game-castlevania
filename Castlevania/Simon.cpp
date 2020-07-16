@@ -346,7 +346,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += SIMON_GRAVITY * dt;
 	}
 
-	DebugOut(L"[SIMON] x = %f y = %f \n", x, y);
+	//DebugOut(L"[SIMON] x = %f y = %f \n", x, y);
 
 
 	if (isOnStair) vy = 0;
@@ -420,12 +420,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	float leftCorner = cam_x;
 	float rightCorner = leftCorner + SCREEN_WIDTH - SIMON_BBOX_WIDTH;
+	//DebugOut(L"[CAM] cam_x = %f, cam_y = %f\n", cam_x, cam_y);
 
 	// Left corner
 	if (x < leftCorner)
 	{
 		x = 0;
 	}
+
 	//if (x + SIMON_BBOX_WIDTH > rightCorner) {
 	//	x = rightCorner - SIMON_BBOX_WIDTH;
 	//}
