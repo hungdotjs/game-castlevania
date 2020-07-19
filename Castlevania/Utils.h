@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <dinput.h>
 #include <assert.h>
 #include <signal.h>
 #include <string.h>
@@ -15,6 +16,14 @@
 #include <vector>
 
 #define GAME_FONT L"textures\\font\\prstart.ttf"
+
+#define KEY_UP		DIK_UP
+#define KEY_DOWN	DIK_DOWN
+#define KEY_RIGHT	DIK_RIGHT
+#define KEY_LEFT	DIK_LEFT
+
+#define KEY_ATTACK	DIK_A
+#define KEY_JUMP	DIK_SPACE
 
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
@@ -263,6 +272,14 @@
 #define HOLYWATER_SPEED_X				0.12f
 #define HOLYWATER_SPEED_Y				0.3f
 
+// Cross
+#define CROSS_BBOX_WIDTH				16
+#define CROSS_BBOX_HEIGHT				16
+
+#define CROSS_SPEED						0.15f
+
+#define CLOCK_BBOX_WIDTH				16
+#define CLOCK_BBOX_HEIGHT				16
 
 using namespace std;
 

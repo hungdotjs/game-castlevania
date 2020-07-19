@@ -221,11 +221,11 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	0	116	1	16	132	4
-#50	374	243	1	375	244	7
+50	374	243	1	375	244	7
 
 # ================= CHECK STAIR =============
 # type	x	y	ani_set_id	type_checkstair
-5	460	141	4	0
+5	465	143	4	0
 
 [MAP]
 textures\map\map_3.txt

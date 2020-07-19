@@ -1,10 +1,6 @@
 #pragma once
 #include "Weapon.h"
 
-#define CROSS_BBOX_WIDTH				16
-#define CROSS_BBOX_HEIGHT				16
-
-#define CROSS_SPEED						0.15f
 
 #define CROSS_ANIMATION_ID			3012
 

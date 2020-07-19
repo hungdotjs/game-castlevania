@@ -6,7 +6,7 @@ class Zombie : public Enemy
 {
 public:
 	Zombie() {
-		SetState(ZOMBIE_STATE_WALKING);
+		SetState(ZOMBIE_STATE_WALKING, 0);
 	}
 	virtual void SetState(int state, int i = 0);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

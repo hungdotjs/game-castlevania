@@ -42,7 +42,6 @@ class CGame
 	int screen_height;
 
 	unordered_map<int, LPSCENE> scenes;
-	int current_scene;
 	int temp_current_scene;
 
 	void _ParseSection_SETTINGS(string line);
@@ -50,6 +49,7 @@ class CGame
 	void _ParseSection_SIMON(string line);
 
 public:
+	int current_scene;
 	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);

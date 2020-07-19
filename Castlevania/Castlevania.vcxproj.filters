@@ -49,9 +49,6 @@
     <Filter Include="Object\CheckStair">
       <UniqueIdentifier>{83a25e2a-d234-436c-8da3-1cde1c798173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\CheckStairUp">
-      <UniqueIdentifier>{83dfcb1b-ffa0-4e44-a7e6-4c06e9102300}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Elevator">
       <UniqueIdentifier>{9012254c-b0b1-4468-9de0-3cd441e9c692}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,12 @@
     </Filter>
     <Filter Include="Object\Enemy\PhantomBat">
       <UniqueIdentifier>{49c1acb1-385d-43ec-8205-1d87c6a4f5d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Scene\BeginScene">
+      <UniqueIdentifier>{c451d68a-c36d-439f-ba5f-02dc3a5c830d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\CheckStairTop">
+      <UniqueIdentifier>{83dfcb1b-ffa0-4e44-a7e6-4c06e9102300}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +155,7 @@
       <Filter>Object\CheckStair</Filter>
     </ClCompile>
     <ClCompile Include="CheckStairTop.cpp">
-      <Filter>Object\CheckStairUp</Filter>
+      <Filter>Object\CheckStairTop</Filter>
     </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>Object\Enemy\Bat</Filter>
@@ -210,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="PhantomBat.cpp">
       <Filter>Object\Enemy\PhantomBat</Filter>
+    </ClCompile>
+    <ClCompile Include="BeginScene.cpp">
+      <Filter>Library\Scene\BeginScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,7 +277,7 @@
       <Filter>Object\CheckStair</Filter>
     </ClInclude>
     <ClInclude Include="CheckStairTop.h">
-      <Filter>Object\CheckStairUp</Filter>
+      <Filter>Object\CheckStairTop</Filter>
     </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>Object\Enemy\Bat</Filter>
@@ -329,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="PhantomBat.h">
       <Filter>Object\Enemy\PhantomBat</Filter>
+    </ClInclude>
+    <ClInclude Include="BeginScene.h">
+      <Filter>Library\Scene\BeginScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

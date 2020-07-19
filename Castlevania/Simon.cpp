@@ -294,13 +294,22 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					case ITEM_AXE:
 						SetCurrentWeapon(ITEM_AXE);
 						break;
+					case ITEM_CROSS:
+						SetCurrentWeapon(ITEM_CROSS);
+						break;
+					case ITEM_HOLYWATER:
+						SetCurrentWeapon(ITEM_HOLYWATER);
+						break;
+					case ITEM_CLOCK:
+						SetCurrentWeapon(ITEM_CLOCK);
+						break;
 					case ITEM_MONEY:
 						AddScore(1000);
 						break;
 					}
 
 				}
-				
+
 			}
 			else if (dynamic_cast<Enemy*>(coObjects->at(i)) && !isUntouchable)
 			{
@@ -423,7 +432,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"[CAM] cam_x = %f, cam_y = %f\n", cam_x, cam_y);
 
 	// Left corner
-	if (x < leftCorner)
+	if (x < 0)
 	{
 		x = 0;
 	}
@@ -432,7 +441,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//	x = rightCorner - SIMON_BBOX_WIDTH;
 	//}
 
-	if (y < 76) y = 76;
+	if (y < 74) y = 74;
 
 	if (y > 500)
 	{

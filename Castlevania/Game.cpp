@@ -5,6 +5,7 @@
 #include "Utils.h"
 
 #include "PlayScence.h"
+#include "BeginScene.h"
 
 CGame* CGame::__instance = NULL;
 int CGame::bossHeath = 16;
@@ -348,8 +349,11 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-
-	LPSCENE scene = new CPlayScene(id, path);
+	LPSCENE scene;
+	if (id == 0)
+		scene = new BeginScene(id, path);
+	else
+		scene = new CPlayScene(id, path);
 	scenes[id] = scene;
 }
 

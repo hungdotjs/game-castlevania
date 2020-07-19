@@ -1,29 +1,14 @@
 #pragma once
 #include "Game.h"
-#include "Grid.h"
 #include "Textures.h"
 #include "Scence.h"
 #include "GameObject.h"
-#include "Item.h"
-#include "Brick.h"
-#include "Torch.h"
-#include "Simon.h"
 #include "Map.h"
-#include "Board.h"
-#include "Effect.h"
-#include "EffectWhip.h"
-#include "Weapon.h"
-#include "Knife.h"
-#include "Axe.h"
-#include "Cross.h"
-#include "HolyWater.h"
 
 
-class CPlayScene : public CScene
+class BeginScene : public CScene
 {
 protected:
-	Simon* player;					// A play scene has to have player, right? 
-
 	vector<LPGAMEOBJECT> objects;
 	//vector<LPGAMEOBJECT> coObjects;
 
@@ -40,38 +25,27 @@ protected:
 	void _ParseSection_MAP(string line);
 
 public:
-	Map* map;
-	Board* board;
-	Weapon* weapon;
-	DWORD gameTime = 300000;
 	int stage;
-	ListGrids* listGrids;
-	vector<GridObjects*> currentGrids;
-	bool isClockWeaponUsed = false;
-	DWORD clockWeaponCast;
-	bool isUnload;
+	Map* map;
 
 public:
-	CPlayScene(int id, LPCWSTR filePath);
+	BeginScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	void RemoveObjects(vector<LPGAMEOBJECT>& coObjects);
-	void GenerateWeapon();
-	Simon* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;
-	~CPlayScene();
+	~BeginScene();
 };
 
-class CPlayScenceKeyHandler : public CScenceKeyHandler
+class BeginSceneKeyHandler : public CScenceKeyHandler
 {
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
+	BeginSceneKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
 

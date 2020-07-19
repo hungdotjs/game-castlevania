@@ -1,5 +1,6 @@
 ﻿#include "Item.h"
 #include "Weapon.h"
+#include "CheckStairTop.h"
 
 Item::Item()
 {
@@ -13,8 +14,9 @@ void Item::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCOL
 		if (!dynamic_cast<Candle*>(coObjects->at(i)) &&
 			!dynamic_cast<Torch*>(coObjects->at(i)) &&
 			!dynamic_cast<CheckStair*>(coObjects->at(i)) &&
+			!dynamic_cast<CheckStairTop*>(coObjects->at(i)) &&
 			!dynamic_cast<Enemy*>(coObjects->at(i)) &&
-			!dynamic_cast<Item*>(coObjects->at(i)) && 
+			!dynamic_cast<Item*>(coObjects->at(i)) &&
 			!dynamic_cast<Weapon*>(coObjects->at(i))
 			)
 		{
@@ -101,6 +103,18 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 	case ITEM_AXE:
 		r = x + AXE_BBOX_WIDTH;
 		b = y + AXE_BBOX_HEIGHT;
+		break;
+	case ITEM_CROSS:
+		r = x + CROSS_BBOX_WIDTH;
+		b = y + CROSS_BBOX_HEIGHT;
+		break;
+	case ITEM_HOLYWATER:
+		r = x + HOLYWATER_BBOX_WIDTH;
+		b = y + HOLYWATER_BBOX_HEIGHT;
+		break;
+	case ITEM_CLOCK:
+		r = x + CLOCK_BBOX_WIDTH;
+		b = y + CLOCK_BBOX_HEIGHT;
 		break;
 	}
 }

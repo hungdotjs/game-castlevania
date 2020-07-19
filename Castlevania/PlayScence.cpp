@@ -178,6 +178,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SIMON:
 		if (player != NULL)
 		{
+			player->SetPosition(x, y);
 			DebugOut(L"[ERROR] SIMON object was created before!\n");
 			return;
 		}
@@ -269,6 +270,7 @@ void CPlayScene::_ParseSection_MAP(string line)
 
 void CPlayScene::Load()
 {
+	isUnload = false;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
 	if (listGrids->isEmpty()) {
@@ -348,7 +350,7 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 0));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 
@@ -383,6 +385,9 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	player->Update(dt, &coObjects);
+
+	if (isUnload)
+		return;
 
 	if (isClockWeaponUsed)
 	{
@@ -457,6 +462,7 @@ void CPlayScene::Update(DWORD dt)
 
 	gameTime -= dt;
 	board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
+	objects = coObjects;
 	RemoveObjects(coObjects);
 }
 
@@ -502,12 +508,15 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 
 			if (dynamic_cast<PhantomBat*>(objects.at(i))) {
 				if (CGame::GetInstance()->bossHeath <= 0) {
-					Effect* effect = new Effect();
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							Effect* effect = new Effect();
+							effect->SetPosition(x + EFFECT_WIDTH * j, y + EFFECT_HEIGHT * i);
+							objects.push_back(effect);
+							listGrids->AddObject(effect);
 
-					effect->SetPosition(x + (right - x) / 2, y + (bottom - y) / 2);
-					objects.push_back(effect);
-					listGrids->AddObject(effect);
-
+						}
+					}
 					listRemoveObjects.push_back(enemy);
 				}
 			}
@@ -639,7 +648,7 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 					int random_portion = rand() % 100;
 
 					// Heart
-					if (random_portion < 50) {
+					if (random_portion < 40) {
 						ani_set = animation_sets->Get(ITEM_WHIP);
 						item->SetAnimationSet(ani_set);
 						item->SetType(ITEM_WHIP);
@@ -714,7 +723,8 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 void CPlayScene::Unload()
 {
 	//player = NULL;
-
+	isUnload = true;
+	RemoveObjects(objects);
 	objects.clear();
 
 	listGrids->ReleaseList();
@@ -742,7 +752,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
-	case DIK_SPACE:	// Nhay
+	case KEY_JUMP:	// Nhay
 		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false && simon->isOnStair == false && !simon->isHurt)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
@@ -772,8 +782,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		((CPlayScene*)scence)->GenerateWeapon();
 		break;
 
-	case DIK_A: // Danh
-		if (game->IsKeyDown(DIK_UP))
+	case KEY_ATTACK: // Danh
+		if (game->IsKeyDown(KEY_UP))
 		{
 			if (simon->isAttack == false && simon->currentWeapon != 0)
 			{
@@ -795,6 +805,22 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_R:	// Reset
 		simon->Reset();
 		break;
+	case DIK_F1:
+		int currScene = game->current_scene;
+		switch (currScene) {
+		case 1:
+			game->SwitchScene(2);
+			break;
+		case 2:
+		case 3:
+			game->SwitchScene(4);
+			break;
+		case 4:
+		case 5:
+			game->SwitchScene(6);
+			break;
+		}
+		break;
 	}
 }
 
@@ -806,7 +832,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
 	// Len xuong cau thang
-	if (KeyCode == DIK_UP)
+	if (KeyCode == KEY_UP)
 	{
 		if (simon->isOnStair)
 		{
@@ -822,7 +848,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 
 	// Ngoi
-	if (KeyCode == DIK_DOWN)
+	if (KeyCode == KEY_DOWN)
 	{
 		if (simon->isOnCheckStairDown)
 		{
@@ -846,7 +872,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 
 	// Di bo
-	else if (KeyCode == DIK_RIGHT || KeyCode == DIK_LEFT)
+	else if (KeyCode == KEY_RIGHT || KeyCode == KEY_LEFT)
 	{
 		simon->isMoving = false;
 		simon->vx = 0;
@@ -862,7 +888,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
 	// Len xuong cau thang
-	if (game->IsKeyDown(DIK_UP))
+	if (game->IsKeyDown(KEY_UP))
 	{
 		if (simon->ny == -1 &&
 			!simon->isOnStair &&
@@ -892,7 +918,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 
 	// Ngoi
-	if (game->IsKeyDown(DIK_DOWN))
+	if (game->IsKeyDown(KEY_DOWN))
 	{
 		if (simon->ny == 1 && !simon->isOnStair)
 		{
@@ -919,7 +945,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 
 	// Di bo
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (game->IsKeyDown(KEY_RIGHT))
 	{
 		if (simon->isOnStair || simon->isHurt || simon->isAttack) return;
 
@@ -931,7 +957,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		if (!simon->isOnStair && !simon->isAttack || !simon->isJump)
 			simon->nx = 1;
 	}
-	else if (game->IsKeyDown(DIK_LEFT))
+	else if (game->IsKeyDown(KEY_LEFT))
 	{
 		if (simon->isOnStair || simon->isHurt || simon->isAttack) return;
 
