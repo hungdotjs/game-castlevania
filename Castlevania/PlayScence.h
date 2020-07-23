@@ -50,6 +50,7 @@ public:
 	bool isClockWeaponUsed = false;
 	DWORD clockWeaponCast;
 	bool isUnload;
+	bool isWin;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);

@@ -47,6 +47,7 @@ public:
 	int ny;
 
 	DWORD attackTime;
+	DWORD resetTime;
 
 	Whip* whip;
 	int life;

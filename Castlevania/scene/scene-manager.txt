@@ -2,7 +2,7 @@
 scene\\simon.txt
 
 [SETTINGS]
-start	2
+start	6
 
 #scene list
 [SCENES]
@@ -14,3 +14,4 @@ start	2
 5	scene\\scene5.txt
 6	scene\\scene6.txt
 7	scene\\scene2-backup.txt
+8	scene\\scene4-backup.txt

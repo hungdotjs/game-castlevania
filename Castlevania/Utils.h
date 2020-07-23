@@ -54,6 +54,8 @@
 #define SCENE_SECTION_MAP				7
 
 // Simon
+#define TIME_RESET			3000
+#define TIME_BLACK_SCREEN	2000
 
 #define SIMON_WALKING_SPEED			0.05f 
 #define SIMON_JUMP_SPEED_Y			0.28f
@@ -180,11 +182,11 @@
 
 
 // Zombie
-#define ZOMBIE_WALKING_SPEED			0.07f
+#define ZOMBIE_WALKING_SPEED			0.04f
 
-#define ZOMBIE_BBOX_WIDTH				32
-#define ZOMBIE_BBOX_HEIGHT				64
-#define ZOMBIE_BBOX_HEIGHT_DIE			9
+#define ZOMBIE_BBOX_WIDTH				16
+#define ZOMBIE_BBOX_HEIGHT				32
+#define ZOMBIE_BBOX_HEIGHT_DIE			4
 
 #define ZOMBIE_STATE_WALKING			100
 #define ZOMBIE_STATE_DIE				200
@@ -214,6 +216,7 @@
 #define PHANTOMBAT_SPEED_DOWN				0.08f
 #define PHANTOMBAT_TIME_UP					2500
 #define PHANTOMBAT_TIME_DOWN				2000
+#define PHANTOMBAT_SCORE					3000
 
 
 #define WEAPON_ACTIVATE_TIME			300
@@ -234,7 +237,10 @@
 #define ITEM_CROSS						306
 #define ITEM_HOLYWATER					307
 #define ITEM_CLOCK						308
+#define ITEM_CRYSTAL					309
 
+#define CRYSTAL_BBOX_WIDTH		16
+#define CRYSTAL_BBOX_HEIGHT		16
 
 // Heart
 #define HEART_BBOX_WIDTH				12

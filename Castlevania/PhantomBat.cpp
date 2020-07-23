@@ -68,8 +68,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isAttack && !isBottom)
 		{
 			// Đã bay đến vị trí bottom
-			if (x - 10 <= destination_x && x + PHANTOMBAT_BBOX_WIDTH + 10 >= destination_x &&
-				y - 10 <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT + 10 >= destination_y)
+			if (x <= destination_x && x + PHANTOMBAT_BBOX_WIDTH >= destination_x &&
+				y <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT >= destination_y)
 			{
 				vx = 0;
 				vy = 0;
@@ -119,8 +119,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!isAttack && !isTop)
 		{
 			// Đã bay đến vị trí top
-			if (x - 10 <= destination_x && x + PHANTOMBAT_BBOX_WIDTH + 10 >= destination_x &&
-				y - 10 <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT + 10 >= destination_y)
+			if (x  <= destination_x && x + PHANTOMBAT_BBOX_WIDTH  >= destination_x &&
+				y  <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT  >= destination_y)
 			{
 				vx = 0;
 				vy = 0;

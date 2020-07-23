@@ -116,6 +116,10 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = x + CLOCK_BBOX_WIDTH;
 		b = y + CLOCK_BBOX_HEIGHT;
 		break;
+	case ITEM_CRYSTAL:
+		r = x + CRYSTAL_BBOX_WIDTH;
+		b = y + CRYSTAL_BBOX_HEIGHT;
+		break;
 	}
 }
 

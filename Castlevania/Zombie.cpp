@@ -1,5 +1,6 @@
 ﻿#include "Zombie.h"
 #include "Utils.h"
+#include "Game.h"
 
 void Zombie::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -12,6 +13,13 @@ void Zombie::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	Enemy::Update(dt, coObjects);
+
+	float camX, camY;
+	CGame::GetInstance()->GetCamPos(camX, camY);
+
+	if (x < camX && camX < 528) {
+		x = camX + SCREEN_WIDTH;
+	}
 
 	// Trạng thái chết
 	if (health <= 0)
@@ -98,14 +106,14 @@ void Zombie::Render()
 	RenderBoundingBox();
 }
 
-void Zombie::SetState(int state, int i)
+void Zombie::SetState(int state, int nx)
 {
 	Enemy::SetState(state);
 
 	switch (state)
 	{
 	case ZOMBIE_STATE_WALKING:
-		if (i == 0)
+		if (nx == 0)
 			vx = -ZOMBIE_WALKING_SPEED;
 		else
 			vx = ZOMBIE_WALKING_SPEED;

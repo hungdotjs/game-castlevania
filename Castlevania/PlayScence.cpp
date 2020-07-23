@@ -275,19 +275,21 @@ void CPlayScene::Load()
 
 	if (listGrids->isEmpty()) {
 		int stage = CGame::GetInstance()->GetCurrentStage();
-		if (stage == 7) stage = 2;
+
 		switch (stage)
 		{
 		case 1:
 			listGrids->InitList(MAP_1_WIDTH);
 			break;
 		case 2:
+		case 7:
 			listGrids->InitList(MAP_2_WIDTH);
 			break;
 		case 3:
 			listGrids->InitList(MAP_3_WIDTH);
 			break;
 		case 4:
+		case 8:
 			listGrids->InitList(MAP_4_WIDTH);
 			break;
 		case 5:
@@ -364,6 +366,26 @@ void CPlayScene::Update(DWORD dt)
 	//skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
+	if (player->isDead && GetTickCount() > player->resetTime + TIME_RESET) {	
+		player->isDead = false;
+		switch (CGame::GetInstance()->GetCurrentStage())
+		{
+		case 1:
+			CGame::GetInstance()->SwitchScene(1);
+			break;
+		case 2:
+		case 3:
+			CGame::GetInstance()->SwitchScene(2);
+			break;
+		case 4:
+		case 5:
+			CGame::GetInstance()->SwitchScene(4);
+			break;
+		case 6: 
+			CGame::GetInstance()->SwitchScene(6);
+			break;
+		}
+	}
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
@@ -468,6 +490,10 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	if (player->isDead && GetTickCount() > player->resetTime + TIME_BLACK_SCREEN) {
+		return;
+	}
+
 	float x, y;
 	CGame::GetInstance()->GetCamPos(x, y);
 
@@ -514,10 +540,19 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 							effect->SetPosition(x + EFFECT_WIDTH * j, y + EFFECT_HEIGHT * i);
 							objects.push_back(effect);
 							listGrids->AddObject(effect);
-
 						}
 					}
+
+					Item* item = new Item();
+					item->SetPosition(x, y);
+					item->SetSpeed(0, -0.1);
+					item->SetType(309);
+					item->SetAnimationSet(CAnimationSets::GetInstance()->Get(309));
+					objects.push_back(item);
+					listGrids->AddObject(item);
+
 					listRemoveObjects.push_back(enemy);
+					Simon::score += PHANTOMBAT_SCORE;
 				}
 			}
 
@@ -781,7 +816,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->currentWeapon = ITEM_CLOCK;
 		((CPlayScene*)scence)->GenerateWeapon();
 		break;
-
+	case DIK_P:
+		simon->SetState(SIMON_STATE_DIE);
+		break;
 	case KEY_ATTACK: // Danh
 		if (game->IsKeyDown(KEY_UP))
 		{

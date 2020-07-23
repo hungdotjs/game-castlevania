@@ -306,6 +306,8 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 					case ITEM_MONEY:
 						AddScore(1000);
 						break;
+					case ITEM_CRYSTAL:
+						break;
 					}
 
 				}
@@ -389,8 +391,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != SIMON_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);
+	//if (state != SIMON_STATE_DIE)
+	CalcPotentialCollisions(coObjects, coEvents);
 
 	// Set idle state
 	if (!isDead && !isOnStair && !isSit && !isMoving && !isJump && !isAttack && !isHurt)
@@ -443,7 +445,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (y < 74) y = 74;
 
-	if (y > 500)
+	if (preHP <= 0 && !isDead) {
+		SetState(SIMON_STATE_DIE);
+	}
+
+	if (y > 400)
 	{
 		SetState(SIMON_STATE_DIE);
 	}
@@ -546,8 +552,12 @@ void Simon::Render()
 {
 	int ani = -1, aniWhip = -1;
 
-	if (state == SIMON_STATE_DIE)
-		ani = SIMON_ANI_DIE_RIGHT;
+	if (isDead) {
+		if (nx < 0)
+			ani = SIMON_ANI_DIE_LEFT;
+		else
+			ani = SIMON_ANI_DIE_RIGHT;
+	}
 	else
 	{
 		if (isHurt) {
@@ -793,7 +803,8 @@ void Simon::SetState(int state)
 	{
 	case SIMON_STATE_DIE:
 		isDead = true;
-		vy = -SIMON_DIE_DEFLECT_SPEED;
+		resetTime = GetTickCount();
+		vy = 0;
 		break;
 
 	case SIMON_STATE_ONCHECKSTAIR:
@@ -931,7 +942,12 @@ void Simon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	left = x;
 	top = y;
 	right = x + SIMON_BBOX_WIDTH;
-	bottom = y + SIMON_BBOX_HEIGHT;
+
+	if (isDead) {
+		bottom = y + SIMON_BBOX_WIDTH;
+	}
+	else
+		bottom = y + SIMON_BBOX_HEIGHT;
 
 }
 
