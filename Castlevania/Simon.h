@@ -60,6 +60,7 @@ public:
 	static int score;
 	static int heartsAmount;
 	int currentWeapon;
+	bool isWin;
 
 	static Simon* __instance;
 	bool isClockWeaponUsed;

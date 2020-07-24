@@ -140,4 +140,11 @@ void Board::Render(float x, float y, Simon* simon, int bossHeath)
 
 }
 
+void Board::RenderTextScreen(float x, float y, string text) {
+	RECT r;
+	SetRect(&r, x, y, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (font)
+		font->DrawTextA(NULL, text.c_str(), -1, &r, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+}
+
 

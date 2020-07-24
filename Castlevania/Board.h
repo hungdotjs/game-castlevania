@@ -50,4 +50,5 @@ public:
 	void Initialize(LPDIRECT3DDEVICE9 d3ddv, Simon* simon);
 	void Update(int time, int stage, Simon* simon);
 	void Render(float x, float y, Simon* simon, int bossHeath);
+	void RenderTextScreen(float x, float y, string text);
 };

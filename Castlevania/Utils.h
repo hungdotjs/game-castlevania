@@ -30,6 +30,12 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 256
 
+#define GAME_TIME	400000
+#define TIME_RESET			4000
+#define TIME_BLACK_SCREEN	2000
+
+#define ENEMY_DAMAGE	2
+
 #define ID_TEX_TILESET 100
 #define ID_TEX_MISC		20
 
@@ -54,8 +60,7 @@
 #define SCENE_SECTION_MAP				7
 
 // Simon
-#define TIME_RESET			3000
-#define TIME_BLACK_SCREEN	2000
+
 
 #define SIMON_WALKING_SPEED			0.05f 
 #define SIMON_JUMP_SPEED_Y			0.28f

@@ -13,7 +13,7 @@ Simon::Simon(float x, float y) : CGameObject()
 	level = SIMON_LEVEL;
 	whip = new Whip(0);
 
-	life = 3;
+	life = 5;
 	preHP = 16;
 	hp = 16;
 	currentWeapon = 0;
@@ -307,9 +307,10 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 						AddScore(1000);
 						break;
 					case ITEM_CRYSTAL:
+						preHP = 16;
+						isWin = true;
 						break;
 					}
-
 				}
 
 			}
@@ -322,7 +323,7 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				{
 					SetState(SIMON_STATE_HURT);
 					willHurt = true;
-					preHP -= 1;
+					preHP -= ENEMY_DAMAGE;
 					StartUntouchable();
 				}
 
@@ -805,6 +806,8 @@ void Simon::SetState(int state)
 		isDead = true;
 		resetTime = GetTickCount();
 		vy = 0;
+		vx = 0;
+		life -= 1;
 		break;
 
 	case SIMON_STATE_ONCHECKSTAIR:

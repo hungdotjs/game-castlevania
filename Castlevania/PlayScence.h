@@ -43,7 +43,7 @@ public:
 	Map* map;
 	Board* board;
 	Weapon* weapon;
-	DWORD gameTime = 300000;
+	DWORD gameTime = GAME_TIME;
 	int stage;
 	ListGrids* listGrids;
 	vector<GridObjects*> currentGrids;
@@ -59,6 +59,9 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	void ResetGameTime() {
+		gameTime = GAME_TIME;
+	}
 	void RemoveObjects(vector<LPGAMEOBJECT>& coObjects);
 	void GenerateWeapon();
 	Simon* GetPlayer() { return player; }
