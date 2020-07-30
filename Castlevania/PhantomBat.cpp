@@ -18,7 +18,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
 	// Đổi trạng thái
-	if (simon->x > cam_x + SCREEN_WIDTH / 2 && state == PHANTOMBAT_STATE_WAIT)
+	if (simon->x > cam_x + 3 * SCREEN_WIDTH / 5 && state == PHANTOMBAT_STATE_WAIT)
 	{
 		isWait = true;
 		isAttack = true;
@@ -41,6 +41,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			// Tính vận tốc bay ngang theo góc hợp bởi vị trí hiện tại của boss dơi và destination
 			float angle = atan2(destination_x - x, destination_y - y);
 
+			DebugOut(L"[GOC] angle = %f\n", angle);
+
 			// Tính vx theo vy
 			vx = vy * tan(angle);
 
@@ -55,6 +57,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			// Tính vận tốc bay ngang theo góc hợp bởi vị trí hiện tại của boss dơi và destination
 			float angle = atan2(destination_x - x, destination_y - y);
+			DebugOut(L"[GOC] angle = %f\n", angle);
 
 			// Tính vx theo vy
 			vx = vy * tan(angle);
@@ -68,8 +71,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isAttack && !isBottom)
 		{
 			// Đã bay đến vị trí bottom
-			if (x <= destination_x && x + PHANTOMBAT_BBOX_WIDTH >= destination_x &&
-				y <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT >= destination_y)
+			if (x - 10 <= destination_x && x + PHANTOMBAT_BBOX_WIDTH  >= destination_x &&
+				y - 10 <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT >= destination_y)
 			{
 				vx = 0;
 				vy = 0;
@@ -119,8 +122,8 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!isAttack && !isTop)
 		{
 			// Đã bay đến vị trí top
-			if (x  <= destination_x && x + PHANTOMBAT_BBOX_WIDTH  >= destination_x &&
-				y  <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT  >= destination_y)
+			if (x - 10 <= destination_x && x + PHANTOMBAT_BBOX_WIDTH + 10 >= destination_x &&
+				y - 10 <= destination_y && y + PHANTOMBAT_BBOX_HEIGHT + 10 >= destination_y)
 			{
 				vx = 0;
 				vy = 0;

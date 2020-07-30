@@ -31,8 +31,8 @@
 #define SCREEN_HEIGHT 256
 
 #define GAME_TIME	400000
-#define TIME_RESET			4000
-#define TIME_BLACK_SCREEN	2000
+#define TIME_RESET			3000
+#define TIME_BLACK_SCREEN	1500
 
 #define ENEMY_DAMAGE	2
 
@@ -61,7 +61,7 @@
 
 // Simon
 
-
+#define SIMON_HP					16
 #define SIMON_WALKING_SPEED			0.05f 
 #define SIMON_JUMP_SPEED_Y			0.28f
 #define SIMON_CLIMBING_SPEED_X		0.05f
@@ -219,6 +219,7 @@
 
 #define PHANTOMBAT_SPEED_UP					0.05f
 #define PHANTOMBAT_SPEED_DOWN				0.08f
+#define PHANTOMBAT_SPEED_X					0.05f
 #define PHANTOMBAT_TIME_UP					2500
 #define PHANTOMBAT_TIME_DOWN				2000
 #define PHANTOMBAT_SCORE					3000

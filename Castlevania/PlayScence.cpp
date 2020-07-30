@@ -366,8 +366,23 @@ void CPlayScene::Update(DWORD dt)
 	//skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
+	if (player->isWin) {
+		player->SetState(SIMON_STATE_IDLE);
+		if (gameTime / 1000 <= 0)
+			isFinish = true;
+		else {
+			gameTime -= 1000;
+			player->AddScore(100);
+			board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
+
+		}
+		return;
+	}
+
 	if (player->isDead && GetTickCount() > player->resetTime + TIME_RESET) {
 		player->isDead = false;
+		player->preHP = SIMON_HP;
+		player->SetState(SIMON_STATE_IDLE);
 		switch (CGame::GetInstance()->GetCurrentStage())
 		{
 		case 1:
@@ -385,7 +400,7 @@ void CPlayScene::Update(DWORD dt)
 			CGame::GetInstance()->SwitchScene(6);
 			break;
 		}
-		player->SetState(SIMON_STATE_IDLE);
+		return;
 	}
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
@@ -495,16 +510,16 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	if (player->isDead && GetTickCount() > player->resetTime + TIME_BLACK_SCREEN) {
+	if (player->isDead && GetTickCount() - player->resetTime > TIME_BLACK_SCREEN) {
 		string lifeLeft = "X " + std::to_string(player->life);
-		CSprites::GetInstance()->Get(1001)->Draw(SCREEN_WIDTH / 3 , SCREEN_HEIGHT / 2);
+		CSprites::GetInstance()->Get(1001)->Draw(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 2);
 		board->RenderTextScreen(SCREEN_WIDTH / 3 + 32, SCREEN_HEIGHT / 3, lifeLeft);
 		ResetGameTime();
 		return;
 	}
 
-	if (player->isWin) {
-		string text = "       YOU WIN \n\n";
+	if (isFinish) {
+		string text = "YOU WIN \n\n";
 		text += "YOUR SCORE - " + std::to_string(Simon::score);
 		board->RenderTextScreen(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, text);
 		return;
@@ -864,6 +879,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->Reset();
 		break;
 	case DIK_F1:
+	{
 		int currScene = game->current_scene;
 		switch (currScene) {
 		case 1:
@@ -879,6 +895,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		}
 		break;
+	}
+	case DIK_F8:
+		simon->preHP -= 2;
+		break;
+	case DIK_F9:
+		simon->preHP += 2;
+		break;
+
 	}
 }
 

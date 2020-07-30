@@ -14,8 +14,8 @@ Simon::Simon(float x, float y) : CGameObject()
 	whip = new Whip(0);
 
 	life = 5;
-	preHP = 16;
-	hp = 16;
+	preHP = SIMON_HP;
+	hp = SIMON_HP;
 	currentWeapon = 0;
 
 	start_x = x;
@@ -307,7 +307,6 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 						AddScore(1000);
 						break;
 					case ITEM_CRYSTAL:
-						preHP = 16;
 						isWin = true;
 						break;
 					}
@@ -348,6 +347,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
+
 	// Simple fall down
 	if (isJump || isAttack || isHurt && !isOnStair)
 	{
@@ -359,7 +359,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"[SIMON] x = %f y = %f \n", x, y);
-
 
 	if (isOnStair) vy = 0;
 
@@ -440,9 +439,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x = 0;
 	}
 
-	//if (x + SIMON_BBOX_WIDTH > rightCorner) {
-	//	x = rightCorner - SIMON_BBOX_WIDTH;
-	//}
+	if (CGame::GetInstance()->GetCurrentStage() == 6 && x + SIMON_BBOX_WIDTH > rightCorner)
+	{
+		x = rightCorner - SIMON_BBOX_WIDTH;
+	}
 
 	if (y < 74) y = 74;
 
@@ -450,7 +450,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(SIMON_STATE_DIE);
 	}
 
-	if (y > 400)
+	if (y > 400 && !isDead)
 	{
 		SetState(SIMON_STATE_DIE);
 	}
@@ -884,6 +884,7 @@ void Simon::SetState(int state)
 	case SIMON_STATE_IDLE:
 		vx = 0;
 		isMoving = false;
+		isDead = false;
 		break;
 	case SIMON_STATE_HURT:
 		isHurt = true;

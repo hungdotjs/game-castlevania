@@ -2,7 +2,7 @@
 scene\\simon.txt
 
 [SETTINGS]
-start	6
+start	0
 
 #scene list
 [SCENES]

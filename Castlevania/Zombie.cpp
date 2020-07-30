@@ -17,7 +17,7 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float camX, camY;
 	CGame::GetInstance()->GetCamPos(camX, camY);
 
-	if (x < camX && camX < 528) {
+	if (x < camX) {
 		x = camX + SCREEN_WIDTH;
 	}
 
