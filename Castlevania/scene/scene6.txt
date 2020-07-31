@@ -164,6 +164,8 @@
 40	240	218	40
 40	260	218	40
 
+40	520	218	40
+
 #================= BRICK =================
 # --- platform (hint: I created the list using Excel!) ----
 

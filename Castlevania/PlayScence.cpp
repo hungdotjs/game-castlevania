@@ -58,6 +58,8 @@ CPlayScene::~CPlayScene()
 #define OBJECT_TYPE_ELEVATOR		402
 #define OBJECT_TYPE_KNIGHT			500
 #define OBJECT_TYPE_BAT				600
+#define OBJECT_TYPE_HIDDENOBJECT	998
+#define OBJECT_TYPE_HIDDENBRICK		999
 #define OBJECT_TYPE_PORTAL			50
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -237,7 +239,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-
+	case OBJECT_TYPE_HIDDENBRICK:
+		obj = new HiddenBrick();
+		break;	
+	case OBJECT_TYPE_HIDDENOBJECT:
+	{
+		float itemX = atof(tokens[4].c_str());
+		float itemY = atof(tokens[5].c_str());
+		int itemID = atoi(tokens[6].c_str());
+		obj = new HiddenObject(itemX, itemY, itemID);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -372,7 +384,7 @@ void CPlayScene::Update(DWORD dt)
 			isFinish = true;
 		else {
 			gameTime -= 1000;
-			player->AddScore(100);
+			player->AddScore(10);
 			board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
 
 		}
@@ -577,8 +589,8 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 					Item* item = new Item();
 					item->SetPosition(x, y);
 					item->SetSpeed(0, -0.1);
-					item->SetType(309);
-					item->SetAnimationSet(CAnimationSets::GetInstance()->Get(309));
+					item->SetType(ITEM_CRYSTAL);
+					item->SetAnimationSet(CAnimationSets::GetInstance()->Get(ITEM_CRYSTAL));
 					objects.push_back(item);
 					listGrids->AddObject(item);
 
@@ -606,6 +618,48 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				listGrids->AddObject(whipEffect);
 
 				enemy->isHitted = false;
+			}
+		}
+		else if (dynamic_cast<HiddenBrick*>(objects.at(i)))
+		{
+			HiddenBrick* brick = dynamic_cast<HiddenBrick*>(objects.at(i));
+			if (brick->isHitted)
+			{
+				BrokenEffect* effect = new BrokenEffect();
+				effect->SetPosition(brick->x, brick->y);
+				effect->SetSpeed(-0.08f, -0.08f);
+				objects.push_back(effect);
+				listGrids->AddObject(effect);
+
+				effect = new BrokenEffect();
+				effect->SetPosition(brick->x, brick->y);
+				effect->SetSpeed(0.08f, -0.08f);
+				objects.push_back(effect);
+				listGrids->AddObject(effect);
+
+				listRemoveObjects.push_back(brick);
+
+			}
+		}
+		else if (dynamic_cast<HiddenObject*>(objects.at(i)))
+		{
+			HiddenObject* ho = dynamic_cast<HiddenObject*>(objects.at(i));
+			if (ho->isTouched)
+			{
+				Item* item = new Item();
+				item->SetPosition(ho->item_x, ho->item_y);
+				item->SetSpeed(0, -0.1);
+
+				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+				LPANIMATION_SET ani_set;
+				ani_set = animation_sets->Get(ho->itemID);
+				item->SetType(ho->itemID);
+				item->SetAnimationSet(ani_set);
+				objects.push_back(item);
+				listGrids->AddObject(item);
+
+				listRemoveObjects.push_back(ho);
+
 			}
 		}
 		else if (dynamic_cast<Bat*>(objects.at(i)))
@@ -767,6 +821,15 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 				listRemoveObjects.push_back(effect);
 			}
 		}
+		else if (dynamic_cast<BrokenEffect*>(objects.at(i)))
+		{
+			BrokenEffect* effect = dynamic_cast<BrokenEffect*>(objects.at(i));
+
+			if (effect->GetExposed())
+			{
+				listRemoveObjects.push_back(effect);
+			}
+		}
 		else if (dynamic_cast<EffectWhip*>(objects.at(i)))
 		{
 			EffectWhip* effect = dynamic_cast<EffectWhip*>(objects.at(i));
@@ -892,6 +955,26 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		case 4:
 		case 5:
 			game->SwitchScene(6);
+			break;
+		}
+		break;
+	}
+	case DIK_F2:
+	{
+		int currScene = game->current_scene;
+		switch (currScene) {
+		case 2:
+		case 3:
+			game->SwitchScene(1);
+			break;
+			
+		case 4:
+		case 5:
+			game->SwitchScene(2);
+			break;
+	
+		case 6:
+			game->SwitchScene(4);
 			break;
 		}
 		break;

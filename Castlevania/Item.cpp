@@ -96,6 +96,10 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = x + MONEY_BBOX_WIDTH;
 		b = y + MONEY_BBOX_HEIGHT;
 		break;
+	case ITEM_MONEY_1000PTS:
+		r = x + MONEY_BBOX_WIDTH;
+		b = y + MONEY_BBOX_HEIGHT;
+		break;
 	case ITEM_KNIFE:
 		r = x + KNIFE_BBOX_WIDTH;
 		b = y + KNIFE_BBOX_HEIGHT;
@@ -119,6 +123,10 @@ void Item::GetBoundingBox(float& l, float& t, float& r, float& b)
 	case ITEM_CRYSTAL:
 		r = x + CRYSTAL_BBOX_WIDTH;
 		b = y + CRYSTAL_BBOX_HEIGHT;
+		break;
+	case ITEM_CROWN:
+		r = x + CROWN_BBOX_WIDTH;
+		b = y + CROWN_BBOX_HEIGHT;
 		break;
 	}
 }

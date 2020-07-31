@@ -220,7 +220,7 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	0	116	1	4	120	4
+50	0	110	1	4	130	4
 50	374	243	1	375	244	7
 
 # ================= CHECK STAIR =============

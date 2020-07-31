@@ -5,6 +5,8 @@
 class Zombie : public Enemy
 {
 public:
+	DWORD waitTime;
+
 	Zombie() {
 		SetState(ZOMBIE_STATE_WALKING);
 	}

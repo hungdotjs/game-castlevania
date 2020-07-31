@@ -94,6 +94,12 @@
     <Filter Include="Object\CheckStairTop">
       <UniqueIdentifier>{83dfcb1b-ffa0-4e44-a7e6-4c06e9102300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\HiddenBrick">
+      <UniqueIdentifier>{a4f2d13b-0abc-486f-bcf7-718bca8ee6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\HiddenObject">
+      <UniqueIdentifier>{dd4f08e9-2a59-446e-8863-711c02854b1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -217,6 +223,15 @@
     <ClCompile Include="BeginScene.cpp">
       <Filter>Library\Scene\BeginScene</Filter>
     </ClCompile>
+    <ClCompile Include="HiddenBrick.cpp">
+      <Filter>Object\HiddenBrick</Filter>
+    </ClCompile>
+    <ClCompile Include="BrokenEffect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenObject.cpp">
+      <Filter>Object\HiddenObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -338,6 +353,15 @@
     </ClInclude>
     <ClInclude Include="BeginScene.h">
       <Filter>Library\Scene\BeginScene</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenBrick.h">
+      <Filter>Object\HiddenBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenEffect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenObject.h">
+      <Filter>Object\HiddenObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

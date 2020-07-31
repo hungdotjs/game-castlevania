@@ -18,6 +18,7 @@
 #include "Whip.h"
 #include "Torch.h"
 #include "Item.h"
+#include "HiddenObject.h"
 #include "Skeleton.h"
 
 class Simon : public CGameObject

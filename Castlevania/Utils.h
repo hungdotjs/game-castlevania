@@ -30,7 +30,7 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 256
 
-#define GAME_TIME	400000
+#define GAME_TIME			300000
 #define TIME_RESET			3000
 #define TIME_BLACK_SCREEN	1500
 
@@ -215,7 +215,7 @@
 
 #define PHANTOMBAT_ATTACK_TIME			400
 #define PHANTOMBAT_WAITING_TIME			1000
-#define PHANTOMBAT_HURTING_TIME			1000
+#define PHANTOMBAT_HURTING_TIME			700
 
 #define PHANTOMBAT_SPEED_UP					0.05f
 #define PHANTOMBAT_SPEED_DOWN				0.08f
@@ -231,7 +231,7 @@
 #define CLOCK_WEAPON_FREEZE_TIME		2000
 
 
-#define ITEM_GRAVITY		0.002f
+#define ITEM_GRAVITY		0.0009f
 
 // Item
 #define ITEM_WHIP						300
@@ -244,6 +244,8 @@
 #define ITEM_HOLYWATER					307
 #define ITEM_CLOCK						308
 #define ITEM_CRYSTAL					309
+#define ITEM_CROWN						310
+#define ITEM_MONEY_1000PTS				311
 
 #define CRYSTAL_BBOX_WIDTH		16
 #define CRYSTAL_BBOX_HEIGHT		16
@@ -251,6 +253,10 @@
 // Heart
 #define HEART_BBOX_WIDTH				12
 #define HEART_BBOX_HEIGHT				10
+
+// Heart
+#define CROWN_BBOX_WIDTH				16
+#define CROWN_BBOX_HEIGHT				16
 
 // Mini heart
 #define MINIHEART_BBOX_WIDTH			8

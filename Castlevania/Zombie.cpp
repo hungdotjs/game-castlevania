@@ -1,5 +1,6 @@
 ﻿#include "Zombie.h"
 #include "Utils.h"
+#include "Simon.h"
 #include "Game.h"
 
 void Zombie::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -17,9 +18,13 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float camX, camY;
 	CGame::GetInstance()->GetCamPos(camX, camY);
 
-	if (x < camX) {
+	float simonX, simonY;
+	Simon::GetInstance()->GetPosition(simonX, simonY);
+
+	if (simonX > x && x < camX) {
 		x = camX + SCREEN_WIDTH;
 	}
+
 
 	// Trạng thái chết
 	if (health <= 0)

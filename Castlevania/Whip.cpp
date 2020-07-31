@@ -4,6 +4,7 @@
 #include "Bat.h"
 #include "EffectWhip.h"
 #include "PhantomBat.h"
+#include "HiddenBrick.h"
 
 void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -76,6 +77,16 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
 				candle->isHitted = true;
+			}
+		}
+		else if (dynamic_cast<HiddenBrick*>(coObjects->at(i)))
+		{
+			HiddenBrick* brick = dynamic_cast<HiddenBrick*>(coObjects->at(i));
+			float zl, zr, zt, zb;
+			brick->GetBoundingBox(zl, zt, zr, zb);
+			if (wl < zr && wr > zl && wt < zb && wb > zt)
+			{
+				brick->isHitted = true;
 			}
 		}
 		else if (dynamic_cast<Knight*>(coObjects->at(i)))

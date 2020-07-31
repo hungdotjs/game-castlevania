@@ -304,10 +304,16 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 						SetCurrentWeapon(ITEM_CLOCK);
 						break;
 					case ITEM_MONEY:
+						AddScore(700);
+						break;
+					case ITEM_MONEY_1000PTS:
 						AddScore(1000);
 						break;
 					case ITEM_CRYSTAL:
 						isWin = true;
+						break;
+					case ITEM_CROWN:
+						AddScore(2000);
 						break;
 					}
 				}
@@ -539,6 +545,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			}
+			else if (dynamic_cast<HiddenObject*>(e->obj))
+			{
+				HiddenObject* p = dynamic_cast<HiddenObject*>(e->obj);
+				p->isTouched = true;
 			}
 		}
 
