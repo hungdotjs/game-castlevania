@@ -241,7 +241,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_HIDDENBRICK:
 		obj = new HiddenBrick();
-		break;	
+		break;
 	case OBJECT_TYPE_HIDDENOBJECT:
 	{
 		float itemX = atof(tokens[4].c_str());
@@ -806,10 +806,40 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 
 				}
 			}
+
 			else if (item->GetEaten() || GetTickCount() - item->appearTime > ITEM_LIVE_TIME)
 			{
 				listRemoveObjects.push_back(item);
 
+			}
+
+			if (item->GetType() == ITEM_MONEY_1000PTS) {
+				if (item->GetEaten()) {
+					Effect* effect = new Effect(EFFECT_MONEY_1000PTS_ANIMATION_ID);
+					effect->SetPosition(item->x, item->y);
+					objects.push_back(effect);
+					listGrids->AddObject(effect);
+
+
+				}
+			}
+			else if (item->GetType() == ITEM_MONEY) {
+				if (item->GetEaten()) {
+					Effect* effect = new Effect(EFFECT_700PTS_ANIMATION_ID);
+					effect->SetPosition(item->x, item->y);
+					objects.push_back(effect);
+					listGrids->AddObject(effect);
+				}
+			}
+			else if (item->GetType() == ITEM_CROWN) {
+				if (item->GetEaten()) {
+					Effect* effect = new Effect(EFFECT_2000PTS_ANIMATION_ID);
+					effect->SetPosition(item->x, item->y);
+					objects.push_back(effect);
+					listGrids->AddObject(effect);
+
+
+				}
 			}
 		}
 		else if (dynamic_cast<Effect*>(objects.at(i)))
@@ -967,22 +997,25 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		case 3:
 			game->SwitchScene(1);
 			break;
-			
+
 		case 4:
 		case 5:
 			game->SwitchScene(2);
 			break;
-	
+
 		case 6:
 			game->SwitchScene(4);
 			break;
 		}
 		break;
 	}
-	case DIK_F8:
+	case DIK_F3:
+		simon->whip->UpLevel();
+		break;
+	case DIK_F4:
 		simon->preHP -= 2;
 		break;
-	case DIK_F9:
+	case DIK_F5:
 		simon->preHP += 2;
 		break;
 
