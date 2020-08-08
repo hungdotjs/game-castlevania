@@ -16,6 +16,7 @@
 #include <vector>
 
 #define GAME_FONT L"textures\\font\\prstart.ttf"
+#define BBOX_TEXTURE  L"textures\\bbox.png"
 
 #define KEY_UP		DIK_UP
 #define KEY_DOWN	DIK_DOWN
@@ -298,6 +299,37 @@
 
 #define CLOCK_BBOX_WIDTH				16
 #define CLOCK_BBOX_HEIGHT				16
+
+// Sound
+#define MUSIC_INTRO					0
+#define MUSIC_SCENE					1
+#define MUSIC_BOSS					2
+#define SOUND_HIT					3
+#define SOUND_HURT					4
+#define SOUND_WHIP					5
+#define SOUND_KNIFE					6
+#define SOUND_AXE					7
+#define SOUND_CROSS					8
+#define SOUND_HOLYWATER				9
+#define SOUND_STOPWATCH				10
+#define SOUND_ITEM_INVISIBILITYPOTION 11
+#define SOUND_ITEM_ALLKILL			12
+#define SOUND_BROKENBRICK			13
+#define SOUND_COLLECT_ITEM			14
+#define SOUND_COLLECT_WEAPON		15
+#define SOUND_HOLYWATER_FLY			16
+#define SOUND_HOLYWATER_BURN		17
+#define SOUND_COUNT_POINT			18
+
+#ifndef SAFE_DELETE
+#define SAFE_DELETE(ptr) \
+if(ptr) \
+{\
+	delete (ptr); \
+	ptr = nullptr; \
+} \
+
+#endif
 
 using namespace std;
 

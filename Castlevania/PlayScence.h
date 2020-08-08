@@ -19,6 +19,7 @@
 #include "Axe.h"
 #include "Cross.h"
 #include "HolyWater.h"
+#include "Sound.h"
 
 
 class CPlayScene : public CScene
@@ -44,6 +45,7 @@ protected:
 public:
 	Map* map;
 	Board* board;
+	Sound* sound;
 	Weapon* weapon;
 	DWORD gameTime = GAME_TIME;
 	int stage;
@@ -54,7 +56,6 @@ public:
 	bool isUnload;
 	bool isWin;
 	bool isFinish;
-
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 
@@ -68,6 +69,7 @@ public:
 	void RemoveObjects(vector<LPGAMEOBJECT>& coObjects);
 	void GenerateWeapon();
 	Simon* GetPlayer() { return player; }
+	void ReplayMusicGame();
 
 	//friend class CPlayScenceKeyHandler;
 	~CPlayScene();

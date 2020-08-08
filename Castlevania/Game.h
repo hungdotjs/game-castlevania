@@ -47,6 +47,7 @@ class CGame
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 	void _ParseSection_SIMON(string line);
+	void _ParseSection_SOUND(string line);
 
 public:
 	int current_scene;
@@ -57,6 +58,9 @@ public:
 
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
+
+	HWND GetHWND() { return hWnd; }
+
 
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }

@@ -364,12 +364,17 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(ID_TEX_BBOX, BBOX_TEXTURE, D3DCOLOR_XRGB(255, 255, 255));
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	sound = Sound::GetInstance();
+
+	ReplayMusicGame();
 
 	board = new Board();
+
 	board->Initialize(CGame::GetInstance()->GetDirect3DDevice(), player);
+
+	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -379,14 +384,24 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return;
 
 	if (player->isWin) {
+		sound->Stop(MUSIC_SCENE);
+		sound->StopAll();
+		sound->Play(SOUND_COUNT_POINT, true);
+
 		player->SetState(SIMON_STATE_IDLE);
-		if (gameTime / 1000 <= 0)
+		if (gameTime / 1000 <= 0 && player->heartsAmount <= 0) {
 			isFinish = true;
+			sound->Stop(SOUND_COUNT_POINT);
+
+		}
 		else {
+			if (player->heartsAmount > 0) {
+				player->heartsAmount -= 1;
+				player->AddScore(25);
+			}
 			gameTime -= 1000;
 			player->AddScore(10);
 			board->Update(gameTime / 1000, CGame::GetInstance()->GetCurrentStage(), player);
-
 		}
 		return;
 	}
@@ -508,7 +523,8 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (cy > 48) cy = 48;
 
-	CGame::GetInstance()->SetCamPos(cx, 48);
+	if (!player->isFightBoss)
+		CGame::GetInstance()->SetCamPos((int)cx, 48);
 
 	gameTime -= dt;
 	if (gameTime / 1000 == 0) {
@@ -531,9 +547,10 @@ void CPlayScene::Render()
 	}
 
 	if (isFinish) {
-		string text = "YOU WIN \n\n";
+
+		string text = "		YOU WIN \n\n";
 		text += "YOUR SCORE - " + std::to_string(Simon::score);
-		board->RenderTextScreen(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, text);
+		board->RenderTextScreen(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3, text);
 		return;
 	}
 
@@ -625,6 +642,7 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 			HiddenBrick* brick = dynamic_cast<HiddenBrick*>(objects.at(i));
 			if (brick->isHitted)
 			{
+				sound->Play(SOUND_BROKENBRICK);
 				BrokenEffect* effect = new BrokenEffect();
 				effect->SetPosition(brick->x, brick->y);
 				effect->SetSpeed(-0.08f, -0.08f);
@@ -646,6 +664,8 @@ void CPlayScene::RemoveObjects(vector<LPGAMEOBJECT>& objects)
 			HiddenObject* ho = dynamic_cast<HiddenObject*>(objects.at(i));
 			if (ho->isTouched)
 			{
+				sound->Play(SOUND_COLLECT_ITEM);
+
 				Item* item = new Item();
 				item->SetPosition(ho->item_x, ho->item_y);
 				item->SetSpeed(0, -0.1);
@@ -920,6 +940,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (simon->isJump == false && simon->isSit == false && simon->isAttack == false && simon->isOnStair == false && !simon->isHurt)
 			simon->SetAction(SIMON_ACTION_JUMP);
 		break;
+	case DIK_ESCAPE:
+		DestroyWindow(CGame::GetInstance()->GetHWND());
+		break;
 
 	case DIK_1:
 		simon->currentWeapon = ITEM_KNIFE;
@@ -969,7 +992,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_R:	// Reset
-		simon->Reset();
+		// simon->Reset();
 		break;
 	case DIK_F1:
 	{
@@ -1193,9 +1216,11 @@ void CPlayScene::GenerateWeapon() {
 		weapon->SetPosition(player->x, player->y);
 		weapon->firstCast = GetTickCount();
 		listGrids->AddObject(weapon);
+		sound->Play(SOUND_KNIFE);
 		break;
 
 	case ITEM_AXE:
+
 		weapon = new Axe(player);
 		weapon->nx = nx;
 
@@ -1211,6 +1236,7 @@ void CPlayScene::GenerateWeapon() {
 		weapon->SetPosition(player->x, player->y);
 		weapon->firstCast = GetTickCount();
 		listGrids->AddObject(weapon);
+		sound->Play(SOUND_AXE);
 		break;
 
 	case ITEM_HOLYWATER:
@@ -1228,6 +1254,7 @@ void CPlayScene::GenerateWeapon() {
 		weapon->SetPosition(player->x, player->y);
 		weapon->firstCast = GetTickCount();
 		listGrids->AddObject(weapon);
+		sound->Play(SOUND_HOLYWATER_FLY);
 		break;
 
 	case ITEM_CROSS:
@@ -1246,12 +1273,20 @@ void CPlayScene::GenerateWeapon() {
 		weapon->SetPosition(player->x, player->y);
 		weapon->firstCast = GetTickCount();
 		listGrids->AddObject(weapon);
+		sound->Play(SOUND_CROSS);
 		break;
 
 	case ITEM_CLOCK:
 		isClockWeaponUsed = true;
+		sound->Play(SOUND_STOPWATCH);
 		clockWeaponCast = GetTickCount();
 		break;
 
 	}
+}
+
+void CPlayScene::ReplayMusicGame()
+{
+	sound->StopAll();// tắt hết nhạc
+	sound->Play(MUSIC_SCENE, true); // mở lại nhạc nền
 }

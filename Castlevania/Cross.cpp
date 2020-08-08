@@ -140,20 +140,24 @@ void Cross::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				Torch* torch = dynamic_cast<Torch*>(e->obj);
 				torch->isHitted = true;
+				sound->Play(SOUND_HIT);
 			}
 			else if (dynamic_cast<Candle*>(e->obj))
 			{
 				Candle* candle = dynamic_cast<Candle*>(e->obj);
 				candle->isHitted = true;
+				sound->Play(SOUND_HIT);
+
 			}
 			else if (dynamic_cast<Simon*>(e->obj))
 			{
 				isExposed = true;
-				Simon::GetInstance()->heartsAmount += 1;
+				// Simon::GetInstance()->heartsAmount += 1;
 			}
 			else if (dynamic_cast<Enemy*>(e->obj))
 			{
 				Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
+				sound->Play(SOUND_HIT);
 
 				if (dynamic_cast<PhantomBat*>(e->obj))
 				{

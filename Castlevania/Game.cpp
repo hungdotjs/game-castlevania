@@ -330,6 +330,8 @@ CGame* CGame::GetInstance()
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_SIMON	3
+#define GAME_FILE_SECTION_SOUND 4
+
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -366,6 +368,15 @@ void CGame::_ParseSection_SIMON(string line)
 	Simon::GetInstance()->Load(path);
 }
 
+void CGame::_ParseSection_SOUND(string line)
+{
+	vector<string> tokens = split(line);
+	if (tokens.size() < 1) return;
+	LPCWSTR path = ToLPCWSTR(tokens[0]);
+	Sound::GetInstance()->Load(path);
+}
+
+
 /*
 	Load game campaign file and load/initiate first scene
 */
@@ -389,6 +400,7 @@ void CGame::Load(LPCWSTR gameFile)
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
 		if (line == "[PLAYER]") { section = GAME_FILE_SECTION_SIMON; continue; }
+		if (line == "[SOUND]") { section = GAME_FILE_SECTION_SOUND; continue; }
 		//
 		// data section
 		//
@@ -397,6 +409,7 @@ void CGame::Load(LPCWSTR gameFile)
 		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
 		case GAME_FILE_SECTION_SIMON: _ParseSection_SIMON(line); break;
+		case GAME_FILE_SECTION_SOUND: _ParseSection_SOUND(line); break;
 		}
 	}
 	f.close();

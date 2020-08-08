@@ -20,6 +20,7 @@
 #include "Item.h"
 #include "HiddenObject.h"
 #include "Skeleton.h"
+#include "Sound.h"
 
 class Simon : public CGameObject
 {
@@ -49,6 +50,7 @@ public:
 
 	DWORD attackTime;
 	DWORD resetTime;
+	Sound* sound;
 
 	Whip* whip;
 	int life;
@@ -62,6 +64,8 @@ public:
 	static int heartsAmount;
 	int currentWeapon;
 	bool isWin;
+	bool isFightBoss;
+
 
 	static Simon* __instance;
 	bool isClockWeaponUsed;

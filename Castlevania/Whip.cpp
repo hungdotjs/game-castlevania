@@ -24,6 +24,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (wl < zr && wr > zl && wt < zb && wb > zt)
 				{
+					sound->Play(SOUND_HIT);
 					if (!phantomBat->isUntouchable)
 					{
 						CGame::GetInstance()->bossHeath -= WEAPON_DAME;
@@ -52,6 +53,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (wl < zr && wr > zl && wt < zb && wb > zt)
 				{
+					sound->Play(SOUND_HIT);
+
 					enemy->isHitted = true;
 					enemy->health -= 1;
 				}
@@ -66,6 +69,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			torch->GetBoundingBox(zl, zt, zr, zb);
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
+				sound->Play(SOUND_HIT);
+
 				torch->isHitted = true;
 			}
 		}
@@ -76,6 +81,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			candle->GetBoundingBox(zl, zt, zr, zb);
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
+				sound->Play(SOUND_HIT);
+
 				candle->isHitted = true;
 			}
 		}
@@ -96,6 +103,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			knight->GetBoundingBox(zl, zt, zr, zb);
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
+				sound->Play(SOUND_HIT);
+
 				knight->isHitted = true;
 				knight->health -= 1;
 				DebugOut(L"Hitted: health = %d \n", knight->health);
@@ -109,6 +118,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (wl < zr && wr > zl && wt < zb && wb > zt)
 			{
+				sound->Play(SOUND_HIT);
+
 				bat->isHitted = true;
 			}
 		}

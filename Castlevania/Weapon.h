@@ -5,6 +5,7 @@
 #include "CheckStair.h"
 #include "Simon.h"
 #include "PhantomBat.h"
+#include "Sound.h"
 
 class Weapon : public CGameObject
 {
@@ -17,13 +18,18 @@ public:
 	bool isExposed;
 	bool isActivate;
 	DWORD firstCast;
+	Sound* sound;
 
-	Weapon() {}
+	Weapon() {
+		sound = Sound::GetInstance();
+	}
 
 	Weapon(Simon* simon, float max_width = SCREEN_WIDTH)
 	{
 		this->simon = simon;
 		this->max_width = max_width;
+		sound = Sound::GetInstance();
+
 	}
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

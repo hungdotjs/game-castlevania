@@ -1,6 +1,8 @@
 ﻿#include "PhantomBat.h"
 #include "Utils.h"
 #include <math.h>
+#include "Sound.h"
+#include "PlayScence.h"
 
 void PhantomBat::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -17,9 +19,18 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
+
 	// Đổi trạng thái
 	if (simon->x > cam_x + 3 * SCREEN_WIDTH / 5 && state == PHANTOMBAT_STATE_WAIT)
 	{
+		simon->isFightBoss = true;
+		Sound* sound = Sound::GetInstance();
+		if (sound->isPlaying(MUSIC_SCENE))
+		{
+			sound->Stop(MUSIC_SCENE);
+		}
+		sound->Play(MUSIC_BOSS);
+
 		isWait = true;
 		isAttack = true;
 
@@ -38,13 +49,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			vy = (destination_y - y) / PHANTOMBAT_TIME_DOWN;
 
-			// Tính vận tốc bay ngang theo góc hợp bởi vị trí hiện tại của boss dơi và destination
-			float angle = atan2(destination_x - x, destination_y - y);
-
-			DebugOut(L"[GOC] angle = %f\n", angle);
-
-			// Tính vx theo vy
-			vx = vy * tan(angle);
+			vx = ( destination_x - x) / PHANTOMBAT_TIME_DOWN;
 
 			isTop = false;
 			isWait = false;
@@ -55,12 +60,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			vy = (destination_y - y) / PHANTOMBAT_TIME_UP;
 
-			// Tính vận tốc bay ngang theo góc hợp bởi vị trí hiện tại của boss dơi và destination
-			float angle = atan2(destination_x - x, destination_y - y);
-			DebugOut(L"[GOC] angle = %f\n", angle);
-
-			// Tính vx theo vy
-			vx = vy * tan(angle);
+			vx = (destination_x - x) / PHANTOMBAT_TIME_UP;
 
 			isBottom = false;
 			isWait = false;

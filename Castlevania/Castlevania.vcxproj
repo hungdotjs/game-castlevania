@@ -87,14 +87,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
-      <AdditionalDependencies>d3dx9.lib;d3d9.lib;dxguid.lib;dxerr.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;d3d9.lib;dxguid.lib;dxerr.lib;dinput8.lib;dsound.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,6 +147,8 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BeginScene.cpp" />
     <ClCompile Include="BrokenEffect.cpp" />
+    <ClCompile Include="DSutil.cpp" />
+    <ClCompile Include="dxutil.cpp" />
     <ClCompile Include="HiddenBrick.cpp" />
     <ClCompile Include="HiddenObject.cpp" />
     <ClCompile Include="HolyWater.cpp" />
@@ -179,6 +181,7 @@
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="CheckStairTop.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Whip.cpp" />
@@ -193,6 +196,8 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BeginScene.h" />
     <ClInclude Include="BrokenEffect.h" />
+    <ClInclude Include="DSutil.h" />
+    <ClInclude Include="dxutil.h" />
     <ClInclude Include="HiddenBrick.h" />
     <ClInclude Include="HiddenObject.h" />
     <ClInclude Include="HolyWater.h" />
@@ -222,6 +227,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="CheckStairTop.h" />
     <ClInclude Include="Textures.h" />

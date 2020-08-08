@@ -100,6 +100,9 @@
     <Filter Include="Object\HiddenObject">
       <UniqueIdentifier>{dd4f08e9-2a59-446e-8863-711c02854b1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Sound">
+      <UniqueIdentifier>{8075bf5d-895c-42bd-90a1-533989f15c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -232,6 +235,15 @@
     <ClCompile Include="HiddenObject.cpp">
       <Filter>Object\HiddenObject</Filter>
     </ClCompile>
+    <ClCompile Include="dxutil.cpp">
+      <Filter>Library\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="DSutil.cpp">
+      <Filter>Library\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Library\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -362,6 +374,15 @@
     </ClInclude>
     <ClInclude Include="HiddenObject.h">
       <Filter>Object\HiddenObject</Filter>
+    </ClInclude>
+    <ClInclude Include="dxutil.h">
+      <Filter>Library\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="DSutil.h">
+      <Filter>Library\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Library\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

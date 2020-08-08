@@ -1,0 +1,21 @@
+[SOUND]
+# id	file_path
+0	sound\Music-Intro.wav
+1	sound\Music-Scene.wav
+2	sound\Music-Boss.wav
+3	sound\Sound-Hit.wav
+4	sound\Sound-Hurt.wav
+5	sound\Sound-Morningstar.wav
+6	sound\Sound-Dagger.wav
+7	sound\Sound-Axe.wav
+8	sound\Sound-Boomerang.wav
+9	sound\Sound-Firebomb.wav
+10	sound\Sound-StopWatch.wav
+11	sound\Sound-Item-InvisibilityPotion.wav
+12	sound\Sound-Item-AllKill.wav
+13	sound\Sound-BrokenBrick.wav
+14	sound\Sound-Collect-Item.wav
+15	sound\Sound-Collect-Weapon.wav
+16	sound\Sound-Holywater-Fly.wav
+17	sound\Sound-Holywater-Burn.wav
+18	sound\Sound-Count-Point.wav

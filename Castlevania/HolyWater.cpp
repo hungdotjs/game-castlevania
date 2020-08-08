@@ -26,6 +26,7 @@ void HolyWater::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<
 				if (dynamic_cast<Enemy*>(e->obj) && isBurn)
 				{
 					Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
+					sound->Play(SOUND_HIT);
 
 					if (dynamic_cast<PhantomBat*>(e->obj))
 					{
@@ -53,20 +54,20 @@ void HolyWater::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<
 
 					}
 
-
-					isBurn = true;
 				}
 				else if ((dynamic_cast<Torch*>(e->obj) && isBurn))
 				{
 					Torch* torch = dynamic_cast<Torch*>(e->obj);
 					torch->isHitted = true;
-					isBurn = true;
+					sound->Play(SOUND_HIT);
+
 				}
 				else if ((dynamic_cast<Candle*>(e->obj) && isBurn))
 				{
 					Candle* candle = dynamic_cast<Candle*>(e->obj);
 					candle->isHitted = true;
-					isBurn = true;
+					sound->Play(SOUND_HIT);
+
 				}
 			}
 
@@ -141,6 +142,7 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vy = 0;
 						isBurn = true;
 						willBlock = true;
+						sound->Play(SOUND_HOLYWATER_BURN);
 					}
 				}
 			}

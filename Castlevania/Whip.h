@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Sprites.h"
 #include "Utils.h"
+#include "Sound.h"
 
 #define WHIP_RIGHT 						0
 #define WHIP_LEFT						1
@@ -23,9 +24,11 @@ class Whip :public CGameObject
 	int step = 0;
 
 public:
+	Sound* sound;
 	int level = 0;
 	Whip(int level) :CGameObject()
 	{
+		sound = Sound::GetInstance();
 		this->level = level;
 	}
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

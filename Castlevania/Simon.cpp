@@ -17,7 +17,7 @@ Simon::Simon(float x, float y) : CGameObject()
 	preHP = SIMON_HP;
 	hp = SIMON_HP;
 	currentWeapon = 0;
-
+	sound = Sound::GetInstance();
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -276,44 +276,57 @@ void Simon::CalcPotentialCollisions(vector<LPGAMEOBJECT>* coObjects, vector<LPCO
 				{
 					item->SetEaten();
 
+
 					int type = item->GetType();
 					switch (type)
 					{
 					case ITEM_MINIHEART:
 						AddHeart(1);
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					case ITEM_HEART:
 						AddHeart(5);
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					case ITEM_WHIP:
+						sound->Play(SOUND_COLLECT_WEAPON);
 						whip->UpLevel();
 						break;
 					case ITEM_KNIFE:
 						SetCurrentWeapon(ITEM_KNIFE);
+						sound->Play(SOUND_COLLECT_WEAPON);
 						break;
 					case ITEM_AXE:
 						SetCurrentWeapon(ITEM_AXE);
+						sound->Play(SOUND_COLLECT_WEAPON);
 						break;
 					case ITEM_CROSS:
 						SetCurrentWeapon(ITEM_CROSS);
+						sound->Play(SOUND_COLLECT_WEAPON);
 						break;
 					case ITEM_HOLYWATER:
 						SetCurrentWeapon(ITEM_HOLYWATER);
+						sound->Play(SOUND_COLLECT_WEAPON);
 						break;
 					case ITEM_CLOCK:
 						SetCurrentWeapon(ITEM_CLOCK);
+						sound->Play(SOUND_COLLECT_WEAPON);
 						break;
 					case ITEM_MONEY:
 						AddScore(700);
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					case ITEM_MONEY_1000PTS:
 						AddScore(1000);
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					case ITEM_CRYSTAL:
 						isWin = true;
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					case ITEM_CROWN:
 						AddScore(2000);
+						sound->Play(SOUND_COLLECT_ITEM);
 						break;
 					}
 				}
@@ -899,6 +912,7 @@ void Simon::SetState(int state)
 		break;
 	case SIMON_STATE_HURT:
 		isHurt = true;
+		sound->Play(SOUND_HURT);
 
 		vy = -SIMON_HURT_DEFLECT_SPEED_Y;
 		if (nx > 0)
@@ -927,6 +941,7 @@ void Simon::SetAction(int action)
 		// Ngat tat ca trang thai (tru ngoi)
 		// Neu dang nhay toi thi de nguyen van toc, neu khong thi dung lai va danh
 		isAttack = true;
+		sound->Play(SOUND_WHIP);
 
 		if (!isJump)
 			vx = 0;

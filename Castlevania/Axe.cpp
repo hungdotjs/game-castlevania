@@ -56,6 +56,7 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (dynamic_cast<Enemy*>(e->obj))
 				{
 					Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
+					sound->Play(SOUND_HIT);
 
 					if (dynamic_cast<PhantomBat*>(e->obj))
 					{
@@ -83,16 +84,23 @@ void Axe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 					}
 
+					this->isExposed = true;
+
 				}
 				else if (dynamic_cast<Torch*>(e->obj))
 				{
 					Torch* torch = dynamic_cast<Torch*>(e->obj);
 					torch->isHitted = true;
+					this->isExposed = true;
+					sound->Play(SOUND_HIT);
+
 				}
 				else if (dynamic_cast<Candle*>(e->obj))
 				{
 					Candle* candle = dynamic_cast<Candle*>(e->obj);
 					candle->isHitted = true;
+					this->isExposed = true;
+					sound->Play(SOUND_HIT);
 				}
 			}
 		}

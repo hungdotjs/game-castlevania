@@ -1,3 +1,6 @@
+[SOUND]
+scene\\sound.txt
+
 [PLAYER]
 scene\\simon.txt
 
